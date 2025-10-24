@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SGD</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Configurações Globais e Cores --- */
+        :root {
+            --color-black: #000000;
+            --color-gold: #C0A040;
+            --color-gold-light: #E6C850;
+            --color-text: #E0E0E0;
+            --color-text-secondary: #AAAAAA;
+            --color-bg-dark: #121212; /* Fundo principal (mais suave) */
+            --color-bg-sidebar: #000000; /* Sidebar (preto total) */
+            --color-bg-card: #1F1F1F; /* Fundo dos cards */
+            --color-border: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* A fonte 'Poppins' agora vai carregar */
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--color-bg-dark);
+            color: var(--color-text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Barra Lateral (Sidebar) --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--color-bg-sidebar);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--color-border);
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-header img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-header h2 {
+            color: var(--color-gold);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* --- Menu de Navegação --- */
+        .sidebar-nav ul {
+            list-style: none;
+        }
+
+        .sidebar-nav .nav-section-title {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 10px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            color: var(--color-text);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: 400;
+        }
+
+        .sidebar-nav li a:hover {
+            background-color: var(--color-bg-card);
+            color: var(--color-gold-light);
+        }
+
+        .sidebar-nav li a.active {
+            background-color: var(--color-gold);
+            color: var(--color-black);
+            font-weight: 600;
+        }
+
+        /* --- Conteúdo Principal (Main Content) --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Cabeçalho Superior (Header) --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background-color: var(--color-bg-sidebar);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: var(--color-text);
+            margin: 0;
+        }
+
+        .user-menu a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .user-menu a:hover {
+            color: var(--color-gold);
+        }
+
+        /* --- Área do Dashboard (Cards) --- */
+        .dashboard {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--color-bg-card);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid var(--color-gold);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h3 {
+            color: var(--color-gold-light);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .card a {
+            display: inline-block;
+            background-color: var(--color-gold);
+            color: var(--color-black);
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+        
+        .card a:hover {
+             background-color: var(--color-gold-light);
+        }
+
+    </style>
+</head>
+<body>
+    
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            
+            <img src="logo_sgd.webp" alt="Logo SGD">
+            <h2>Gestão de Defesas</h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="nav-section-title">Principal</li>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Agenda de Defesas</a></li>
+
+                <li class="nav-section-title">Gerenciamento</li>
+                <li><a href="#">Solicitações Pendentes</a></li>
+                <li><a href="#">Gerar Documentos</a></li>
+                <li><a href="#">Gerenciar Alunos</a></li>
+                <li><a href="#">Gerenciar Professores</a></li>
+                
+                <li class="nav-section-title">Sistema</li>
+                <li><a href="#">Configurações</a></li>
+                <li><a href="#">Meu Perfil</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        
+        <header class="header">
+            <h1>Dashboard</h1>
+            <div class="user-menu">
+                <span>Olá, Diogo Aguiar (Admin)</span> | <a href="index.html">Sair</a>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <div class="card-grid">
+                
+                <div class="card">
+                    <h3>Solicitações Pendentes</h3>
+                    <p>Novos pedidos de defesa ou qualificação aguardando homologação da banca.</p>
+                    <div class="card-value">5</div>
+                    <a href="#">Verificar Agora</a>
+                </div>
+
+                <div class="card">
+                    <h3>Defesas (Próx. 7 dias)</h3>
+                    <p>Bancas confirmadas e agendadas para a próxima semana.</p>
+                    <div class="card-value">12</div>
+                    <a href="#">Ver Agenda</a>
+                </div>
+
+                <div class="card">
+                    <h3>Gerar Documentos</h3>
+                    <p>Acessar o módulo para emissão de atas de defesa e declarações de participação.</p>
+                    <a href="#">Acessar Módulo</a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>
