@@ -16,6 +16,7 @@ O SGD é uma plataforma web dedicada a gerenciar todo o fluxo de defesas de qual
 
 - Html
 - Css
+- JS
 
 ## 🌐 Página de Login (Temporária)
 http://diogobaguiar.github.io/SGD/
