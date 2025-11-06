@@ -29,8 +29,18 @@
           
         <div class="mb-5">
             <label for="password" class="block mb-2 text-sm text-[#AAAAAA]">Senha</label>
-            <input type="password" id="password" name="password" required
-                class="w-full p-3 bg-[#1F1F1F] border border-[#333333] rounded text-[#E0E0E0] text-base transition-colors duration-300 focus:outline-none focus:border-[#C0A040] focus:ring-4 focus:ring-[#C0A040]/20 [&:-webkit-autofill]:bg-[#1F1F1F] [&:-webkit-autofill]:text-[#E0E0E0] [&:-webkit-autofill]:shadow-[0_0_0_30px_#1F1F1F_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:#E0E0E0] focus:shadow-[0_0_0_2px_rgba(192,160,64,0.3)]">
+            <div class="relative">
+                <input type="password" id="password" name="password" required
+                    class="w-full p-3 pr-10 bg-[#1F1F1F] border border-[#333333] rounded text-[#E0E0E0] text-base transition-colors duration-300 focus:outline-none focus:border-[#C0A040] focus:ring-4 focus:ring-[#C0A040]/20 [&:-webkit-autofill]:bg-[#1F1F1F] [&:-webkit-autofill]:text-[#E0E0E0] [&:-webkit-autofill]:shadow-[0_0_0_30px_#1F1F1F_inset] [&:-webkit-text-fill-color:#E0E0E0] focus:shadow-[0_0_0_2px_rgba(192,160,64,0.3)]">
+                
+                <button type="button" id="togglePassword" aria-label="Mostrar senha"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 text-white p-1 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </button>
+            </div>
         </div>
           
         <button type="submit"
@@ -43,6 +53,15 @@
           <a href="#" class="text-[#AAAAAA] hover:text-[#C0A040] transition-colors">Esqueceu sua senha?</a>
       </div>
   </div>
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
 
+    togglePassword.addEventListener('click', function () {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        togglePassword.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
+});
+</script>
 </body>
 </html>
