@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Gerenciar Professores - SGD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .font-poppins { font-family: 'Poppins', sans-serif; }
+      /* Classe utilitária para esconder elementos (usada no modal) */
+      .hidden { display: none; }
+    </style>
+</head>
+<body class="font-poppins min-h-screen flex bg-[#121212] text-[#E0E0E0]">
+
+  <div id="sidebar-container" class="h-screen sticky top-0 z-10"></div>
+
+  <main class="flex-1 flex flex-col min-h-screen relative">
+    
+    <div id="header-container"></div>
+
+    <section class="p-8 flex-1">
+        
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold text-[#C0A040]">Listagem de Professores</h2>
+            <button onclick="openProfessorModal()" class="flex items-center bg-[#C0A040] text-black px-4 py-2 rounded font-bold hover:bg-[#E6C850] transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                Novo Professor
+            </button>
+        </div>
+
+        <div class="bg-[#1F1F1F] p-4 rounded-lg mb-6 flex gap-4 items-end border border-[#333333]">
+            <div class="flex-1">
+                <label class="block text-xs text-[#AAAAAA] mb-1">Buscar por Nome ou E-mail</label>
+                <input type="text" placeholder="Digite para buscar..." class="w-full bg-[#121212] border border-[#333333] text-[#E0E0E0] px-3 py-2 rounded focus:outline-none focus:border-[#C0A040]">
+            </div>
+            <div>
+                 <label class="block text-xs text-[#AAAAAA] mb-1">Tipo</label>
+                 <select class="bg-[#121212] border border-[#333333] text-[#E0E0E0] px-3 py-2 rounded focus:outline-none focus:border-[#C0A040]">
+                     <option value="">Todos</option>
+                     <option value="interno">Interno (IFPB)</option>
+                     <option value="externo">Externo</option>
+                 </select>
+            </div>
+            <button class="bg-[#333333] text-[#E0E0E0] px-4 py-2 rounded hover:bg-[#444444] transition">Filtrar</button>
+        </div>
+
+        <div class="bg-[#1F1F1F] rounded-lg border border-[#333333] overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-[#000000] text-[#C0A040] text-sm uppercase">
+                    <tr>
+                        <th class="px-6 py-3">Nome</th>
+                        <th class="px-6 py-3">Instituição</th>
+                        <th class="px-6 py-3">Titulação</th>
+                        <th class="px-6 py-3">Tipo</th>
+                        <th class="px-6 py-3 text-right">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="professores-table-body" class="divide-y divide-[#333333] text-sm">
+                    <tr>
+                        <td class="px-6 py-4 text-center text-[#AAAAAA]" colspan="5">Carregando dados...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div id="professor-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 backdrop-blur-sm">
+        <div class="bg-[#1F1F1F] w-full max-w-md p-6 rounded-lg border border-[#C0A040] shadow-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-[#C0A040]" id="modal-title">Novo Professor</h3>
+                <button onclick="closeProfessorModal()" class="text-[#AAAAAA] hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="professor-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-[#AAAAAA] mb-1">Nome Completo *</label>
+                    <input type="text" required class="w-full bg-[#121212] border border-[#333333] text-[#E0E0E0] px-3 py-2 rounded focus:outline-none focus:border-[#C0A040]">
+                </div>
+                <div>
+                    <label class="block text-sm text-[#AAAAAA] mb-1">E-mail *</label>
+                    <input type="email" required class="w-full bg-[#121212] border border-[#333333] text-[#E0E0E0] px-3 py-2 rounded focus:outline-none focus:border-[#C0A040]">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-[#AAAAAA] mb-1">Instituição *</label>
+                        <input type="text" id="input-instituicao" required class="w-full bg-[#121212] border border-[#333333] text-[#E0E0E0] px-3 py-2 rounded focus:outline-none focus:border-[#C0A040]" value="IFPB">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-[#AAAAAA] mb-1">Tipo</label>
+                        <select id="select-tipo" onchange="toggleInstituicao(this.value)" class="w-full bg-[#121212] border border-[#333333] text-[#E0E0E0] px-3 py-2 rounded focus:outline-none focus:border-[#C0A040]">
+                            <option value="Interno" selected>Interno (IFPB)</option>
+                            <option value="Externo">Externo</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm text-[#AAAAAA] mb-1">Maior Titulação *</label>
+                    <select required class="w-full bg-[#121212] border border-[#333333] text-[#E0E0E0] px-3 py-2 rounded focus:outline-none focus:border-[#C0A040]">
+                        <option value="Doutorado">Doutorado</option>
+                        <option value="Mestrado">Mestrado</option>
+                        <option value="Especialização">Especialização</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="closeProfessorModal()" class="px-4 py-2 bg-[#333333] text-[#E0E0E0] rounded hover:bg-[#444444] transition">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-[#C0A040] text-black font-bold rounded hover:bg-[#E6C850] transition">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+  </main>
+
+  <script src="../js/layout.js"></script>
+  
+  <script src="../js/professores.js"></script>
+
+  <script>
+      
+      setTimeout(() => {
+          const pageTitle = document.getElementById('page-title');
+          if (pageTitle) pageTitle.innerText = "Gerenciar Professores";
+    
+          const activeLink = document.querySelector('a[href="professores.html"]');
+          if (activeLink) {
+              activeLink.classList.add('bg-[#C0A040]', 'text-black', 'font-semibold');
+              activeLink.classList.remove('hover:bg-[#1F1F1F]', 'hover:text-[#E6C850]');
+          }
+      }, 100);
+  </script>
+</body>
+</html>
