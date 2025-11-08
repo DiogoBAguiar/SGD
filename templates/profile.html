@@ -11,63 +11,35 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <script type="module" src="../js/main.js" defer></script>
+
   <style>
-    .font-poppins { font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .font-poppins { font-family: 'Poppins', sans-serif; }
   </style>
 </head>
 
 <body class="font-poppins min-h-screen flex bg-[#121212] text-[#E0E0E0]">
 
-  <!-- SIDEBAR -->
-  <aside class="w-[260px] bg-[#000000] border-r border-[#333333] p-5 flex flex-col">
-    <div class="text-center mb-6">
-      <img src="logo_sgd.webp" alt="Logo SGD" class="w-20 h-20 rounded-md object-cover mx-auto mb-3">
-      <h2 class="text-[#C0A040] text-lg font-semibold">Gestão de Defesas</h2>
-    </div>
+  <div id="navbar" class="sticky top-0 h-screen z-10"></div>
 
-    <nav class="mt-2 flex-1">
-      <ul class="space-y-2 text-sm">
-        <li class="px-2 text-[#AAAAAA] uppercase tracking-wider text-xs mt-2">Principal</li>
-        <li><a href="dashboard.html" class="flex items-center px-3 py-2 rounded hover:bg-[#1F1F1F] hover:text-[#E6C850] transition-colors">Dashboard</a></li>
-        <li><a href="#" class="flex items-center px-3 py-2 rounded hover:bg-[#1F1F1F] hover:text-[#E6C850] transition-colors">Agenda de Defesas</a></li>
-
-        <li class="px-2 text-[#AAAAAA] uppercase tracking-wider text-xs mt-4">Gerenciamento</li>
-        <li><a href="#" class="flex items-center px-3 py-2 rounded hover:bg-[#1F1F1F] hover:text-[#E6C850] transition-colors">Solicitações Pendentes</a></li>
-        <li><a href="#" class="flex items-center px-3 py-2 rounded hover:bg-[#1F1F1F] hover:text-[#E6C850] transition-colors">Gerar Documentos</a></li>
-
-        <li class="px-2 text-[#AAAAAA] uppercase tracking-wider text-xs mt-4">Sistema</li>
-        <li><a href="#" class="flex items-center px-3 py-2 rounded hover:bg-[#1F1F1F] hover:text-[#E6C850] transition-colors">Configurações</a></li>
-        <li><a href="perfil.html" class="flex items-center px-3 py-2 rounded bg-[#C0A040] text-black font-semibold">Meu Perfil</a></li>
-      </ul>
-    </nav>
-  </aside>
-
-  <!-- MAIN CONTENT -->
   <main class="flex-1 flex flex-col">
-    <header class="flex items-center justify-between px-8 py-5 bg-[#000000] border-b border-[#333333]">
-      <h1 class="text-2xl font-semibold">Meu Perfil</h1>
-      <div class="text-sm text-[#AAAAAA]">
-        <span class="text-[#E0E0E0]">Olá, Diogo Aguiar (Admin)</span>
-        <span class="mx-2">|</span>
-        <a href="index.html" class="text-[#AAAAAA] hover:text-[#C0A040]">Sair</a>
-      </div>
-    </header>
+    
+    <div id="header"></div>
 
-    <!-- CONTEÚDO -->
-    <section class="p-8 flex justify-center items-start">
-      <div class="bg-[#1F1F1F] p-8 rounded-xl shadow-lg w-full max-w-3xl border border-[#333333]">
+    <section class="p-8 flex justify-center items-start flex-1">
+      <div class="bg-[#1F1F1F] p-8 rounded-xl shadow-lg w-full max-w-3xl border border-[#333333] mt-4">
         <div class="flex items-center gap-6 mb-8">
-          <img src="user_photo.jpg" alt="Foto do usuário" class="w-32 h-32 rounded-full object-cover border-4 border-[#C0A040]">
+          <img src="../img/user_photo.jpg" alt="Foto do usuário" class="w-32 h-32 rounded-full object-cover border-4 border-[#C0A040]">
           <div>
             <h2 class="text-2xl font-semibold text-[#E6C850]">Diogo Aguiar</h2>
             <p class="text-[#AAAAAA]">Administrador do Sistema</p>
-            <p class="text-[#C0A040] mt-2 text-sm">diogo.aguiar@ifce.edu.br</p>
+            <p class="text-[#C0A040] mt-2 text-sm">diogo.aguiar@ifpb.edu.br</p>
           </div>
         </div>
 
         <hr class="border-[#333333] my-6"/>
 
-        <div class="grid grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h3 class="text-[#E6C850] font-semibold mb-2">Informações Gerais</h3>
             <ul class="text-sm text-[#CCCCCC] space-y-2">
@@ -80,15 +52,17 @@
           <div>
             <h3 class="text-[#E6C850] font-semibold mb-2">Contato</h3>
             <ul class="text-sm text-[#CCCCCC] space-y-2">
-              <li><span class="font-semibold text-[#E0E0E0]">E-mail:</span> diogo.aguiar@ifce.edu.br</li>
-              <li><span class="font-semibold text-[#E0E0E0]">Telefone:</span> (85) 99999-9999</li>
-              <li><span class="font-semibold text-[#E0E0E0]">Endereço:</span> Campus Fortaleza - IFCE</li>
+              <li><span class="font-semibold text-[#E0E0E0]">E-mail:</span> diogo.aguiar@ifpb.edu.br</li>
+              <li><span class="font-semibold text-[#E0E0E0]">Telefone:</span> (83) 99999-9999</li>
+              <li><span class="font-semibold text-[#E0E0E0]">Campus:</span> João Pessoa</li>
             </ul>
           </div>
         </div>
 
         <div class="mt-10 text-right">
-          <a href="#" class="bg-[#C0A040] text-black px-5 py-2 rounded font-semibold text-sm hover:bg-[#E6C850]">Editar Perfil</a>
+          <button class="bg-[#C0A040] text-black px-5 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+            Editar Perfil
+          </button>
         </div>
       </div>
     </section>

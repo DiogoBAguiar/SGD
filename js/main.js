@@ -1,16 +1,20 @@
 import { createNavbar, createHeader } from './header.js';
 
-const currentPage = window.location.pathname.split('/').pop(); // Obtém o nome do arquivo atual
+const path = window.location.pathname;
+const currentPage = path.split('/').pop() || 'dashboard.html';
 
-let activePage = '';
-if (currentPage === 'dashboard.html') {
-    activePage = 'dashboard';
-} else if (currentPage === 'student_management.html') {
-    activePage = 'gerenciar_alunos';
-    // Adicione mais condições conforme necessário para outras páginas
-} else if (currentPage === 'professores.html') {
-    activePage = 'gerenciar_professores';
-}
+const pageMap = {
+    'dashboard.html': { id: 'dashboard', title: 'Dashboard' },
+    'student_management.html': { id: 'gerenciar_alunos', title: 'Gerenciar Alunos' },
+    'professores.html': { id: 'gerenciar_professores', title: 'Gerenciar Professores' },
+    'secretarios.html': { id: 'gerenciar_secretaria', title: 'Equipe da Secretaria' }, 
+    'profile.html': { id: 'meu_perfil', title: 'Meu Perfil' }
+};
 
-document.getElementById('navbar').innerHTML = createNavbar(activePage);
-document.getElementById('header').innerHTML = createHeader();
+const activePageData = pageMap[currentPage] || { id: '', title: 'SGD IFPB' };
+
+const navbarEl = document.getElementById('navbar');
+if (navbarEl) navbarEl.innerHTML = createNavbar(activePageData.id);
+
+const headerEl = document.getElementById('header');
+if (headerEl) headerEl.innerHTML = createHeader(activePageData.title);
