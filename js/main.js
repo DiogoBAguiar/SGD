@@ -8,6 +8,8 @@ if (currentPage === 'dashboard.html') {
 } else if (currentPage === 'student_management.html') {
     activePage = 'gerenciar_alunos';
     // Adicione mais condições conforme necessário para outras páginas
+} else if (currentPage === 'professores.html') {
+    activePage = 'gerenciar_professores';
 }
 
 document.getElementById('navbar').innerHTML = createNavbar(activePage);
