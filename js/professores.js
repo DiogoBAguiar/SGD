@@ -219,7 +219,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.getElementById('professor-form').addEventListener('submit',saveProfessor);
 });
 
-// Exportações
 window.applyFilters=applyFilters; window.openProfessorModal=openProfessorModal; window.closeProfessorModal=closeProfessorModal;
 window.toggleInstituicao=toggleInstituicao; window.deleteProfessor=deleteProfessor; window.editProfessor=openProfessorModal;
 window.changePage=changePage; window.viewProfessor=viewProfessor; window.closeDetailsModal=closeDetailsModal;
