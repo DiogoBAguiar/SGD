@@ -25,7 +25,7 @@ const createNavbar = (activePage) => {
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center px-3 py-2 rounded ${activePage === 'gerenciar_professores' ? 'bg-[#C0A040] text-black' : 'hover:bg-[#1F1F1F] hover:text-[#E6C850] transition-colors'}">
+                    <a href="professores.html" class="flex items-center px-3 py-2 rounded ${activePage === 'gerenciar_professores' ? 'bg-[#C0A040] text-black' : 'hover:bg-[#1F1F1F] hover:text-[#E6C850] transition-colors'}">
                         Gerenciar Professores
                     </a>
                 </li>
