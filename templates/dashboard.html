@@ -13,41 +13,28 @@
     <script type="module" src="../js/main.js" defer></script>
 
     <style>
-      .font-poppins { font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      .font-poppins { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
 <body class="font-poppins min-h-screen flex bg-[#121212] text-[#E0E0E0]">
-    <div id="navbar"></div>
+    
+    <div id="navbar" class="sticky top-0 h-screen z-10"></div>
+
     <main class="flex-1 flex flex-col">
         <div id="header"></div>
-    <main class="flex-1 flex flex-col">
-        <div id="header"></div>
+
         <section class="p-8 flex-1">
             <div class="grid grid-cols-3 gap-5">
                 <div class="bg-[#1F1F1F] rounded-lg p-6 border-l-4 border-[#C0A040] shadow-md transform transition hover:-translate-y-1 hover:shadow-lg">
                     <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Solicitações Pendentes</h3>
-                    <p class="text-[#AAAAAA] text-sm mb-4">Novos pedidos de defesa ou qualificação aguardando homologação da banca.</p>
+                    <p class="text-[#AAAAAA] text-sm mb-4">Novos pedidos de defesa.</p>
                     <div class="text-4xl font-extrabold text-[#E0E0E0] mb-4">5</div>
                     <a href="#" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850]">Verificar Agora</a>
                 </div>
-
                 <div class="bg-[#1F1F1F] rounded-lg p-6 border-l-4 border-[#C0A040] shadow-md transform transition hover:-translate-y-1 hover:shadow-lg">
-                    <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Defesas (Próx. 7 dias)</h3>
-                    <p class="text-[#AAAAAA] text-sm mb-4">Bancas confirmadas e agendadas para a próxima semana.</p>
-                    <div class="text-4xl font-extrabold text-[#E0E0E0] mb-4">12</div>
-                    <a href="#" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850]">Ver Agenda</a>
-                </div>
-
-                <div class="bg-[#1F1F1F] rounded-lg p-6 border-l-4 border-[#C0A040] shadow-md transform transition hover:-translate-y-1 hover:shadow-lg">
-                    <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Gerar Documentos</h3>
-                    <p class="text-[#AAAAAA] text-sm mb-4">Acessar o módulo para emissão de atas de defesa e declarações de participação.</p>
-                    <a href="#" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850]">Acessar Módulo</a>
-                </div>
-
-                <div class="bg-[#1F1F1F] rounded-lg p-6 border-l-4 border-[#C0A040] shadow-md transform transition hover:-translate-y-1 hover:shadow-lg">
-                    <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Gerenciar Alunos</h3>
-                    <p class="text-[#AAAAAA] text-sm mb-4">Acesse a lista de alunos e detalhes de cada um.</p>
-                    <a href="./student_management.html" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850]">Ir para Gerenciamento</a>
+                    <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Gerenciar Professores</h3>
+                    <p class="text-[#AAAAAA] text-sm mb-4">Controle de corpo docente e externo.</p>
+                    <a href="professores.html" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850]">Acessar</a>
                 </div>
             </div>
         </section>
