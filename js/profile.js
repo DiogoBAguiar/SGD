@@ -23,16 +23,25 @@ homeBtn.addEventListener('click', () => {
   window.location.href = "../templates/dashboard.html";
 });
 
+// Simulação de histórico vindo do backend
 const activities = [
-  { icon: "clock", text: "Participou como avaliador na defesa de João Silva", date: "15 de outubro de 2025" },
-  { icon: "mail", text: "Enviou solicitação de prorrogação de prazo", date: "03 de novembro de 2025" },
-  { icon: "check", text: "Atualizou o perfil de usuário", date: "09 de novembro de 2025" }
+  { icon: "clock", text: "Participou como avaliador na defesa de João Silva", date: "2025-10-15" },
+  { icon: "mail", text: "Enviou solicitação de prorrogação de prazo", date: "2025-11-03" },
+  { icon: "check", text: "Atualizou o perfil de usuário", date: "2025-11-09" },
+  { icon: "clock", text: "Assistiu defesa de Maria Oliveira", date: "2025-11-10" },
+  { icon: "mail", text: "Enviou documento complementar", date: "2025-11-11" }
 ];
 
 function renderActivityHistory() {
   const container = document.getElementById("activityHistory");
-  container.innerHTML = ""; // limpa
-  activities.forEach(a => {
+  container.innerHTML = ""; // limpa conteúdo anterior
+
+  // Ordena por data e pega os 3 últimos
+  const recentActivities = activities
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0,3 );
+
+  recentActivities.forEach(a => {
     const div = document.createElement("div");
     div.className = "flex items-start gap-3 bg-[#181818] p-4 rounded-lg border border-[#333333]";
     const iconPaths = {
