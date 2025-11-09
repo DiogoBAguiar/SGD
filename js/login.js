@@ -1,10 +1,10 @@
 // Simulação de um banco de dados de usuários
 const users = [
-    { username: 'icaro.pontes@academico.ifpb.edu.br', password: '123456789' },
-    { username: 'diogo.aguiar@academico.ifpb.edu.br', password: '123456789' },
-    { username: 'alan.clemente@academico.ifpb.edu.br', password: '123456789' },
-    { username: 'carlos.gabriel@academico.ifpb.edu.br', password: '123456789' },
-    { username: 'thalyson.felicio@academico.ifpb.edu.br', password: '123456789' }
+    { username: 'icaro.pontes@academico.ifpb.edu.br', password: 'icaro123' },
+    { username: 'diogo.aguiar@academico.ifpb.edu.br', password: 'diogo123' },
+    { username: 'alan.clemente@academico.ifpb.edu.br', password: 'alan123' },
+    { username: 'carlos.gabriel@academico.ifpb.edu.br', password: 'carlos123' },
+    { username: 'thalyson.felicio@academico.ifpb.edu.br', password: 'thalyson123' }
 ];
 
 // Função para validar login
