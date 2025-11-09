@@ -5,7 +5,7 @@ let mockAlunos = [
         id: 101, nome: "Diogo Bruno Aguiar", matricula: "2023201405", email: "diogo@aluno.ifpb.edu.br", curso: "Mestrado", ingresso: 2023, orientador: "Damires Yluska", status: "Qualificado",
         defesa: {
             titulo: "Arquitetura de Microsserviços para Sistemas Acadêmicos",
-            data: "2024-12-15", horario: "14:00", local: "Laboratório 3",
+            data: "31/12/2026", horario: "14:00", local: "Laboratório 3",
             banca: ["Profa. Dra. Damires Yluska (Orientadora)", "Prof. Dr. Francisco Dantas (Examinador Interno)", "Prof. Dr. José Silva (Examinador Externo - UFPB)"]
         }
     },
@@ -242,12 +242,51 @@ function openAlunoModal(id=null) {
 }
 function closeAlunoModal() { document.getElementById('aluno-modal').classList.add('hidden'); }
 function saveAluno(e) {
-    e.preventDefault(); const id=document.getElementById('aluno-id').value;
-    const formData={ id:id?parseInt(id):Date.now(), nome:document.getElementById('input-nome').value, matricula:document.getElementById('input-matricula').value, email:document.getElementById('input-email').value, curso:document.getElementById('select-curso').value, ingresso:parseInt(document.getElementById('input-ingresso').value), orientador:document.getElementById('select-orientador').value, status:document.getElementById('select-status').value, defesa: null }; // Defesa null ao criar novo
-    if(id){ const idx=mockAlunos.findIndex(a=>a.id===parseInt(id)); if(idx!==-1) mockAlunos[idx]={...mockAlunos[idx], ...formData, defesa: mockAlunos[idx].defesa}; } 
-    else{ mockAlunos.unshift(formData); }
-    applyFilters(); closeAlunoModal();
+    e.preventDefault();
+    const id = document.getElementById('aluno-id').value;
+
+    const FormData = {
+        id: id ? parseInt(id) : Date.now(),
+        nome: document.getElementById('input-nome').value,
+        matricula: document.getElementById('input-matricula').value,
+        email: document.getElementById('input-email').value,
+        curso: document.getElementById('select-curso').value,
+        ingresso: parseInt(document.getElementById('input-ingresso').value),
+        orientador: document.getElementById('select-orientador').value,
+        status: document.getElementById('select-status').value,
+        defesa: null // Inicializa como null por padrão
+    };
+
+    // Adiciona a defesa se os campos estiverem preenchidos
+    const titulo = document.getElementById('titulo').value;
+    const data = document.getElementById('data').value;
+    const horario = document.getElementById('horario').value;
+    const local = document.getElementById('local').value;
+    const banca = document.getElementById('banca').value.split(',').map(s => s.trim()).filter(s => s);
+
+    if (titulo && data && horario && local && banca.length > 0) {
+        FormData.defesa = {
+            titulo,
+            data,
+            horario,
+            local,
+            banca
+        };
+    }
+
+    if (id) {
+        const idx = mockAlunos.findIndex(a => a.id === parseInt(id));
+        if (idx !== -1) {
+            mockAlunos[idx] = { ...mockAlunos[idx], ...FormData };
+        }
+    } else {
+        mockAlunos.unshift(FormData);
+    }
+
+    applyFilters();
+    closeAlunoModal();
 }
+
 function deleteAluno(id,nome) { if(confirm(`Remover "${nome}"?`)){ mockAlunos=mockAlunos.filter(a=>a.id!==id); applyFilters(); }}
 
 document.addEventListener("DOMContentLoaded",()=>{
