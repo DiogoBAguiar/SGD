@@ -5,7 +5,7 @@ let mockAlunos = [
         id: 101, nome: "Diogo Bruno Aguiar", matricula: "2023201405", email: "diogo@aluno.ifpb.edu.br", curso: "Mestrado", ingresso: 2023, orientador: "Damires Yluska", status: "Qualificado",
         defesa: {
             titulo: "Arquitetura de Microsserviços para Sistemas Acadêmicos",
-            data: "31/12/2026", horario: "14:00", local: "Laboratório 3",
+            data: "2026-12-31", horario: "14:00", local: "Laboratório 3",
             banca: ["Profa. Dra. Damires Yluska (Orientadora)", "Prof. Dr. Francisco Dantas (Examinador Interno)", "Prof. Dr. José Silva (Examinador Externo - UFPB)"]
         }
     },
@@ -227,17 +227,50 @@ function viewStudent(e, id) {
 }
 function closeDetailsModal() { document.getElementById('detalhes-modal').classList.add('hidden'); }
 
-function openAlunoModal(id=null) {
-    const modal = document.getElementById('aluno-modal'); document.getElementById('aluno-form').reset();
-    if(id){
-        document.getElementById('modal-title').textContent="Editar Aluno";
-        const a=mockAlunos.find(x=>x.id===id);
-        if(a){
-            document.getElementById('aluno-id').value=a.id; document.getElementById('input-nome').value=a.nome; document.getElementById('input-matricula').value=a.matricula;
-            document.getElementById('input-email').value=a.email; document.getElementById('select-curso').value=a.curso; document.getElementById('input-ingresso').value=a.ingresso;
-            document.getElementById('select-orientador').value=a.orientador; document.getElementById('select-status').value=a.status;
+function openAlunoModal(id = null) {
+    const modal = document.getElementById('aluno-modal');
+    document.getElementById('aluno-form').reset();
+    
+    if (id) {
+        document.getElementById('modal-title').textContent = "Editar Aluno";
+        const a = mockAlunos.find(x => x.id === id);
+        
+        if (a) {
+            document.getElementById('aluno-id').value = a.id;
+            document.getElementById('input-nome').value = a.nome;
+            document.getElementById('input-matricula').value = a.matricula;
+            document.getElementById('input-email').value = a.email;
+            document.getElementById('select-curso').value = a.curso;
+            document.getElementById('input-ingresso').value = a.ingresso;
+            document.getElementById('select-orientador').value = a.orientador;
+            document.getElementById('select-status').value = a.status;
+
+            if (a.defesa) {
+                document.getElementById('titulo').value = a.defesa.titulo || '';
+                document.getElementById('data').value = a.defesa.data || '';
+                document.getElementById('horario').value = a.defesa.horario || '';
+                document.getElementById('local').value = a.defesa.local || '';
+                document.getElementById('banca').value = a.defesa.banca.join(', ') || '';
+            } else {
+
+                document.getElementById('titulo').value = '';
+                document.getElementById('data').value = '';
+                document.getElementById('horario').value = '';
+                document.getElementById('local').value = '';
+                document.getElementById('banca').value = '';
+            }
         }
-    }else{ document.getElementById('modal-title').textContent="Novo Aluno"; document.getElementById('aluno-id').value=''; }
+    } else {
+        document.getElementById('modal-title').textContent = "Novo Aluno";
+        document.getElementById('aluno-id').value = '';
+        
+        document.getElementById('titulo').value = '';
+        document.getElementById('data').value = '';
+        document.getElementById('horario').value = '';
+        document.getElementById('local').value = '';
+        document.getElementById('banca').value = '';
+    }
+    
     modal.classList.remove('hidden');
 }
 function closeAlunoModal() { document.getElementById('aluno-modal').classList.add('hidden'); }
