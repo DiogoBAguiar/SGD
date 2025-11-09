@@ -15,3 +15,10 @@ closeModalBtn.addEventListener('click', () => {
 cancelModalBtn.addEventListener('click', () => {
   editModal.classList.add('hidden');
 });
+
+
+const homeBtn = document.getElementById('homeBtn');
+
+homeBtn.addEventListener('click', () => {
+  window.location.href = "../templates/dashboard.html";
+});
