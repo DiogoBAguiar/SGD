@@ -22,5 +22,7 @@ if (headerEl) headerEl.innerHTML = createHeader(activePageData.title);
 document.addEventListener('DOMContentLoaded', () => {
     const email = localStorage.getItem('userEmail'); // Recupera o e-mail armazenado
     document.getElementById('header').innerHTML = createHeader(email); // Passa o e-mail para o cabeçalho
-    document.getElementById('navbar').innerHTML = createNavbar('dashboard'); // Renderiza a navbar
+
+    const navbarEl = document.getElementById('navbar');
+    if (navbarEl) navbarEl.innerHTML = createNavbar(activePageData.id); // Renderiza a navbar com a página ativa
 });
