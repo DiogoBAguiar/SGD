@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Agenda - SGD</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/locales/pt-br.global.min.js'></script>
+
+    <script type="module" src="../js/main.js" defer></script>
+
+    <script type="module" src="../js/agenda.js" defer></script>
+
+    <style>
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: #333; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: #555; }
+
+        /* --- Estilização DARK-MODE para o FullCalendar --- */
+        .fc { background-color: #1F1F1F; color: #E0E0E0; border: none; }
+        .fc-toolbar-title { color: #E6C850 !important; }
+        .fc .fc-button { background-color: #333; border: 1px solid #555; color: #E0E0E0; }
+        .fc .fc-button:hover, .fc .fc-button-primary:not(:disabled):active { background-color: #C0A040; color: #1F1F1F; border-color: #C0A040; }
+        .fc .fc-button-primary:not(:disabled).fc-button-active { background-color: #C0A040; color: #1F1F1F; border-color: #C0A040; }
+        .fc th { border-color: #333; }
+        .fc .fc-col-header-cell-cushion { color: #AAAAAA; text-decoration: none; }
+        .fc .fc-daygrid-day { border-color: #333; }
+        .fc .fc-day-other .fc-daygrid-day-number { color: #555; }
+        .fc .fc-daygrid-day-number { color: #E0E0E0; }
+        .fc .fc-day-today { background-color: #333 !important; }
+        .fc-event { border: none !important; padding: 4px 6px; font-size: 0.8rem; }
+        .fc-event-confirmed { background-color: #166534; border-left: 4px solid #22C55E !important; }
+        .fc-event-pending { background-color: #713f12; border-left: 4px solid #E6C850 !important; }
+        .fc-event-canceled { background-color: #7f1d1d; border-left: 4px solid #EF4444 !important; }
+        .fc-list-day-text { color: #E6C850; }
+    </style>
+</head> 
+
+<body class="font-poppins bg-[#121212] text-[#E0E0E0]">
+
+    <div class="flex min-h-screen">
+        <div id="menuBackdrop" class="fixed inset-0 z-20 bg-black/50 hidden lg:hidden"></div>
+
+        <nav id="navbar" class="fixed lg:static lg:translate-x-0 inset-y-0 left-0 z-30 w-64 bg-[#1F1F1F] border-r border-[#333] flex-col transform -translate-x-full transition-transform duration-300 ease-in-out lg:flex">
+            <div class="flex items-center justify-center p-6 h-20 border-b border-[#333]">
+                <h1 class="text-2xl font-bold text-[#E6C850]">SGD</h1>
+            </div>
+
+            <div class="flex-1 p-4 space-y-2">
+                <a href="dashboard.html" class="flex items-center px-4 py-2 rounded-lg text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850] transition-colors">
+                    Dashboard
+                </a>
+                <a href="professores.html" class="flex items-center px-4 py-2 rounded-lg text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850] transition-colors">
+                    Professores
+                </a>
+                <a href="#" class="flex items-center px-4 py-2 rounded-lg text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850] transition-colors">
+                    Alunos
+                </a>
+                <a href="agenda.html" class="flex items-center px-4 py-2 rounded-lg bg-[#C0A040] text-black font-semibold">
+                    Defesas
+                </a>
+            </div>
+
+            <div class="p-4 border-t border-[#333]">
+                <a href="#" class="flex items-center px-4 py-2 rounded-lg text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850] transition-colors">
+                    Sair
+                </a>
+            </div>
+
+            </nav>
+        <main class="flex-1 flex flex-col">
+            
+            <header id="header" class="sticky top-0 z-10 bg-[#1F1F1F] shadow-md">
+                <div class="flex items-center justify-between h-20 px-4 sm:px-8">
+                    <button id="mobileMenuButton" class="lg:hidden text-[#E6C850] p-2 rounded-md hover:bg-[#333]">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                    <div class="lg:hidden"></div> 
+                    
+                    <h2 class="hidden sm:block text-xl font-semibold text-[#E0E0E0]">Gerenciar Agenda</h2>
+
+                    <div class="relative">
+                        <button id="userMenuButton" class="flex items-center space-x-2 p-2 rounded-full hover:bg-[#333]">
+                            <img class="w-8 h-8 rounded-full" src="https://ui-avatars.com/api/?name=Usuario+Admin&background=C0A040&color=1F1F1F" alt="Avatar do usuário">
+                            <span class="hidden md:inline text-sm font-medium text-[#E0E0E0]">Usuário Admin</span>
+                            <svg class="w-4 h-4 hidden md:inline text-[#AAAAAA]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-[#1F1F1F] rounded-md shadow-lg border border-[#333] py-1">
+                            <a href="#" class="block px-4 py-2 text-sm text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850]">Meu Perfil</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850]">Configurações</a>
+                            <div class="border-t border-[#333] my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-sm text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850]">Sair</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <section class="p-4 sm:p-8 flex-1 overflow-y-auto custom-scroll">
+                
+                <div class="bg-[#1F1F1F] p-6 rounded-lg shadow-lg mb-8">
+                    <h2 class="text-xl font-semibold mb-4 text-[#E6C850]">Defesas Próximas (Próximos 7 dias)</h2>
+                    <div id="upcomingDefensesList" class="space-y-3 max-h-60 overflow-y-auto custom-scroll">
+                        </div>
+                </div>
+
+                <div class="bg-[#1F1F1F] p-4 sm:p-8 rounded-lg shadow-lg">
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                        <h2 class="text-xl font-semibold text-[#E0E0E0]">Calendário de Defesas</h2>
+                        <button id="addEventButton" class="w-full sm:w-auto bg-[#C0A040] text-black px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+                            + Novo Agendamento
+                        </button>
+                    </div>
+
+                    <div id="calendar" class="w-full"></div>
+                </div>
+
+            </section>
+            </main>
+        </div>
+
+    <div id="eventModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 hidden">
+        <div id="modalBackdrop" class="absolute inset-0"></div>
+        
+        <div class="relative bg-[#1F1F1F] rounded-lg shadow-xl w-full max-w-2xl border border-[#333] max-h-[90vh] overflow-y-auto custom-scroll">
+            <form id="eventForm" class="p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-[#333]">
+                    <h3 id="modalTitle" class="text-xl font-semibold text-[#E6C850]">Agendar Defesa</h3>
+                    <button type="button" id="modalCloseButton" class="text-[#AAAAAA] hover:text-[#E0E0E0]">&times;</button>
+                </div>
+                <div class="mt-6 space-y-4">
+                    <input type="hidden" id="eventId" name="eventId">
+                    <div>
+                        <label for="evento_aluno" class="block mb-2 text-sm font-medium text-[#AAAAAA]">Aluno(a)</label>
+                        <select id="evento_aluno" name="aluno" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" required>
+                            <option value="Ana Clara Silva">Ana Clara Silva</option>
+                            <option value="Bruno Costa">Bruno Costa</option>
+                            <option value="Carla Mendes">Carla Mendes</Dra. Beatriz Martins</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="evento_titulo" class="block mb-2 text-sm font-medium text-[#AAAAAA]">Título do Trabalho</label>
+                        <input type="text" id="evento_titulo" name="titulo" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" placeholder="Título do TCC ou Qualificação" required>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="evento_data" class="block mb-2 text-sm font-medium text-[#AAAAAA]">Data</label>
+                            <input type="date" id="evento_data" name="data" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" required>
+                        </div>
+                        <div>
+                            <label for="evento_hora" class="block mb-2 text-sm font-medium text-[#AAAAAA]">Horário</label>
+                            <input type="time" id="evento_hora" name="hora" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" required>
+                        </div>
+                    </div>
+                     <div>
+                        <label for="evento_status" class="block mb-2 text-sm font-medium text-[#AAAAAA]">Status</label>
+                        <select id="evento_status" name="status" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" required>
+                            <option value="pending">Pendente</option>
+                            <option value="confirmed">Confirmada</option>
+                            <option value="canceled">Cancelada</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-8 pt-4 border-t border-[#333]">
+                    <button type="button" id="deleteButton" class="px-5 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-900/50 transition-colors hidden">
+                        Excluir Evento
+                    </button>
+                    <div class="flex-1 flex justify-end gap-4">
+                        <button type="button" id="cancelButton" class="px-5 py-2.5 rounded-lg text-sm font-medium text-[#AAAAAA] hover:text-[#E0E0E0] transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="bg-[#C0A040] text-black px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+                            Salvar Alterações
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </body>
+</html>
