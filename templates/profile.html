@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meu Perfil - SGD</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,10 +12,10 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <script type="module" src="../js/main.js" defer></script>
-
   <style>
-    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .font-poppins {
+      font-family: 'Poppins', sans-serif;
+    }
   </style>
 </head>
 
@@ -23,13 +24,13 @@
   <div id="navbar" class="sticky top-0 h-screen z-10"></div>
 
   <main class="flex-1 flex flex-col">
-    
     <div id="header"></div>
 
     <section class="p-8 flex justify-center items-start flex-1">
       <div class="bg-[#1F1F1F] p-8 rounded-xl shadow-lg w-full max-w-3xl border border-[#333333] mt-4">
         <div class="flex items-center gap-6 mb-8">
-          <img src="../img/user_photo.jpg" alt="Foto do usuário" class="w-32 h-32 rounded-full object-cover border-4 border-[#C0A040]">
+          <img src="../img/user_photo.jpg" alt="Foto do usuário"
+            class="w-32 h-32 rounded-full object-cover border-4 border-[#C0A040]">
           <div>
             <h2 class="text-2xl font-semibold text-[#E6C850]">Diogo Aguiar</h2>
             <p class="text-[#AAAAAA]">Administrador do Sistema</p>
@@ -37,7 +38,7 @@
           </div>
         </div>
 
-        <hr class="border-[#333333] my-6"/>
+        <hr class="border-[#333333] my-6" />
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -59,13 +60,55 @@
           </div>
         </div>
 
+        <!-- 🔹 Botão principal do card -->
         <div class="mt-10 text-right">
-          <button class="bg-[#C0A040] text-black px-5 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+          <button id="editModalBtn"
+            class="bg-[#C0A040] text-black px-5 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">
             Editar Perfil
           </button>
         </div>
       </div>
     </section>
+
+    <!-- 🔹 Modal de Edição -->
+    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+      <div class="bg-[#1F1F1F] p-8 rounded-xl w-full max-w-lg border border-[#333333] relative">
+        <h2 class="text-xl font-semibold text-[#E6C850] mb-4">Editar Perfil</h2>
+        <button id="closeModalBtn" class="absolute top-4 right-4 text-[#AAAAAA] hover:text-[#C0A040]">✕</button>
+
+        <form class="space-y-4">
+          <input type="text" placeholder="Nome Completo"
+            class="w-full px-3 py-2 rounded bg-[#2A2A2A] text-white border border-[#444] focus:border-[#C0A040]" />
+          <input type="email" placeholder="E-mail"
+            class="w-full px-3 py-2 rounded bg-[#2A2A2A] text-white border border-[#444] focus:border-[#C0A040]" />
+          <input type="text" placeholder="Telefone"
+            class="w-full px-3 py-2 rounded bg-[#2A2A2A] text-white border border-[#444] focus:border-[#C0A040]" />
+          <input type="text" placeholder="Campus"
+            class="w-full px-3 py-2 rounded bg-[#2A2A2A] text-white border border-[#444] focus:border-[#C0A040]" />
+
+          <hr class="border-[#333333] my-4" />
+
+          <input type="password" placeholder="Senha Atual"
+            class="w-full px-3 py-2 rounded bg-[#2A2A2A] text-white border border-[#444] focus:border-[#C0A040]" />
+          <input type="password" placeholder="Nova Senha"
+            class="w-full px-3 py-2 rounded bg-[#2A2A2A] text-white border border-[#444] focus:border-[#C0A040]" />
+          <input type="password" placeholder="Confirmar Senha"
+            class="w-full px-3 py-2 rounded bg-[#2A2A2A] text-white border border-[#444] focus:border-[#C0A040]" />
+
+          <div class="flex justify-end gap-3 mt-6">
+            <button type="button" id="cancelModalBtn"
+              class="px-5 py-2 rounded bg-[#333] text-white hover:bg-[#444] transition-colors">Cancelar</button>
+            <button type="submit"
+              class="px-5 py-2 rounded bg-[#C0A040] text-black font-semibold hover:bg-[#E6C850] transition-colors">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="../js/profile.js" defer></script>
+
+
   </main>
 </body>
+
 </html>
