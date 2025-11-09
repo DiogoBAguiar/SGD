@@ -19,6 +19,7 @@
   </style>
 </head>
 <script type="module" src="../js/main.js" defer></script>
+
 <body class="font-poppins min-h-screen flex bg-[#121212] text-[#E0E0E0]">
 
   <div id="navbar" class="sticky top-0 h-screen z-10"></div>
@@ -40,7 +41,7 @@
           </svg>
         </button>
 
- 
+
         <div class="flex items-center gap-6 mb-8">
           <img src="../img/user_photo.jpg" alt="Foto de Diogo Aguiar"
             class="w-32 h-32 rounded-full object-cover border-4 border-[#C0A040]">
@@ -53,7 +54,7 @@
 
         <hr class="border-[#333333] my-6" />
 
- 
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h3 class="text-[#E6C850] font-semibold mb-2">Informações Gerais</h3>
@@ -67,22 +68,27 @@
           <div>
             <h3 class="text-[#E6C850] font-semibold mb-2">Contato</h3>
             <ul id="contactInfo" class="text-sm text-[#CCCCCC] space-y-2">
-              <li><span class="font-semibold text-[#E0E0E0]">E-mail:</span> <span id="contactEmail">diogo.aguiar@ifpb.edu.br</span></li>
-              <li><span class="font-semibold text-[#E0E0E0]">Telefone:</span> <span id="contactPhone">(83) 99999-9999</span></li>
-              <li><span class="font-semibold text-[#E0E0E0]">Campus:</span> <span id="contactCampus">João Pessoa</span></li>
+              <li><span class="font-semibold text-[#E0E0E0]">E-mail:</span> <span
+                  id="contactEmail">diogo.aguiar@ifpb.edu.br</span></li>
+              <li><span class="font-semibold text-[#E0E0E0]">Telefone:</span> <span id="contactPhone">(83)
+                  99999-9999</span></li>
+              <li><span class="font-semibold text-[#E0E0E0]">Campus:</span> <span id="contactCampus">João Pessoa</span>
+              </li>
             </ul>
           </div>
         </div>
 
-
-        <div class="mt-10 text-right">
-          <button id="editModalBtn"
+        <div class="mt-10">
+          <h3 class="text-[#E6C850] font-semibold mb-4">Histórico de Atividades</h3>
+          <div id="activityHistory" class="space-y-4 text-sm text-[#CCCCCC]"><div>
+          
+            <button id="editModalBtn"
             class="bg-[#C0A040] text-black px-5 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">
             Editar Perfil
           </button>
         </div>
 
-      </div> 
+      </div>
     </section>
 
 
