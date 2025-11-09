@@ -50,7 +50,7 @@ const createNavbar = (activePage) => {
                 <li><a href="profile.html" class="${getLinkClass('meu_perfil')}">${icons.perfil} Meu Perfil</a></li>
                 
                 <li class="mt-6 pt-4 border-t border-[#333333]">
-                    <a href="index.html" class="flex items-center px-3 py-2 rounded text-red-400 hover:bg-red-900/20 transition-colors duration-200">
+                    <a href="../templates/login.html" id="logoutButton" class="flex items-center px-3 py-2 rounded text-red-400 hover:bg-red-900/20 transition-colors duration-200">
                         ${icons.sair} Sair
                     </a>
                 </li>
@@ -60,13 +60,14 @@ const createNavbar = (activePage) => {
     `;
 };
 
-const createHeader = (pageTitle = 'Dashboard') => {
+const createHeader = (email = '') => {
+    const names = extractNames(email);
     return `
     <header class="flex items-center justify-between px-8 py-5 bg-[#000000] border-b border-[#333333] sticky top-0 z-10">
-        <h1 class="text-2xl font-semibold text-[#E0E0E0]">${pageTitle}</h1>
+        <h1 class="text-2xl font-semibold text-[#E0E0E0]">Bem-vindo, ${names}!</h1>
         <div class="flex items-center text-sm">
             <div class="text-right mr-4">
-                <span class="block text-[#E0E0E0] font-medium">Diogo Aguiar</span>
+                <span class="block text-[#E0E0E0] font-medium">${names}</span>
                 <span class="block text-sgd-muted text-xs">Coordenador</span>
             </div>
             <img src="../img/user_photo.jpg" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-[#C0A040] object-cover">
@@ -74,5 +75,22 @@ const createHeader = (pageTitle = 'Dashboard') => {
     </header>
     `;
 };
+
+// Função para extrair o primeiro nome do e-mail
+const extractNames = (email) => {
+    if (!email) return 'Usuário';
+    const parts = email.split('.');
+    return parts.length > 0 ? parts[0] : 'Usuário'; // Retorna o primeiro nome
+};
+
+// Evento de logout
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            window.location.href = 'login.html'; // Redireciona para a página de login
+        });
+    }
+});
 
 export { createNavbar, createHeader };
