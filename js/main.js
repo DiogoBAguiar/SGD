@@ -8,6 +8,7 @@ const pageMap = {
     'student_management.html': { id: 'gerenciar_alunos', title: 'Gerenciar Alunos' },
     'professores.html': { id: 'gerenciar_professores', title: 'Gerenciar Professores' },
     'secretarios.html': { id: 'gerenciar_secretaria', title: 'Equipe da Secretaria' }, 
+    'agenda.html': { id: 'agenda', title: 'Gerenciar Agenda' },
     'profile.html': { id: 'meu_perfil', title: 'Meu Perfil' }
 };
 
