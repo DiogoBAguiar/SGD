@@ -64,16 +64,13 @@ const createNavbar = (activePage) => {
     `;
 };
 
-// CORREÇÃO: Agora aceita 'pageTitle' para exibir o título correto (Ex: "Dashboard")
-const createHeader = (email = '', pageTitle = 'Dashboard') => {
+const createHeader = (email = '') => {
     const names = extractNames(email);
-    // CORREÇÃO: Usei um placeholder de avatar genérico, já que não temos o arquivo de imagem
     const avatarUrl = `https://ui-avatars.com/api/?name=${names.replace(' ', '+')}&background=C0A040&color=1F1F1F&bold=true`;
 
     return `
     <header class="flex items-center justify-between px-8 py-5 bg-[#000000] border-b border-[#333333] sticky top-0 z-10 h-20">
-        <!-- CORREÇÃO: Título da página vindo do main.js -->
-        <h1 class="text-2xl font-semibold text-[#E0E0E0]">${pageTitle}</h1>
+        <h1 class="text-2xl font-semibold text-[#E0E0E0]">Bem-vindo, ${names}!</h1>
         <div class="flex items-center text-sm">
             <div class="text-right mr-4">
                 <span class="block text-[#E0E0E0] font-medium">${names}</span>
@@ -88,10 +85,12 @@ const createHeader = (email = '', pageTitle = 'Dashboard') => {
 // Função para extrair o primeiro nome do e-mail
 const extractNames = (email) => {
     if (!email) return 'Usuário';
-    // Pega "diogo" de "diogo.aguiar@..."
-    const namePart = email.split('@')[0].split('.')[0];
+    // Pega a parte do nome antes do '@'
+    const namePart = email.split('@')[0];
+    // Separa por '.' e pega o primeiro nome
+    const firstName = namePart.split('.')[0];
     // Capitaliza a primeira letra
-    return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+    return firstName.charAt(0).toUpperCase() + firstName.slice(1);
 };
 
 // Evento de logout
