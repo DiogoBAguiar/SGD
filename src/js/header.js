@@ -24,7 +24,7 @@ const createNavbar = (activePage) => {
     return `
     <aside class="w-[260px] h-screen bg-[#000000] border-r border-[#333333] p-5 flex flex-col sticky top-0">
         <div class="text-center mb-6 pt-2">
-            <img src="../img/logo_sgd.webp" alt="Logo SGD" class="w-20 h-20 rounded-xl object-cover mx-auto mb-3 border-2 border-[#333333]">
+            <img src="../../public/logo_sgd.webp" alt="Logo SGD" class="w-20 h-20 rounded-xl object-cover mx-auto mb-3 border-2 border-[#333333]">
             <h2 class="text-[#C0A040] text-lg font-bold tracking-wider">SGD IFPB</h2>
         </div>
 

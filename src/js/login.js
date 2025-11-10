@@ -16,7 +16,7 @@ const validateLogin = (username, password) => {
 const generateLoginHTML = () => {
     return `
     <div class="w-full max-w-md bg-[#121212] px-8 py-10 rounded-lg border border-[#333333] text-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
-        <img src="../img/logo_sgd.webp" alt="Logo do SGD" class="w-32 h-32 mb-6 object-cover rounded-md mx-auto">
+        <img src="../../public/logo_sgd.webp" alt="Logo do SGD" class="w-32 h-32 mb-6 object-cover rounded-md mx-auto">
         <h2 class="text-[#C0A040] text-2xl font-semibold mb-8">Acessar o Sistema</h2>
         <form class="login-form text-left" action="#" method="POST">
             <div class="mb-5">
