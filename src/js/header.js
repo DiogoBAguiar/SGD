@@ -8,6 +8,7 @@ const createNavbar = (activePage) => {
         }`;
     };
 
+    // Ícones... (mesmo código de antes)
     const icons = {
         dashboard: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>',
         agenda: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>',
@@ -24,14 +25,16 @@ const createNavbar = (activePage) => {
     return `
     <aside class="w-[260px] h-screen bg-[#000000] border-r border-[#333333] p-5 flex flex-col sticky top-0">
         <div class="text-center mb-6 pt-2">
-            <img src="../img/logo_sgd.webp" alt="Logo SGD" class="w-20 h-20 rounded-xl object-cover mx-auto mb-3 border-2 border-[#333333]">
+            <!-- CORREÇÃO: Caminho do logo (da pasta 'public') -->
+            <img src="/logo_sgd.webp" alt="Logo SGD" class="w-20 h-20 rounded-xl object-cover mx-auto mb-3 border-2 border-[#333333]">
             <h2 class="text-[#C0A040] text-lg font-bold tracking-wider">SGD IFPB</h2>
         </div>
 
         <nav class="flex-1 overflow-y-auto custom-scrollbar pr-2">
             <ul class="space-y-1 text-sm">
                 <li class="px-3 text-[#AAAAAA] uppercase tracking-widest text-[0.65rem] font-bold mt-4 mb-2">Principal</li>
-                <li><a href="dashboard.html" class="${getLinkClass('dashboard')}">${icons.dashboard} Dashboard</a></li>
+                <!-- CORREÇÃO: Link para index.html -->
+                <li><a href="index.html" class="${getLinkClass('dashboard')}">${icons.dashboard} Dashboard</a></li>
                 <li><a href="agenda.html" class="${getLinkClass('agenda')}">${icons.agenda} Agenda</a></li>
 
                 <li class="px-3 text-[#AAAAAA] uppercase tracking-widest text-[0.65rem] font-bold mt-6 mb-2">Processos</li>
@@ -46,11 +49,12 @@ const createNavbar = (activePage) => {
                 <li><a href="secretarios.html" class="${getLinkClass('gerenciar_secretaria')}">${icons.secretaria} Secretaria</a></li>
 
                 <li class="px-3 text-[#AAAAAA] uppercase tracking-widest text-[0.65rem] font-bold mt-6 mb-2">Sistema</li>
-                <li><a href="#" class="${getLinkClass('configuracoes')}">${icons.config} Configurações</a></li>
+                <li><a href="configuracoes.html" class="${getLinkClass('configuracoes')}">${icons.config} Configurações</a></li>
                 <li><a href="profile.html" class="${getLinkClass('meu_perfil')}">${icons.perfil} Meu Perfil</a></li>
                 
                 <li class="mt-6 pt-4 border-t border-[#333333]">
-                    <a href="../templates/login.html" id="logoutButton" class="flex items-center px-3 py-2 rounded text-red-400 hover:bg-red-900/20 transition-colors duration-200">
+                    <!-- CORREÇÃO: Link para login.html (mesma pasta) -->
+                    <a href="login.html" id="logoutButton" class="flex items-center px-3 py-2 rounded text-red-400 hover:bg-red-900/20 transition-colors duration-200">
                         ${icons.sair} Sair
                     </a>
                 </li>
@@ -60,17 +64,22 @@ const createNavbar = (activePage) => {
     `;
 };
 
-const createHeader = (email = '') => {
+// CORREÇÃO: Agora aceita 'pageTitle' para exibir o título correto (Ex: "Dashboard")
+const createHeader = (email = '', pageTitle = 'Dashboard') => {
     const names = extractNames(email);
+    // CORREÇÃO: Usei um placeholder de avatar genérico, já que não temos o arquivo de imagem
+    const avatarUrl = `https://ui-avatars.com/api/?name=${names.replace(' ', '+')}&background=C0A040&color=1F1F1F&bold=true`;
+
     return `
-    <header class="flex items-center justify-between px-8 py-5 bg-[#000000] border-b border-[#333333] sticky top-0 z-10">
-        <h1 class="text-2xl font-semibold text-[#E0E0E0]">Bem-vindo, ${names}!</h1>
+    <header class="flex items-center justify-between px-8 py-5 bg-[#000000] border-b border-[#333333] sticky top-0 z-10 h-20">
+        <!-- CORREÇÃO: Título da página vindo do main.js -->
+        <h1 class="text-2xl font-semibold text-[#E0E0E0]">${pageTitle}</h1>
         <div class="flex items-center text-sm">
             <div class="text-right mr-4">
                 <span class="block text-[#E0E0E0] font-medium">${names}</span>
                 <span class="block text-sgd-muted text-xs">Coordenador</span>
             </div>
-            <img src="../img/user_photo.jpg" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-[#C0A040] object-cover">
+            <img src="${avatarUrl}" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-[#C0A040] object-cover">
         </div>
     </header>
     `;
@@ -79,18 +88,24 @@ const createHeader = (email = '') => {
 // Função para extrair o primeiro nome do e-mail
 const extractNames = (email) => {
     if (!email) return 'Usuário';
-    const parts = email.split('.');
-    return parts.length > 0 ? parts[0] : 'Usuário'; // Retorna o primeiro nome
+    // Pega "diogo" de "diogo.aguiar@..."
+    const namePart = email.split('@')[0].split('.')[0];
+    // Capitaliza a primeira letra
+    return namePart.charAt(0).toUpperCase() + namePart.slice(1);
 };
 
 // Evento de logout
 document.addEventListener('DOMContentLoaded', () => {
-    const logoutButton = document.getElementById('logoutButton');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', () => {
-            window.location.href = 'login.html'; // Redireciona para a página de login
-        });
-    }
+    // Este listener precisa estar no 'header.js' pois o 'main.js' pode
+    // não ter terminado de injetar o HTML quando ele for procurado.
+    // Usamos 'click' no documento para garantir que o botão seja encontrado.
+    document.body.addEventListener('click', (e) => {
+        if (e.target.id === 'logoutButton' || e.target.closest('#logoutButton')) {
+            e.preventDefault();
+            localStorage.removeItem('userEmail'); // Limpa o "login"
+            window.location.href = 'login.html'; // Redireciona
+        }
+    });
 });
 
 export { createNavbar, createHeader };

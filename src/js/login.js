@@ -16,13 +16,14 @@ const validateLogin = (username, password) => {
 const generateLoginHTML = () => {
     return `
     <div class="w-full max-w-md bg-[#121212] px-8 py-10 rounded-lg border border-[#333333] text-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
-        <img src="../img/logo_sgd.webp" alt="Logo do SGD" class="w-32 h-32 mb-6 object-cover rounded-md mx-auto">
+        <!-- CORREÇÃO: Caminho do logo (da pasta 'public') -->
+        <img src="/logo_sgd.webp" alt="Logo do SGD" class="w-32 h-32 mb-6 object-cover rounded-md mx-auto">
         <h2 class="text-[#C0A040] text-2xl font-semibold mb-8">Acessar o Sistema</h2>
         <form class="login-form text-left" action="#" method="POST">
             <div class="mb-5">
                 <label for="username" class="block mb-2 text-sm text-[#AAAAAA]">Matrícula ou E-mail</label>
                 <input type="text" id="username" name="username" required
-                    class="w-full p-3 bg-[#1F1F1F] border border-[#333333] rounded text-[#E0E0E0] text-base transition-colors duration-300 focus:outline-none focus:border-[#C0A040] focus:ring-4 focus:ring-[#C0A040]/20 [&:-webkit-autofill]:bg-[#1F1F1F] [&:-webkit-autofill]:text-[#E0E0E0] [&:-webkit-autofill]:shadow-[0_0_0_30px_#1F1F1F_inset] [&:-webkit-autofill]:[-webkit-text-fill-color:#E0E0E0] focus:shadow-[0_0_0_2px_rgba(192,160,64,0.3)]">
+                    class="w-full p-3 bg-[#1F1F1F] border border-[#333333] rounded text-[#E0E0E0] text-base transition-colors duration-300 focus:outline-none focus:border-[#C0A040] focus:ring-4 focus:ring-[#C0A040]/20 [&:-webkit-autofill]:bg-[#1F1F1F] [&:-webkit-autofill]:text-[#E0E0E0] [&:-webkit-autofill]:shadow-[0_0_0_30px_#1F1F1F_inset] [&:-webkit-text-fill-color:#E0E0E0] focus:shadow-[0_0_0_2px_rgba(192,160,64,0.3)]">
             </div>
             <div class="mb-5">
                 <label for="password" class="block mb-2 text-sm text-[#AAAAAA]">Senha</label>
@@ -71,7 +72,8 @@ const renderLogin = () => {
 
         if (validateLogin(username, password)) {
             localStorage.setItem('userEmail', username); // Armazena o e-mail do usuário
-            window.location.href = 'dashboard.html'; // Redireciona para a página dashboard
+            // CORREÇÃO: Redireciona para index.html
+            window.location.href = 'index.html'; 
         } else {
             alert('Credenciais inválidas. Tente novamente.'); // Alerta de erro
         }
