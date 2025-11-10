@@ -49,7 +49,7 @@ const createNavbar = (activePage) => {
                 <li><a href="secretarios.html" class="${getLinkClass('gerenciar_secretaria')}">${icons.secretaria} Secretaria</a></li>
 
                 <li class="px-3 text-[#AAAAAA] uppercase tracking-widest text-[0.65rem] font-bold mt-6 mb-2">Sistema</li>
-                <li><a href="#" class="${getLinkClass('configuracoes')}">${icons.config} Configurações</a></li>
+                <li><a href="configuracoes.html" class="${getLinkClass('configuracoes')}">${icons.config} Configurações</a></li>
                 <li><a href="profile.html" class="${getLinkClass('meu_perfil')}">${icons.perfil} Meu Perfil</a></li>
                 
                 <li class="mt-6 pt-4 border-t border-[#333333]">

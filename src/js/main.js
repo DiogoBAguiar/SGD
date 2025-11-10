@@ -15,7 +15,8 @@ const pageMap = {
     'professores.html': { id: 'gerenciar_professores', title: 'Gerenciar Professores' },
     'secretarios.html': { id: 'gerenciar_secretaria', title: 'Equipe da Secretaria' },
     'agenda.html': { id: 'agenda', title: 'Gerenciar Agenda' },
-    'profile.html': { id: 'meu_perfil', title: 'Meu Perfil' }
+    'profile.html': { id: 'meu_perfil', title: 'Meu Perfil' },
+    'configuracoes.html': { id: 'configuracoes', title: 'Configurações'},
 };
 
 const activePageData = pageMap[currentPage] || { id: '', title: 'SGD IFPB' };
