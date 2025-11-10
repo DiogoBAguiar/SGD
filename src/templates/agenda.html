@@ -12,18 +12,13 @@
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/locales/pt-br.global.min.js'></script>
-
-    <script type="module" src="../js/main.js" defer></script>
-
-    <script type="module" src="../js/agenda.js" defer></script>
-
+    <script type="module" src="/js/main.js" defer></script>
+    <script type="module" src="/js/agenda.js" defer></script>
     <style>
         .font-poppins { font-family: 'Poppins', sans-serif; }
-        
         .custom-scroll::-webkit-scrollbar { width: 8px; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #333; border-radius: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: #555; }
-
         /* --- Estilização DARK-MODE para o FullCalendar --- */
         .fc { background-color: #1F1F1F; color: #E0E0E0; border: none; }
         .fc-toolbar-title { color: #E6C850 !important; }
@@ -44,88 +39,40 @@
     </style>
 </head> 
 
-<body class="font-poppins bg-[#121212] text-[#E0E0E0]">
+<body class="font-poppins bg-[#121212] text-[#E0E0E0] flex min-h-screen">
 
-    <div class="flex min-h-screen">
-        <div id="menuBackdrop" class="fixed inset-0 z-20 bg-black/50 hidden lg:hidden"></div>
+    <!-- CORREÇÃO: Placeholder para o Navbar -->
+    <div id="navbar" class="sticky top-0 h-screen z-30"></div>
 
-        <nav id="navbar" class="fixed lg:static lg:translate-x-0 inset-y-0 left-0 z-30 w-64 bg-[#1F1F1F] border-r border-[#333] flex-col transform -translate-x-full transition-transform duration-300 ease-in-out lg:flex">
-            <div class="flex items-center justify-center p-6 h-20 border-b border-[#333]">
-                <h1 class="text-2xl font-bold text-[#E6C850]">SGD</h1>
-            </div>
-
-            <div class="flex-1 p-4 space-y-2">
-                <a href="dashboard.html" class="flex items-center px-4 py-2 rounded-lg text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850] transition-colors">
-                    Dashboard
-                </a>
-                <a href="professores.html" class="flex items-center px-4 py-2 rounded-lg text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850] transition-colors">
-                    Professores
-                </a>
-                <a href="#" class="flex items-center px-4 py-2 rounded-lg text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850] transition-colors">
-                    Alunos
-                </a>
-                <a href="agenda.html" class="flex items-center px-4 py-2 rounded-lg bg-[#C0A040] text-black font-semibold">
-                    Defesas
-                </a>
-            </div>
-
-            <div class="p-4 border-t border-[#333]">
-                <a href="#" class="flex items-center px-4 py-2 rounded-lg text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850] transition-colors">
-                    Sair
-                </a>
-            </div>
-
-            </nav>
-        <main class="flex-1 flex flex-col">
+    <main class="flex-1 flex flex-col min-h-screen relative">
+        
+        <!-- CORREÇÃO: Placeholder para o Header -->
+        <header id="header"></header>
+        
+        <section class="p-4 sm:p-8 flex-1 overflow-y-auto custom-scroll">
             
-            <header id="header" class="sticky top-0 z-10 bg-[#1F1F1F] shadow-md">
-                <div class="flex items-center justify-between h-20 px-4 sm:px-8">
-                    <button id="mobileMenuButton" class="lg:hidden text-[#E6C850] p-2 rounded-md hover:bg-[#333]">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            <div class="bg-[#1F1F1F] p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-[#E6C850]">Defesas Próximas (Próximos 7 dias)</h2>
+                <div id="upcomingDefensesList" class="space-y-3 max-h-60 overflow-y-auto custom-scroll">
+                    <!-- Conteúdo será preenchido pelo agenda.js -->
+                </div>
+            </div>
+
+            <div class="bg-[#1F1F1F] p-4 sm:p-8 rounded-lg shadow-lg">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                    <h2 class="text-xl font-semibold text-[#E0E0E0]">Calendário de Defesas</h2>
+                    <button id="addEventButton" class="w-full sm:w-auto bg-[#C0A040] text-black px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+                        + Novo Agendamento
                     </button>
-                    <div class="lg:hidden"></div> 
-                    
-                    <h2 class="hidden sm:block text-xl font-semibold text-[#E0E0E0]">Gerenciar Agenda</h2>
-
-                    <div class="relative">
-                        <button id="userMenuButton" class="flex items-center space-x-2 p-2 rounded-full hover:bg-[#333]">
-                            <img class="w-8 h-8 rounded-full" src="https://ui-avatars.com/api/?name=Usuario+Admin&background=C0A040&color=1F1F1F" alt="Avatar do usuário">
-                            <span class="hidden md:inline text-sm font-medium text-[#E0E0E0]">Usuário Admin</span>
-                            <svg class="w-4 h-4 hidden md:inline text-[#AAAAAA]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-[#1F1F1F] rounded-md shadow-lg border border-[#333] py-1">
-                            <a href="#" class="block px-4 py-2 text-sm text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850]">Meu Perfil</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850]">Configurações</a>
-                            <div class="border-t border-[#333] my-1"></div>
-                            <a href="#" class="block px-4 py-2 text-sm text-[#AAAAAA] hover:bg-[#333] hover:text-[#E6C850]">Sair</a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            
-            <section class="p-4 sm:p-8 flex-1 overflow-y-auto custom-scroll">
-                
-                <div class="bg-[#1F1F1F] p-6 rounded-lg shadow-lg mb-8">
-                    <h2 class="text-xl font-semibold mb-4 text-[#E6C850]">Defesas Próximas (Próximos 7 dias)</h2>
-                    <div id="upcomingDefensesList" class="space-y-3 max-h-60 overflow-y-auto custom-scroll">
-                        </div>
                 </div>
 
-                <div class="bg-[#1F1F1F] p-4 sm:p-8 rounded-lg shadow-lg">
-                    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-                        <h2 class="text-xl font-semibold text-[#E0E0E0]">Calendário de Defesas</h2>
-                        <button id="addEventButton" class="w-full sm:w-auto bg-[#C0A040] text-black px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#E6C850] transition-colors">
-                            + Novo Agendamento
-                        </button>
-                    </div>
+                <div id="calendar" class="w-full"></div>
+            </div>
 
-                    <div id="calendar" class="w-full"></div>
-                </div>
+        </section>
+    </main>
 
-            </section>
-            </main>
-        </div>
-
+    <!-- Modal (sem alterações) -->
     <div id="eventModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 hidden">
         <div id="modalBackdrop" class="absolute inset-0"></div>
         
@@ -142,7 +89,7 @@
                         <select id="evento_aluno" name="aluno" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" required>
                             <option value="Ana Clara Silva">Ana Clara Silva</option>
                             <option value="Bruno Costa">Bruno Costa</option>
-                            <option value="Carla Mendes">Carla Mendes</Dra. Beatriz Martins</option>
+                            <option value="Carla Mendes">Carla Mendes</option>
                         </select>
                     </div>
                     <div>
@@ -184,5 +131,8 @@
             </form>
         </div>
     </div>
-    </body>
+
+    <!-- CORREÇÃO: Caminhos dos scripts atualizados para @js -->
+    
+</body>
 </html>

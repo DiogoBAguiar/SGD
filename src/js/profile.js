@@ -20,7 +20,8 @@ cancelModalBtn.addEventListener('click', () => {
 const homeBtn = document.getElementById('homeBtn');
 
 homeBtn.addEventListener('click', () => {
-  window.location.href = "../templates/dashboard.html";
+  // CORREÇÃO: Redireciona para index.html
+  window.location.href = "index.html";
 });
 
 // Simulação de histórico vindo do backend

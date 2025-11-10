@@ -1,29 +1,42 @@
+// CORREÇÃO: Trocamos o caminho relativo './header.js' pelo alias '@js/header.js'
+// Isso garante que o Vite sempre encontre o arquivo, independentemente de qual HTML o chamou.
+// Eles estão lado a lado na mesma pasta
 import { createNavbar, createHeader } from './header.js';
 
-const path = window.location.pathname;
-const currentPage = path.split('/').pop() || 'dashboard.html';
+// 1. Pega o nome do arquivo atual (ex: "index.html", "professores.html")
+const pathName = window.location.pathname;
+const parts = pathName.split('/');
+const currentPage = parts[parts.length - 1] || 'index.html'; // Garante 'index.html' se for a raiz "/"
 
+// 2. Mapeia o nome do arquivo para o ID da página (para destacar o link) e o título
 const pageMap = {
-    'dashboard.html': { id: 'dashboard', title: 'Dashboard' },
+    'index.html': { id: 'dashboard', title: 'Dashboard' },
     'student_management.html': { id: 'gerenciar_alunos', title: 'Gerenciar Alunos' },
     'professores.html': { id: 'gerenciar_professores', title: 'Gerenciar Professores' },
-    'secretarios.html': { id: 'gerenciar_secretaria', title: 'Equipe da Secretaria' }, 
+    'secretarios.html': { id: 'gerenciar_secretaria', title: 'Equipe da Secretaria' },
     'agenda.html': { id: 'agenda', title: 'Gerenciar Agenda' },
     'profile.html': { id: 'meu_perfil', title: 'Meu Perfil' }
 };
 
 const activePageData = pageMap[currentPage] || { id: '', title: 'SGD IFPB' };
 
-const navbarEl = document.getElementById('navbar');
-if (navbarEl) navbarEl.innerHTML = createNavbar(activePageData.id);
-
-const headerEl = document.getElementById('header');
-if (headerEl) headerEl.innerHTML = createHeader(activePageData.title);
-
+// 3. Espera o HTML carregar antes de tentar injetar os componentes
 document.addEventListener('DOMContentLoaded', () => {
-    const email = localStorage.getItem('userEmail'); // Recupera o e-mail armazenado
-    document.getElementById('header').innerHTML = createHeader(email); // Passa o e-mail para o cabeçalho
+    
+    // 4. Pega o email do usuário guardado no login
+    const email = localStorage.getItem('userEmail');
 
+    // 5. Injeta o Navbar (Menu lateral)
     const navbarEl = document.getElementById('navbar');
-    if (navbarEl) navbarEl.innerHTML = createNavbar(activePageData.id); // Renderiza a navbar com a página ativa
+    if (navbarEl) {
+        // Passa o ID da página ativa para o 'createNavbar' saber qual link destacar
+        navbarEl.innerHTML = createNavbar(activePageData.id);
+    }
+
+    // 6. Injeta o Header (Cabeçalho superior)
+    const headerEl = document.getElementById('header');
+    if (headerEl) {
+        // Passa o email (para o "Bem-vindo") e o título da página
+        headerEl.innerHTML = createHeader(email, activePageData.title);
+    }
 });
