@@ -7,12 +7,11 @@ const users = [
     { username: 'thalyson.felicio@academico.ifpb.edu.br', password: 'thalyson123' }
 ];
 
-// Função para validar login
+// Validação de login
 const validateLogin = (username, password) => {
     return users.some(user => user.username === username && user.password === password);
 };
 
-// Função para gerar o HTML do formulário de login
 const generateLoginHTML = () => {
     return `
     <div class="w-full max-w-md bg-[#121212] px-8 py-10 rounded-lg border border-[#333333] text-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
@@ -51,11 +50,9 @@ const generateLoginHTML = () => {
     </div>`;
 };
 
-// Função para renderizar o login
 const renderLogin = () => {
     document.body.innerHTML = generateLoginHTML();
 
-    // Mostrar/Ocultar Senha
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
 
@@ -65,20 +62,17 @@ const renderLogin = () => {
         togglePassword.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
     });
 
-    // Evento de click no botão de login
     document.getElementById('loginButton').addEventListener('click', function () {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
         if (validateLogin(username, password)) {
-            localStorage.setItem('userEmail', username); // Armazena o e-mail do usuário
-            // CORREÇÃO: Redireciona para index.html
+            localStorage.setItem('userEmail', username);// guarda o email do usuario logado
             window.location.href = 'index.html'; 
         } else {
-            alert('Credenciais inválidas. Tente novamente.'); // Alerta de erro
+            alert('Credenciais inválidas. Tente novamente.');// fazer algo melhor depois
         }
     });
 };
 
-// Chama a função de renderização ao carregar
 document.addEventListener('DOMContentLoaded', renderLogin);

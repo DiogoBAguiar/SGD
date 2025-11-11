@@ -102,7 +102,6 @@ let mockAlunos = [
     { id: 140, nome: "Helena Santos Cruz", matricula: "2024202777", email: "helena.s@aluno.ifpb.edu.br", curso: "Mestrado", ingresso: 2024, orientador: "Giovanni Silva", status: "Ativo", defesa: null }
 ];
 
-// (Adicionei mais alguns só para garantir que a paginação continue funcionando no exemplo)
 for (let i = 105; i <= 134; i++) {
      mockAlunos.push({ id: i, nome: `Aluno Teste ${i}`, matricula: `2023${i}`, email: `aluno${i}@ifpb.edu.br`, curso: "Mestrado", ingresso: 2023, orientador: "Damires Yluska", status: "Ativo", defesa: null });
 }
@@ -111,7 +110,6 @@ let currentPage = 1;
 const ITEMS_PER_PAGE = 8;
 let filteredData = [...mockAlunos];
 
-// --- RENDERIZAÇÃO 
 function renderTable() {
     const tbody = document.getElementById('alunos-table-body');
     tbody.innerHTML = '';
@@ -130,6 +128,7 @@ function renderTable() {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-[#1A1A1A] transition-colors";
 
+        // Define o status de cada aluno
         let statusClass = 'bg-gray-900 text-gray-400 border-gray-700';
         switch(aluno.status) {
             case 'Ativo': statusClass = 'bg-sky-900/30 text-sky-400 border-sky-800'; break;
@@ -162,6 +161,7 @@ function renderTable() {
     renderPagination();
 }
 
+// Funções de paginação
 function renderPagination() {
     const container = document.getElementById('pagination-container');
     const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
@@ -176,6 +176,8 @@ function renderPagination() {
     container.innerHTML = `<span class="text-xs text-sgd-muted mr-4">Pág. ${currentPage} de ${totalPages} (${filteredData.length} total)</span>${buttonsHtml}`;
 }
 function changePage(n) { const total = Math.ceil(filteredData.length/ITEMS_PER_PAGE); if(n>=1 && n<=total){ currentPage=n; renderTable(); }}
+// Fim das funções de paginação
+
 function applyFilters() {
     const search = document.getElementById('search-input').value.toLowerCase();
     const status = document.getElementById('filter-status').value.toLowerCase();
@@ -183,6 +185,7 @@ function applyFilters() {
     currentPage = 1; renderTable();
 }
 
+// Função para visualizar detalhes do aluno
 function viewStudent(e, id) {
     if (e) e.preventDefault(); 
     const aluno = mockAlunos.find(a => a.id === id);
@@ -227,6 +230,8 @@ function viewStudent(e, id) {
 }
 function closeDetailsModal() { document.getElementById('detalhes-modal').classList.add('hidden'); }
 
+
+// Função para adicionar/editar aluno
 function openAlunoModal(id = null) {
     const modal = document.getElementById('aluno-modal');
     document.getElementById('aluno-form').reset();
@@ -274,10 +279,13 @@ function openAlunoModal(id = null) {
     modal.classList.remove('hidden');
 }
 function closeAlunoModal() { document.getElementById('aluno-modal').classList.add('hidden'); }
+
+// Salva os aluno
 function saveAluno(e) {
     e.preventDefault();
     const id = document.getElementById('aluno-id').value;
 
+    // Objeto com os dados do formulário
     const FormData = {
         id: id ? parseInt(id) : Date.now(),
         nome: document.getElementById('input-nome').value,
@@ -287,7 +295,7 @@ function saveAluno(e) {
         ingresso: parseInt(document.getElementById('input-ingresso').value),
         orientador: document.getElementById('select-orientador').value,
         status: document.getElementById('select-status').value,
-        defesa: null // Inicializa como null por padrão
+        defesa: null
     };
 
     // Adiciona a defesa se os campos estiverem preenchidos
@@ -297,6 +305,7 @@ function saveAluno(e) {
     const local = document.getElementById('local').value;
     const banca = document.getElementById('banca').value.split(',').map(s => s.trim()).filter(s => s);
 
+    // Adiciona a defesa ao objeto somente se todos os campos obrigatórios estiverem preenchidos
     if (titulo && data && horario && local && banca.length > 0) {
         FormData.defesa = {
             titulo,
@@ -324,11 +333,19 @@ function deleteAluno(id,nome) { if(confirm(`Remover "${nome}"?`)){ mockAlunos=mo
 
 document.addEventListener("DOMContentLoaded",()=>{
     renderTable();
+    // Se clicar fora do modal, fecha ele
     document.getElementById('aluno-modal').addEventListener('click',(e)=>{if(e.target.id==='aluno-modal')closeAlunoModal();});
     document.getElementById('detalhes-modal').addEventListener('click',(e)=>{if(e.target.id==='detalhes-modal')closeDetailsModal();}); 
+    // Chama a função de salvar aluno ao submeter o formulário
     document.getElementById('aluno-form').addEventListener('submit',saveAluno);
 });
 
-window.applyFilters=applyFilters; window.openAlunoModal=openAlunoModal; window.closeAlunoModal=closeAlunoModal;
-window.deleteAluno=deleteAluno; window.editAluno=openAlunoModal; window.changePage=changePage;
-window.viewStudent=viewStudent; window.closeDetailsModal=closeDetailsModal;
+// As globais acessíveis no HTML
+window.applyFilters=applyFilters;
+window.openAlunoModal=openAlunoModal;
+window.closeAlunoModal=closeAlunoModal;
+window.deleteAluno=deleteAluno;
+window.editAluno=openAlunoModal;
+window.changePage=changePage;
+window.viewStudent=viewStudent;
+window.closeDetailsModal=closeDetailsModal;
