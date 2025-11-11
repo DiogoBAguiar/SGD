@@ -1,9 +1,9 @@
-// --- Botão voltar ao dashboard ---
+
 document.getElementById("homeBtn").addEventListener("click", () => {
   window.location.href = "./dashboard.html";
 });
 
-// --- Abrir e fechar modal ---
+
 const openPrazoModal = document.getElementById("openPrazoModal");
 const prazoModal = document.getElementById("prazoModal");
 const closePrazoModal = document.getElementById("closePrazoModal");
@@ -16,7 +16,7 @@ closePrazoModal.addEventListener("click", () => {
   prazoModal.classList.add("hidden");
 });
 
-// --- Salvar configurações ---
+
 document.getElementById("saveBtn").addEventListener("click", () => {
   const settings = {
     email: document.getElementById("emailNotifications").checked,
@@ -28,14 +28,14 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   prazoModal.classList.add("hidden");
 });
 
-// --- Restaurar padrões ---
+
 document.getElementById("resetBtn").addEventListener("click", () => {
   localStorage.removeItem("sgd_settings");
   alert("Configurações restauradas ao padrão.");
   location.reload();
 });
 
-// --- Carregar configurações ---
+
 window.addEventListener("DOMContentLoaded", () => {
   const saved = JSON.parse(localStorage.getItem("sgd_settings"));
   if (saved) {
