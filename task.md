@@ -38,14 +38,53 @@
 ## 4. Gerar Documentos
 - **Objetivo**: Emitir documentos relacionados às defesas.
 - **Requisitos**:
-  - Disponibilizar um módulo para gerar atas de defesa e declarações de participação.
-  - Permitir seleção de defesas específicas para geração dos documentos.
+  - Definir templates padrão para os documentos, com campos preenchidos automaticamente a partir dos dados existentes.
+  Os campos a serem preenchidos no template incluem:
+    - **Nome Completo do Candidato**: 
+    - **Matrícula**: 
+    - **E-mail**: 
+    - **Telefone**: 
+    - **Linha de Pesquisa**: 
+    - **Título**: 
+    - **Produto Educacional**: 
+    - **Nome Completo do Orientador**: 
+      - **Membro**: 
+      - **Matrícula ou CPF**: 
+      - **E-mail**: 
+      - **Telefone**: 
+      - **Titulação de maior nível / Instituição**: 
+      - **Participação**: 
+    - **Nome Completo do Coorientador**: 
+      - **Membro**: 
+      - **Matrícula ou CPF**: 
+      - **E-mail**: 
+      - **Telefone**: 
+      - **Titulação de maior nível / Instituição**: 
+      - **Participação**: 
+    - **Nome Completo do Examinador**: 
+      - **Membro**: 
+      - **Matrícula ou CPF**: 
+      - **E-mail**: 
+      - **Telefone**: 
+      - **Titulação de maior nível / Instituição**: 
+      - **Participação**: 
+    - **Data da Defesa**: 
+    - **Horário da Defesa**: 
+    - **Local da Defesa**: 
+    - **Notas e Avaliação**:
+      - **Texto**: 
+      - **Apresentação**: 
+      - **Arguição**: 
+      - **Média Final**: 
+      - **Avaliação**: 
+    - **Resumo do Trabalho**: 
+    - **Palavras-Chave**: 
+    - **Observação**: 
+  - Incluir uma pré-visualização dos documentos antes da geração final.
   - Garantir que os documentos sejam gerados em formatos padrão (PDF, DOCX).
-  - Incluir opções de personalização para os documentos gerados (ex: inclusão de logotipo, assinatura).
+  - Permitir o download e envio por e-mail dos documentos gerados.
 - **Classificação**: Feature
 - **Responsável**: Thalysson
-
----
 
 ## 5. Gerenciar Alunos
 - **Objetivo**: Administrar informações dos alunos.
@@ -112,7 +151,48 @@
 
 ---
 
+## 10. Regras de Negócio
+- **Objetivo**: Definir restrições e obrigações operacionais do sistema.
+- **Regras**:
+  - **RN01**: O agendamento deve ser iniciado com no mínimo 15 dias de antecedência.
+  - **RN02**: A banca deve ter no mínimo 3 membros, permitindo mais conforme necessário.
+  - **RN03**: Trabalhos confidenciais não devem ser exibidos publicamente.
+  - **RN04**: Para defesa final, o aluno deve anexar o comprovante de submissão de artigo.
+  - **RN05**: A defesa final tem um fluxo de aprovação em duas etapas (Coordenador e Secretaria).
+  - **RN06**: Prazo máximo de 6 meses para refazer a defesa em caso de reprovação.
+  - **RN07**: Se aprovado com correções, o status deve mudar para "Aguardando Versão Final".
+
+---
+
+## 11. Detalhamento de Dados
+- **Objetivo**: Especificar campos obrigatórios para formulários principais do sistema.
+- **Formulário de Solicitação de Banca**:
+  - Dados do Candidato: Nome, Matrícula, Telefone, E-mail, Linha de Pesquisa.
+  - Dados da Banca: Orientador, Coorientador (opcional).
+  - Dados do Trabalho: Título, Resumo, Palavras-chave, Flag de Confidencialidade.
+  - Anexos Obrigatórios: Arquivo do trabalho e, se dissertação, comprovante de submissão de artigo.
+
+---
+
+## 12. Requisitos Funcionais
+- **Objetivos**: Atualizar requisitos funcionais para refletir novos fluxos.
+- **Requisitos**:
+  - O Coordenador deve ter permissão total para editar solicitações de defesa.
+  - O sistema deve validar a anexação de artigos durante a solicitação de dissertação.
+  - Após o agendamento, o sistema deve gerar automaticamente o convite de defesa.
+
+---
+
+## 13. Requisitos Não Funcionais
+- **Objetivos**: Definir aspectos técnicos e de segurança do sistema.
+- **Requisitos**:
+  - O sistema deve integrar-se com o SUAP para armazenamento de documentos.
+  - Autenticação deve usar o serviço de autenticação do SUAP (SSO).
+  - Busca de dados deve preencher automaticamente informações básicas a partir do SUAP.
+
+---
+
 ## Considerações Finais
-- **Usabilidade**: A interface deve ser intuitiva e responsiva, garantindo uma boa experiência em dispositivos móveis.
-- **Segurança**: Implementar autenticação e autorização adequadas para proteger as informações sensíveis de alunos e professores.
+- **Usabilidade**: A interface deve ser intuitiva e responsiva.
+- **Segurança**: Garantir autenticação e autorização adequadas.
 - **Feedback do Usuário**: Incorporar mecanismos para receber feedback dos usuários sobre a usabilidade e eficácia das funcionalidades.
