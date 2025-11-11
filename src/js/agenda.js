@@ -45,14 +45,14 @@ let calendar;
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    initUIControls();
+    // initUIControls();
     populateUpcomingDefenses();
     initAgendaCalendar();
     initModalControls();
 
 });
 
-function initUIControls() {
+/* function initUIControls() {
     const mobileMenuButton = document.getElementById('mobileMenuButton');
     const userMenuButton = document.getElementById('userMenuButton');
     const navbar = document.getElementById('navbar');
@@ -79,7 +79,7 @@ function initUIControls() {
             userMenu?.classList.add('hidden');
         }
     });
-}
+} */
 
 function populateUpcomingDefenses() {
     const listContainer = document.getElementById('upcomingDefensesList');
