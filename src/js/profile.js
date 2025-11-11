@@ -20,11 +20,11 @@ cancelModalBtn.addEventListener('click', () => {
 const homeBtn = document.getElementById('homeBtn');
 
 homeBtn.addEventListener('click', () => {
-  // CORREÇÃO: Redireciona para index.html
+  
   window.location.href = "index.html";
 });
 
-// Simulação de histórico vindo do backend
+
 const activities = [
   { icon: "clock", text: "Participou como avaliador na defesa de João Silva", date: "2025-10-15" },
   { icon: "mail", text: "Enviou solicitação de prorrogação de prazo", date: "2025-11-03" },
@@ -35,9 +35,9 @@ const activities = [
 
 function renderActivityHistory() {
   const container = document.getElementById("activityHistory");
-  container.innerHTML = ""; // limpa conteúdo anterior
+  container.innerHTML = ""; 
 
-  // Ordena por data e pega os 3 últimos
+  
   const recentActivities = activities
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0,3 );
