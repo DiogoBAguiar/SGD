@@ -38,8 +38,8 @@ const createNavbar = (activePage) => {
                 <li><a href="agenda.html" class="${getLinkClass('agenda')}">${icons.agenda} Agenda</a></li>
 
                 <li class="px-3 text-[#AAAAAA] uppercase tracking-widest text-[0.65rem] font-bold mt-6 mb-2">Processos</li>
-                <li><a href="#" class="${getLinkClass('solicitacoes')}">${icons.solicitacoes} Solicitações</a></li>
-                <li><a href="#" class="${getLinkClass('documentos')}">${icons.documentos} Documentos</a></li>
+                <li><a href="solicitacao.html" class="${getLinkClass('solicitacoes')}">${icons.solicitacoes} Solicitações</a></li>
+                <li><a href="documentos.html" class="${getLinkClass('documentos')}">${icons.documentos} Documentos</a></li>
 
                 <li class="px-3 text-[#AAAAAA] uppercase tracking-widest text-[0.65rem] font-bold mt-6 mb-2">Cadastros</li>
                 <li><a href="student_management.html" class="${getLinkClass('gerenciar_alunos')}">${icons.alunos} Alunos</a></li>

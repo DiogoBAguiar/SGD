@@ -17,6 +17,8 @@ const pageMap = {
     'agenda.html': { id: 'agenda', title: 'Gerenciar Agenda' },
     'profile.html': { id: 'meu_perfil', title: 'Meu Perfil' },
     'configuracoes.html': { id: 'configuracoes', title: 'Configurações'},
+    'solicitacao.html': { id: 'solicitacoes', title: 'Gerenciar Solicitações' },
+    'documentos.html': { id: 'documentos', title: 'Gerenciar Documentos' },
 };
 
 const activePageData = pageMap[currentPage] || { id: '', title: 'SGD IFPB' };
