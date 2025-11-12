@@ -1,11 +1,4 @@
-
-let listaProfessores = [
-    { id: 1, nome: "Damires Yluska", email: "damires@ifpb.edu.br", lattes: "[http://lattes.cnpq.br/ex1](http://lattes.cnpq.br/ex1)", instituicao: "IFPB", titulacao: "Doutorado", tipo: "Permanente", areas: "Redes de Computadores, Segurança da Informação", ativo: true },
-    { id: 2, nome: "Francisco Dantas", email: "dantas@ifpb.edu.br", lattes: "", instituicao: "IFPB", titulacao: "Mestrado", tipo: "Colaborador", areas: "Engenharia de Software, Banco de Dados", ativo: true },
-    { id: 3, nome: "Valéria Maria", email: "valeria.maria@ufpb.br", lattes: "[http://lattes.cnpq.br/ex2](http://lattes.cnpq.br/ex2)", instituicao: "UFPB", titulacao: "Doutorado", tipo: "Visitante", areas: "Inteligência Artificial, Data Science", ativo: false },
-    // ... (restante dos dados mockados)
-    { id: 40, nome: "Sophia Nunes", email: "sophia.n@ifpb.edu.br", lattes: "[http://lattes.cnpq.br/ex40](http://lattes.cnpq.br/ex40)", instituicao: "IFPB", titulacao: "Doutorado", tipo: "Permanente", areas: "Interação Humano-Computador, Realidade Aumentada", ativo: true }
-];
+import { listaProfessores } from './database.js';
 
 for (let i = 11; i <= 33; i++) {
     listaProfessores.push({
@@ -208,7 +201,6 @@ function abrirModalProfessor(id = null) {
             alternarInstituicao(professor.tipo); 
         }
     } else { 
-        // Modo Novo
         document.getElementById('modal-title').textContent = "Novo Professor"; 
         document.getElementById('professor-id').value = ''; 
         alternarInstituicao('Permanente'); 
@@ -248,12 +240,14 @@ function salvarProfessor(evento) {
     aplicarFiltros(); 
 }
 
-// Função para deletar um professor
 function deletarProfessor(id, nome) { 
-    if (confirm(`Remover "${nome}"?\n\n(Atenção: Esta ação é permanente!)`)) { 
-        listaProfessores = listaProfessores.filter(p => p.id !== id); 
-        aplicarFiltros(); // Atualiza a tabela
-    }
+    if (confirm(`Remover "${nome}"? ...`)) { 
+        const indice = listaProfessores.findIndex(p => p.id === id);
+        if (indice !== -1) {
+            listaProfessores.splice(indice, 1);
+        }
+        aplicarFiltros(); 
+    }
 }
 
 // --- Funções que rodam quando a página carrega ---
