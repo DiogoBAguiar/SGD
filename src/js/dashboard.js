@@ -1,16 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Dados mockados
-    const pendingRequests = 5;
-    const scheduledDefenses = 2;
-    const generatedDocs = 42;
-    const professorCount = 12;
+    const solicitacoesPendentes = 5;
+    const defesasAgendadas = 2;
+    const documentosGerados = 42;
+    const quantidadeProfessores = 12;
 
-    const defesasData = [2, 3, 5, 4, 7, 8, 5, 6, 9, 10, 4, 0];
-    const defesasLabels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const dadosDefesas = [2, 3, 5, 4, 7, 8, 5, 6, 9, 10, 4, 0];
+    const labelsDefesas = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
-    const statusAlunosData = [15, 60, 10, 15];
-    const statusAlunosLabels = ['Aguardando Orientação', 'Em Orientação', 'Agendamento Pendente', 'Defendido / Concluído'];
-    const statusAlunosColors = ['#EF4444', '#3B82F6', '#E6C850', '#22C55E'];
+    const dadosStatusAlunos = [15, 60, 10, 15];
+    const labelsStatusAlunos = ['Aguardando Orientação', 'Em Orientação', 'Agendamento Pendente', 'Defendido / Concluído'];
+    const coresStatusAlunos = ['#EF4444', '#3B82F6', '#E6C850', '#22C55E'];
 
     const solicitacoes = [
         { nome: 'Ana Clara Silva', curso: 'Eng. de Software', dias: 1 },
@@ -20,20 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
         { nome: 'Elisa Fernandes', curso: 'Ciência da Computação', dias: 3 }
     ];
 
-    // Atualizar cards
-    document.getElementById('pending-requests').textContent = pendingRequests;
-    document.getElementById('scheduled-defenses').textContent = scheduledDefenses;
-    document.getElementById('generated-docs').textContent = generatedDocs;
-    document.getElementById('professor-count').textContent = professorCount;
+    document.getElementById('pending-requests').textContent = solicitacoesPendentes;
+    document.getElementById('scheduled-defenses').textContent = defesasAgendadas;
+    document.getElementById('generated-docs').textContent = documentosGerados;
+    document.getElementById('professor-count').textContent = quantidadeProfessores;
 
-    // Renderizar gráficos
-    renderDefesasMensaisChart(defesasLabels, defesasData);
-    renderStatusAlunosChart(statusAlunosLabels, statusAlunosData, statusAlunosColors);
+    renderizarGraficoDefesasMensais(labelsDefesas, dadosDefesas);
+    renderizarGraficoStatusAlunos(labelsStatusAlunos, dadosStatusAlunos, coresStatusAlunos);
 
-    // Popular lista de solicitações
-    populateListaSolicitacoes(solicitacoes);
+    popularListaSolicitacoes(solicitacoes);
 
-    // Links
     document.getElementById('link-solicitacoes').href = 'solicitacao.html';
     document.getElementById('link-agenda').href = 'agenda.html';
     document.getElementById('link-documentos').href = 'documentos.html';
@@ -41,71 +36,71 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('link-ver-solicitacoes').href = 'solicitacao.html';
 });
 
-function renderDefesasMensaisChart(labels, data) {
+function renderizarGraficoDefesasMensais(labels, data) {
     const canvas = document.getElementById('defesasMensaisChart');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    const chartColor = '#C0A040';
-    const gridColor = '#333';
-    const textColor = '#AAAAAA';
-    const fontFamily = 'Poppins';
+    const corGrafico = '#C0A040';
+    const corGrade = '#333';
+    const corTexto = '#AAAAAA';
+    const fonteFamilia = 'Poppins';
 
-    const draw = () => {
+    const desenhar = () => {
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
         const width = canvas.width;
         const height = canvas.height;
         const padding = 50;
-        const chartWidth = width - padding * 2;
-        const chartHeight = height - padding * 2;
-        const barWidth = chartWidth / (data.length * 2);
-        const maxValue = Math.max(...data);
+        const larguraGrafico = width - padding * 2;
+        const alturaGrafico = height - padding * 2;
+        const larguraBarra = larguraGrafico / (data.length * 2);
+        const valorMaximo = Math.max(...data);
 
         ctx.clearRect(0, 0, width, height);
 
-        ctx.strokeStyle = gridColor;
-        ctx.fillStyle = textColor;
-        ctx.font = `12px ${fontFamily}`;
-        const yAxisTicks = 5;
-        for (let i = 0; i <= yAxisTicks; i++) {
-            const value = Math.round((maxValue / yAxisTicks) * i);
-            const y = chartHeight - (value / maxValue) * chartHeight + padding;
+        ctx.strokeStyle = corGrade;
+        ctx.fillStyle = corTexto;
+        ctx.font = `12px ${fonteFamilia}`;
+        const ticksEixoY = 5;
+        for (let i = 0; i <= ticksEixoY; i++) {
+            const valor = Math.round((valorMaximo / ticksEixoY) * i);
+            const y = alturaGrafico - (valor / valorMaximo) * alturaGrafico + padding;
             
             ctx.beginPath();
             ctx.moveTo(padding, y);
             ctx.lineTo(width - padding, y);
             ctx.stroke();
 
-            ctx.fillText(value, padding - 30, y + 4);
+            ctx.fillText(valor, padding - 30, y + 4);
         }
 
         ctx.textAlign = 'center';
         labels.forEach((label, i) => {
-            const x = padding + i * (chartWidth / data.length) + (chartWidth / data.length) / 2;
+            const x = padding + i * (larguraGrafico / data.length) + (larguraGrafico / data.length) / 2;
             ctx.fillText(label, x, height - padding + 20);
         });
 
-        ctx.fillStyle = chartColor;
-        data.forEach((value, i) => {
-            const barHeight = (value / maxValue) * chartHeight;
-            const x = padding + i * (chartWidth / data.length) + (chartWidth / data.length - barWidth) / 2;
-            const y = chartHeight - barHeight + padding;
-            ctx.fillRect(x, y, barWidth, barHeight);
+        ctx.fillStyle = corGrafico;
+        data.forEach((valor, i) => {
+            const alturaBarra = (valor / valorMaximo) * alturaGrafico;
+            const x = padding + i * (larguraGrafico / data.length) + (larguraGrafico / data.length - larguraBarra) / 2;
+            const y = alturaGrafico - alturaBarra + padding;
+            ctx.fillRect(x, y, larguraBarra, alturaBarra);
         });
     };
 
-    draw();
-    window.addEventListener('resize', draw);
+    desenhar();
+    window.addEventListener('resize', desenhar);
 }
 
-function renderStatusAlunosChart(labels, data, colors) {
+function renderizarGraficoStatusAlunos(labels, data, colors) {
     const canvas = document.getElementById('statusAlunosChart');
     const legendContainer = document.getElementById('statusAlunosLegend');
     if (!canvas || !legendContainer) return;
     const ctx = canvas.getContext('2d');
 
-    const draw = () => {
+    const desenhar = () => {
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
         const width = canvas.width;
@@ -116,10 +111,10 @@ function renderStatusAlunosChart(labels, data, colors) {
         const cutoutRadius = radius * 0.7;
 
         let startAngle = -0.5 * Math.PI;
-        const total = data.reduce((sum, val) => sum + val, 0);
+        const total = data.reduce((soma, val) => soma + val, 0);
 
-        data.forEach((value, i) => {
-            const sliceAngle = (value / total) * 2 * Math.PI;
+        data.forEach((valor, i) => {
+            const sliceAngle = (valor / total) * 2 * Math.PI;
             const endAngle = startAngle + sliceAngle;
             
             ctx.beginPath();
@@ -138,25 +133,25 @@ function renderStatusAlunosChart(labels, data, colors) {
         ctx.fill();
     };
 
-    draw();
-    window.addEventListener('resize', draw);
+    desenhar();
+    window.addEventListener('resize', desenhar);
 
     legendContainer.innerHTML = '';
     labels.forEach((label, i) => {
-        const percentage = data[i];
-        const color = colors[i];
+        const percentual = data[i];
+        const cor = colors[i];
         
-        const legendItem = `
+        const itemLegenda = `
             <p class="flex items-center">
-                <span class="w-3 h-3 rounded-full mr-2" style="background-color: ${color};"></span>
-                ${label} (${percentage}%)
+                <span class="w-3 h-3 rounded-full mr-2" style="background-color: ${cor};"></span>
+                ${label} (${percentual}%)
             </p>
         `;
-        legendContainer.innerHTML += legendItem;
+        legendContainer.innerHTML += itemLegenda;
     });
 }
 
-function populateListaSolicitacoes(solicitacoes) {
+function popularListaSolicitacoes(solicitacoes) {
     const listaContainer = document.getElementById('listaSolicitacoes');
     if (!listaContainer) return;
 
