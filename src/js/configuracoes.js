@@ -1,6 +1,6 @@
 // --- Botão voltar ao dashboard ---
 document.getElementById("homeBtn").addEventListener("click", () => {
-  window.location.href = "./dashboard.html";
+  window.location.href = "./index.html";
 });
 
 // --- Abrir e fechar modal ---
