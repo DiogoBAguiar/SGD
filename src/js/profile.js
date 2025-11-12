@@ -1,21 +1,26 @@
-import { users } from './login.js';
+import { users } from './auth-data.js';
 
 const loggedInUserEmail = localStorage.getItem('userEmail');
 const loggedInUser = users.find(user => user.email === loggedInUserEmail);
 
 if (loggedInUser) {
+    // --- SEÇÃO "CONTATO" ---
+    // (O HTML já tinha IDs aqui que funcionavam)
     document.getElementById("profileEmail").textContent = loggedInUser.email;
     document.getElementById("contactEmail").textContent = loggedInUser.email;
     document.getElementById("contactPhone").textContent = loggedInUser.phone;
     document.getElementById("contactCampus").textContent = loggedInUser.campus;
 
-    const infoGeneral = document.getElementById("infoGeneral");
-    infoGeneral.innerHTML = `
-        <li><span class="font-semibold text-[#E0E0E0]">Cargo:</span> ${loggedInUser.role}</li>
-        <li><span class="font-semibold text-[#E0E0E0]">Departamento:</span> ${loggedInUser.department}</li>
-        <li><span class="font-semibold text-[#E0E0E0]">Registro:</span> ${loggedInUser.username}</li>
-    `;
+    // --- SEÇÃO "INFORMAÇÕES GERAIS" (CORRIGIDA) ---
+    // (Agora preenche os <span>s pelos seus IDs corretos)
+    document.getElementById("role").textContent = loggedInUser.role;
+    document.getElementById("department").textContent = loggedInUser.department;
+    document.getElementById("username").textContent = loggedInUser.username;
 }
+
+// ===================================================
+// O RESTO DO SEU CÓDIGO (MODAL, HISTÓRICO, ETC.)
+// ===================================================
 
 const editModalBtn = document.getElementById('editModalBtn');
 const editModal = document.getElementById('editModal');
@@ -77,4 +82,9 @@ function renderActivityHistory() {
     });
 }
 
-renderActivityHistory();
+// Garante que a função seja chamada após o carregamento do DOM
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderActivityHistory);
+} else {
+    renderActivityHistory();
+}
