@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         botao.addEventListener('click', (evento) => {
             const elementoItem = evento.target.closest('.solicitacao-item');
             const nomeAluno = elementoItem.querySelector('h4').textContent;
-            console.log(Botão "Ver Detalhes" clicado para: ${nomeAluno} (Item ${indice + 1}));
+            console.log(`Botão "Ver Detalhes" clicado para: ${nomeAluno} (Item ${indice + 1})`);
             
         });
     });

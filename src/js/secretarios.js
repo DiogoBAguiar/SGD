@@ -1,16 +1,4 @@
-let listaSecretarios = [
-    { id: 1, nome: "Ana Paula Ribeiro", siape: "1928374", campus: "João Pessoa", email: "ana.ribeiro@ifpb.edu.br", role: "Secretário", ativo: true },
-    { id: 2, nome: "Carlos Mendes", siape: "9182736", campus: "Campina Grande", email: "carlos.mendes@ifpb.edu.br", role: "Secretário", ativo: true },
-    { id: 3, nome: "Diogo Aguiar", siape: "1020304", campus: "João Pessoa", email: "diogo.aguiar@ifpb.edu.br", role: "Coordenador", ativo: true },
-    { id: 4, nome: "Mariana Lima", siape: "5647382", campus: "João Pessoa", email: "mariana.lima@ifpb.edu.br", role: "Secretário", ativo: false },
-    { id: 5, nome: "Ricardo Alves", siape: "7766554", campus: "Cajazeiras", email: "ricardo.alves@ifpb.edu.br", role: "Secretário", ativo: true },
-    { id: 6, nome: "Beatriz Costa", siape: "3322110", campus: "Reitoria", email: "beatriz.costa@ifpb.edu.br", role: "Coordenador", ativo: true },
-    { id: 7, nome: "Felipe Nogueira", siape: "9876543", campus: "Campina Grande", email: "felipe.nogueira@ifpb.edu.br", role: "Secretário", ativo: true },
-    { id: 8, nome: "Luiza Fernandes", siape: "1231234", campus: "João Pessoa", email: "luiza.fernandes@ifpb.edu.br", role: "Secretário", ativo: false },
-    { id: 9, nome: "Marcos Oliveira", siape: "4564567", campus: "Cajazeiras", email: "marcos.oliveira@ifpb.edu.br", role: "Coordenador", ativo: true },
-    { id: 10, nome: "Júlia Pereira", siape: "7897890", campus: "João Pessoa", email: "julia.pereira@ifpb.edu.br", role: "Secretário", ativo: true },
-    { id: 11, nome: "Vitor Santos", siape: "1112223", campus: "Campina Grande", email: "vitor.santos@ifpb.edu.br", role: "Secretário", ativo: true }
-];
+import { listaSecretarios } from "./database.js";
 
 let paginaAtual = 1;
 const ITENS_POR_PAGINA = 8;
