@@ -1,18 +1,63 @@
-// Simulação de um banco de dados de usuários
 const users = [
-    { username: 'icaro.pontes@academico.ifpb.edu.br', password: 'icaro123' },
-    { username: 'diogo.aguiar@academico.ifpb.edu.br', password: 'diogo123' },
-    { username: 'alan.clemente@academico.ifpb.edu.br', password: 'alan123' },
-    { username: 'carlos.gabriel@academico.ifpb.edu.br', password: 'carlos123' },
-    { username: 'thalyson.felicio@academico.ifpb.edu.br', password: 'thalyson123' }
+    {
+        username: 'icaro.pontes@academico.ifpb.edu.br',
+        password: 'icaro123',
+        name: 'Ícaro Pontes',
+        role: 'Administrador',
+        department: 'Informática',
+        email: 'icaro.pontes@academico.ifpb.edu.br',
+        phone: '(83) 98888-8888',
+        campus: 'João Pessoa'
+    },
+    {
+        username: 'diogo.aguiar@academico.ifpb.edu.br',
+        password: 'diogo123',
+        name: 'Diogo Aguiar',
+        role: 'Administrador',
+        department: 'Sistema',
+        email: 'diogo.aguiar@ifpb.edu.br',
+        phone: '(83) 93333-3333',
+        campus: 'João Pessoa'
+    },
+    {
+        username: 'alan.clemente@academico.ifpb.edu.br',
+        password: 'alan123',
+        name: 'Alan Clemente',
+        role: 'Administrador',
+        department: 'Matemática',
+        email: 'alan.clemente@ifpb.edu.br',
+        phone: '(83) 92222-2222',
+        campus: 'João Pessoa'
+    },
+    {
+        username: 'carlos.gabriel@academico.ifpb.edu.br',
+        password: 'carlos123',
+        name: 'Carlos Gabriel',
+        role: 'Administrador',
+        department: 'Laboratório',
+        email: 'carlos.gabriel@ifpb.edu.br',
+        phone: '(83) 91111-1111',
+        campus: 'João Pessoa'
+    },
+    {
+        username: 'thalyson.felicio@academico.ifpb.edu.br',
+        password: 'thalyson123',
+        name: 'Thalyson Felício',
+        role: 'Administrador',
+        department: 'Secretaria',
+        email: 'thalyson.felicio@ifpb.edu.br',
+        phone: '(83) 94444-4444',
+        campus: 'João Pessoa'
+    }
 ];
 
-// Validação de login
-const validateLogin = (username, password) => {
+export { users };
+
+const validarLogin = (username, password) => {
     return users.some(user => user.username === username && user.password === password);
 };
 
-const generateLoginHTML = () => {
+const gerarLoginHTML = () => {
     return `
     <div class="w-full max-w-md bg-[#121212] px-8 py-10 rounded-lg border border-[#333333] text-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
         <!-- CORREÇÃO: Caminho do logo (da pasta 'public') -->
@@ -51,7 +96,7 @@ const generateLoginHTML = () => {
 };
 
 const renderLogin = () => {
-    document.body.innerHTML = generateLoginHTML();
+    document.body.innerHTML = gerarLoginHTML();
 
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
@@ -66,7 +111,7 @@ const renderLogin = () => {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        if (validateLogin(username, password)) {
+        if (validarLogin(username, password)) {
             localStorage.setItem('userEmail', username);// guarda o email do usuario logado
             window.location.href = 'index.html'; 
         } else {
