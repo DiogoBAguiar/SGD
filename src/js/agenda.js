@@ -1,3 +1,5 @@
+import { mockAlunos } from './database.js';
+
 const listaDefesas = document.getElementById('allDefensesList');
 const modal = document.getElementById('eventModal');
 const formularioEvento = document.getElementById('eventForm');
@@ -97,7 +99,7 @@ function tratarEnvioFormulario(e) {
     const nomeAluno = dadosFormulario.get('aluno');
     
     if (!nomeAluno) {
-        alert('Por favor, selecione um aluno.');
+        console.warn('Seleção de aluno é obrigatória.');
         return;
     }
 
@@ -126,11 +128,26 @@ function tratarEnvioFormulario(e) {
 }
 
 function initControlesModal() {
-    document.getElementById('addEventButton').addEventListener('click', abrirModalEvento);
-    document.getElementById('modalCloseButton').addEventListener('click', fecharModal);
-    document.getElementById('modalBackdrop').addEventListener('click', fecharModal);
-    document.getElementById('cancelButton').addEventListener('click', fecharModal);
-    formularioEvento.addEventListener('submit', tratarEnvioFormulario);
+    const addEventButton = document.getElementById('addEventButton');
+    const modalCloseButton = document.getElementById('modalCloseButton');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const cancelButton = document.getElementById('cancelButton');
+
+    if (addEventButton) {
+        addEventButton.addEventListener('click', abrirModalEvento);
+    }
+    if (modalCloseButton) {
+        modalCloseButton.addEventListener('click', fecharModal);
+    }
+    if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', fecharModal);
+    }
+    if (cancelButton) {
+        cancelButton.addEventListener('click', fecharModal);
+    }
+    if (formularioEvento) {
+        formularioEvento.addEventListener('submit', tratarEnvioFormulario);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
