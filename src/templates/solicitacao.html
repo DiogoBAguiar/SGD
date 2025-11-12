@@ -3,52 +3,69 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dashboard - SGD</title>
+    <title>Solicitações - SGD</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+                sgd: { gold: '#C0A040', 'gold-hover': '#E6C850', bg: '#121212', card: '#1F1F1F', border: '#333333', muted: '#AAAAAA', text: '#E0E0E0' }
+            }
+          }
+        }
+      }
+    </script>
+    <style type="text/tailwindcss">
+      @layer components {
+        .input-std { @apply w-full bg-sgd-bg border border-sgd-border text-sgd-text px-3 py-2 rounded-lg focus:outline-none focus:border-sgd-gold transition-colors text-sm; }
+        .label-std { @apply block text-sm text-sgd-muted mb-1; }
+        .btn-primary { @apply bg-sgd-gold text-black px-4 py-2 rounded-lg font-bold hover:bg-sgd-gold-hover transition flex items-center justify-center; }
+        .btn-secondary { @apply bg-sgd-border text-sgd-text px-4 py-2 rounded-lg hover:bg-[#444444] transition; }
+        .card-std { @apply bg-sgd-card rounded-2xl border border-sgd-border shadow-lg; }
+        .table-header { @apply px-6 py-3 text-left text-sm font-semibold text-sgd-gold uppercase tracking-wider; }
+        .table-cell { @apply px-6 py-4 whitespace-nowrap text-sm text-sgd-text; }
+      }
+    </style>
+
     <script type="module" src="../js/main.js" defer></script>
+    <script type="module" src="../js/solicitacoes.js" defer></script>
 
     <style>
       .font-poppins { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
-<body class="font-poppins min-h-screen flex bg-[#121212] text-[#E0E0E0]">
+<body class="font-poppins min-h-screen flex bg-sgd-bg text-sgd-text">
     
     <div id="navbar" class="sticky top-0 h-screen z-10"></div>
 
     <main class="flex-1 flex flex-col">
         <div id="header"></div>
 
-      
-
-    <!-- Conteúdo principal -->
     <main class="flex-1 w-full">
       <div class="max-w-5xl mx-auto px-4 py-10">
 
-        <!-- Título -->
         <div class="text-center mb-10">
-          <h2 class="text-4xl font-bold text-[#C0A040] mb-2">Solicitações Pendentes</h2>
-          <p class="text-gray-400 text-sm">
+          <h2 class="text-4xl font-bold text-sgd-gold mb-2">Solicitações Pendentes</h2>
+          <p class="text-sgd-muted text-sm">
             Gerencie as solicitações de defesa e qualificação dos alunos.
           </p>
         </div>
 
-        <!-- Filtros -->
-        <section class="bg-[#1E1E1E] p-6 rounded-2xl shadow-lg mb-8">
-          <h3 class="text-xl font-semibold text-[#C0A040] mb-4">Filtrar Solicitações</h3>
+        <section class="card-std p-6 mb-8">
+          <h3 class="text-xl font-semibold text-sgd-gold mb-4">Filtrar Solicitações</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <input
               type="text"
               placeholder="Nome do aluno"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#C0A040] placeholder-gray-500"
+              class="input-std"
             />
-            <select
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#C0A040] text-gray-300"
-            >
+            <select class="input-std text-sgd-text">
               <option value="">Status</option>
               <option value="aguardando">Aguardando</option>
               <option value="aprovada">Aprovada</option>
@@ -56,66 +73,62 @@
             </select>
             <input
               type="date"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[#C0A040] text-gray-300"
+              class="input-std text-sgd-text"
             />
           </div>
 
           <div class="mt-4 text-right">
             <button
-              class="bg-[#C0A040] hover:bg-[#b39236] text-black font-semibold px-5 py-2 rounded-lg shadow-md transition-colors"
+              class="btn-primary px-5 py-2 btn-apply-filters"
             >
               Aplicar Filtros
             </button>
           </div>
         </section>
 
-        <!-- Lista -->
         <section>
-          <div class="bg-[#1E1E1E] rounded-2xl shadow-lg overflow-hidden divide-y divide-gray-800">
+          <div class="card-std overflow-hidden divide-y divide-sgd-border">
             
-            <!-- Item 1 -->
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-5">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-5 solicitacao-item">
               <div>
-                <h4 class="text-lg font-semibold">João da Silva</h4>
-                <p class="text-sm text-gray-400">Matrícula: 2023100101</p>
+                <h4 class="text-lg font-semibold text-white">João da Silva</h4>
+                <p class="text-sm text-sgd-muted">Matrícula: 2023100101</p>
               </div>
               <div class="flex items-center gap-4 mt-3 md:mt-0">
                 <span class="px-3 py-1 text-sm rounded-full bg-yellow-700/30 text-yellow-400">
                   Aguardando
                 </span>
-                <button class="bg-[#C0A040] hover:bg-[#b39236] text-black font-semibold px-4 py-2 rounded-lg text-sm">
+                <button class="btn-primary btn-view-details text-sm px-4 py-2">
                   Ver Detalhes
                 </button>
               </div>
             </div>
 
-            <!-- Item 2 -->
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-5">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-5 solicitacao-item">
               <div>
-                <h4 class="text-lg font-semibold">Maria Oliveira</h4>
-                <p class="text-sm text-gray-400">Matrícula: 2022100312</p>
+                <h4 class="text-lg font-semibold text-white">Maria Oliveira</h4>
+                <p class="text-sm text-sgd-muted">Matrícula: 2022100312</p>
               </div>
               <div class="flex items-center gap-4 mt-3 md:mt-0">
                 <span class="px-3 py-1 text-sm rounded-full bg-green-700/30 text-green-400">
                   Aprovada
                 </span>
-                <button class="bg-[#C0A040] hover:bg-[#b39236] text-black font-semibold px-4 py-2 rounded-lg text-sm">
+                <button class="btn-primary btn-view-details text-sm px-4 py-2">
                   Ver Detalhes
                 </button>
               </div>
             </div>
 
-            <!-- Item 3 -->
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-5">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-5 solicitacao-item">
               <div>
-                <h4 class="text-lg font-semibold">Carlos Pereira</h4>
-                <p class="text-sm text-gray-400">Matrícula: 2023200205</p>
+                <h4 class="text-lg font-semibold text-white">Carlos Pereira</h4>
+                <p class="text-sm text-sgd-muted">Matrícula: 2023200205</p>
               </div>
               <div class="flex items-center gap-4 mt-3 md:mt-0">
                 <span class="px-3 py-1 text-sm rounded-full bg-red-700/30 text-red-400">
                   Rejeitada
                 </span>
-                <button class="bg-[#C0A040] hover:bg-[#b39236] text-black font-semibold px-4 py-2 rounded-lg text-sm">
+                <button class="btn-primary btn-view-details text-sm px-4 py-2">
                   Ver Detalhes
                 </button>
               </div>
@@ -127,8 +140,7 @@
       </div>
     </main>
 
-    <!-- Rodapé -->
-    <footer class="py-6 text-center text-gray-500 text-xs border-t border-gray-800">
+    <footer class="py-6 text-center text-gray-500 text-xs border-t border-sgd-border">
       © 2025 Sistema de Solicitações Acadêmicas
     </footer>
     </main>
