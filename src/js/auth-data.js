@@ -1,4 +1,4 @@
-export const users = [{
+export let users = [{
         username: 'icaro.pontes@academico.ifpb.edu.br',
         password: 'icaro123',
         name: 'Ícaro Pontes',

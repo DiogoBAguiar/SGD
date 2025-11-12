@@ -33,6 +33,7 @@
     </style>
 
     <script type="module" src="../js/main.js" defer></script>
+    <script src="../js/alunos.js" type="module" defer></script>
 
     <style>
       .font-poppins { font-family: 'Poppins', sans-serif; }
@@ -194,7 +195,7 @@
 
     <div id="detalhes-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 backdrop-blur-sm p-4">
         <div class="card-std w-full max-w-2xl shadow-2xl border-sgd-gold/50 max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center p-6 border-b border-sgd-border shrink-0 bg-[#1A1A1A]">
+            <div class="flex justify-between items-center p-5 border-b border-sgd-border bg-[#1A1A1A] rounded-tl-2xl rounded-tr-2xl">
                 <h3 class="text-xl font-semibold text-sgd-gold flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -203,7 +204,7 @@
                     </svg>
                     Ficha do Professor
                 </h3>
-                <button onclick="closeDetailsModal()" class="text-sgd-muted hover:text-white transition bg-[#333333] p-1 rounded-full">
+                <button onclick="closeDetalhesModal()" class="text-sgd-muted hover:text-white transition bg-[#333333] p-1 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -262,8 +263,8 @@
                 </div>
             </div>
             
-            <div class="p-4 border-t border-sgd-border bg-[#1A1A1A] flex justify-end sticky bottom-0 rounded-b-lg">
-                <button onclick="closeDetailsModal()" class="btn-primary px-6">Fechar Ficha</button>
+            <div class="p-4 border-t border-sgd-border bg-[#1A1A1A] flex justify-end sticky bottom-0 rounded-b-lg hidden">
+                <button onclick="closeDetalhesModal()" class="btn-primary px-6">Fechar Ficha</button>
             </div>
         </div>
     </div>
