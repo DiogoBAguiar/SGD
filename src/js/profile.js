@@ -4,24 +4,22 @@ const loggedInUserEmail = localStorage.getItem('userEmail');
 const loggedInUser = users.find(user => user.email === loggedInUserEmail);
 
 if (loggedInUser) {
-    // --- SEÇÃO "CONTATO" ---
-    // (O HTML já tinha IDs aqui que funcionavam)
+
     document.getElementById("profileEmail").textContent = loggedInUser.email;
     document.getElementById("contactEmail").textContent = loggedInUser.email;
     document.getElementById("contactPhone").textContent = loggedInUser.phone;
     document.getElementById("contactCampus").textContent = loggedInUser.campus;
-
-    // --- SEÇÃO "INFORMAÇÕES GERAIS" (CORRIGIDA) ---
-    // (Agora preenche os <span>s pelos seus IDs corretos)
     document.getElementById("role").textContent = loggedInUser.role;
     document.getElementById("department").textContent = loggedInUser.department;
     document.getElementById("username").textContent = loggedInUser.username;
+    document.getElementById("profileName").textContent = loggedInUser.name;
+    document.getElementById("profileRoleDescription").textContent = loggedInUser.role;
 }
 
-// ===================================================
-// O RESTO DO SEU CÓDIGO (MODAL, HISTÓRICO, ETC.)
-// ===================================================
-
+const avatarUrl = `https://ui-avatars.com/api/?name=${loggedInUser.name.replace(' ', '+')}&background=C0A040&color=1F1F1F&bold=true`;
+    const imgEl = document.getElementById("profileImage");
+    imgEl.src = avatarUrl;
+    imgEl.alt = `Foto de ${loggedInUser.name}`;
 const editModalBtn = document.getElementById('editModalBtn');
 const editModal = document.getElementById('editModal');
 const closeModalBtn = document.getElementById('closeModalBtn');
@@ -82,7 +80,6 @@ function renderActivityHistory() {
     });
 }
 
-// Garante que a função seja chamada após o carregamento do DOM
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', renderActivityHistory);
 } else {
