@@ -1,148 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initDefesasMensaisChart();
-    initStatusAlunosChart();
-    populateListaSolicitacoes();
-});
+    const solicitacoesPendentes = 5;
+    const defesasAgendadas = 2;
+    const documentosGerados = 42;
+    const quantidadeProfessores = 12;
 
-function initDefesasMensaisChart() {
-    const ctx = document.getElementById('defesasMensaisChart');
-    if (!ctx) return;
+    const dadosDefesas = [2, 3, 5, 4, 7, 8, 5, 6, 9, 10, 4, 0];
+    const labelsDefesas = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
-    const chartData = {
-        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-        datasets: [{
-            label: 'Nº de Defesas',
-            data: [2, 3, 5, 4, 7, 8, 5, 6, 9, 10, 4, 0],
-            backgroundColor: '#C0A040',
-            borderColor: '#E6C850',
-            borderWidth: 1,
-            borderRadius: 4,
-            hoverBackgroundColor: '#E6C850'
-        }]
-    };
-
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { 
-                display: false
-            },
-            tooltip: {
-                backgroundColor: '#1F1F1F', 
-                titleColor: '#E0E0E0',
-                bodyColor: '#AAAAAA',
-                borderColor: '#333',
-                borderWidth: 1,
-                titleFont: { family: 'Poppins' },
-                bodyFont: { family: 'Poppins' }
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: { 
-                    color: '#333'
-                },
-                ticks: { 
-                    color: '#AAAAAA',
-                    font: { family: 'Poppins' } 
-                }
-            },
-            x: {
-                grid: { 
-                    display: false
-                },
-                ticks: { 
-                    color: '#AAAAAA',
-                    font: { family: 'Poppins' } 
-                }
-            }
-        }
-    };
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: chartData,
-        options: options
-    });
-}
-
-function initStatusAlunosChart() {
-    const ctx = document.getElementById('statusAlunosChart');
-    const legendContainer = document.getElementById('statusAlunosLegend');
-    if (!ctx || !legendContainer) return;
-
-    const data = {
-        labels: [
-            'Aguardando Orientação',
-            'Em Orientação',
-            'Agendamento Pendente',
-            'Defendido / Concluído'
-        ],
-        datasets: [{
-            data: [15, 60, 10, 15],
-            backgroundColor: [
-                '#EF4444',
-                '#3B82F6',
-                '#E6C850',
-                '#22C55E'
-            ],
-            borderColor: '#1F1F1F',
-            borderWidth: 4,
-            hoverOffset: 8
-        }]
-    };
-
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '70%',
-        plugins: {
-            legend: { 
-                display: false
-            },
-            tooltip: {
-                backgroundColor: '#1F1F1F',
-                titleColor: '#E0E0E0',
-                bodyColor: '#AAAAAA',
-                borderColor: '#333',
-                borderWidth: 1,
-                titleFont: { family: 'Poppins' },
-                bodyFont: { family: 'Poppins' },
-                callbacks: {
-                    label: function(context) {
-                        return `${context.label}: ${context.raw}%`;
-                    }
-                }
-            }
-        }
-    };
-
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: data,
-        options: options
-    });
-
-    legendContainer.innerHTML = '';
-    data.labels.forEach((label, i) => {
-        const percentage = data.datasets[0].data[i];
-        const color = data.datasets[0].backgroundColor[i];
-        
-        const legendItem = `
-            <p class="flex items-center">
-                <span class="w-3 h-3 rounded-full mr-2" style="background-color: ${color};"></span>
-                ${label} (${percentage}%)
-            </p>
-        `;
-        legendContainer.innerHTML += legendItem;
-    });
-}
-
-function populateListaSolicitacoes() {
-    const listaContainer = document.getElementById('listaSolicitacoes');
-    if (!listaContainer) return;
+    const dadosStatusAlunos = [15, 60, 10, 15];
+    const labelsStatusAlunos = ['Aguardando Orientação', 'Em Orientação', 'Agendamento Pendente', 'Defendido / Concluído'];
+    const coresStatusAlunos = ['#EF4444', '#3B82F6', '#E6C850', '#22C55E'];
 
     const solicitacoes = [
         { nome: 'Ana Clara Silva', curso: 'Eng. de Software', dias: 1 },
@@ -151,6 +18,142 @@ function populateListaSolicitacoes() {
         { nome: 'Daniel Oliveira', curso: 'Eng. de Software', dias: 3 },
         { nome: 'Elisa Fernandes', curso: 'Ciência da Computação', dias: 3 }
     ];
+
+    document.getElementById('pending-requests').textContent = solicitacoesPendentes;
+    document.getElementById('scheduled-defenses').textContent = defesasAgendadas;
+    document.getElementById('generated-docs').textContent = documentosGerados;
+    document.getElementById('professor-count').textContent = quantidadeProfessores;
+
+    renderizarGraficoDefesasMensais(labelsDefesas, dadosDefesas);
+    renderizarGraficoStatusAlunos(labelsStatusAlunos, dadosStatusAlunos, coresStatusAlunos);
+
+    popularListaSolicitacoes(solicitacoes);
+
+    document.getElementById('link-solicitacoes').href = 'solicitacao.html';
+    document.getElementById('link-agenda').href = 'agenda.html';
+    document.getElementById('link-documentos').href = 'documentos.html';
+    document.getElementById('link-professores').href = 'professores.html';
+    document.getElementById('link-ver-solicitacoes').href = 'solicitacao.html';
+});
+
+function renderizarGraficoDefesasMensais(labels, data) {
+    const canvas = document.getElementById('defesasMensaisChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const corGrafico = '#C0A040';
+    const corGrade = '#333';
+    const corTexto = '#AAAAAA';
+    const fonteFamilia = 'Poppins';
+
+    const desenhar = () => {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        const width = canvas.width;
+        const height = canvas.height;
+        const padding = 50;
+        const larguraGrafico = width - padding * 2;
+        const alturaGrafico = height - padding * 2;
+        const larguraBarra = larguraGrafico / (data.length * 2);
+        const valorMaximo = Math.max(...data);
+
+        ctx.clearRect(0, 0, width, height);
+
+        ctx.strokeStyle = corGrade;
+        ctx.fillStyle = corTexto;
+        ctx.font = `12px ${fonteFamilia}`;
+        const ticksEixoY = 5;
+        for (let i = 0; i <= ticksEixoY; i++) {
+            const valor = Math.round((valorMaximo / ticksEixoY) * i);
+            const y = alturaGrafico - (valor / valorMaximo) * alturaGrafico + padding;
+            
+            ctx.beginPath();
+            ctx.moveTo(padding, y);
+            ctx.lineTo(width - padding, y);
+            ctx.stroke();
+
+            ctx.fillText(valor, padding - 30, y + 4);
+        }
+
+        ctx.textAlign = 'center';
+        labels.forEach((label, i) => {
+            const x = padding + i * (larguraGrafico / data.length) + (larguraGrafico / data.length) / 2;
+            ctx.fillText(label, x, height - padding + 20);
+        });
+
+        ctx.fillStyle = corGrafico;
+        data.forEach((valor, i) => {
+            const alturaBarra = (valor / valorMaximo) * alturaGrafico;
+            const x = padding + i * (larguraGrafico / data.length) + (larguraGrafico / data.length - larguraBarra) / 2;
+            const y = alturaGrafico - alturaBarra + padding;
+            ctx.fillRect(x, y, larguraBarra, alturaBarra);
+        });
+    };
+
+    desenhar();
+    window.addEventListener('resize', desenhar);
+}
+
+function renderizarGraficoStatusAlunos(labels, data, colors) {
+    const canvas = document.getElementById('statusAlunosChart');
+    const legendContainer = document.getElementById('statusAlunosLegend');
+    if (!canvas || !legendContainer) return;
+    const ctx = canvas.getContext('2d');
+
+    const desenhar = () => {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        const width = canvas.width;
+        const height = canvas.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = Math.min(width, height) / 2 - 10;
+        const cutoutRadius = radius * 0.7;
+
+        let startAngle = -0.5 * Math.PI;
+        const total = data.reduce((soma, val) => soma + val, 0);
+
+        data.forEach((valor, i) => {
+            const sliceAngle = (valor / total) * 2 * Math.PI;
+            const endAngle = startAngle + sliceAngle;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fillStyle = colors[i];
+            ctx.fill();
+            
+            startAngle = endAngle;
+        });
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, cutoutRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = '#1F1F1F';
+        ctx.fill();
+    };
+
+    desenhar();
+    window.addEventListener('resize', desenhar);
+
+    legendContainer.innerHTML = '';
+    labels.forEach((label, i) => {
+        const percentual = data[i];
+        const cor = colors[i];
+        
+        const itemLegenda = `
+            <p class="flex items-center">
+                <span class="w-3 h-3 rounded-full mr-2" style="background-color: ${cor};"></span>
+                ${label} (${percentual}%)
+            </p>
+        `;
+        legendContainer.innerHTML += itemLegenda;
+    });
+}
+
+function popularListaSolicitacoes(solicitacoes) {
+    const listaContainer = document.getElementById('listaSolicitacoes');
+    if (!listaContainer) return;
 
     listaContainer.innerHTML = '';
     

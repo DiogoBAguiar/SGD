@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- basicamente o root do css -->
     <script>
       tailwind.config = {
         theme: {
@@ -20,6 +21,7 @@
         }
       }
     </script>
+    <!-- Classes personalizadas -->
     <style type="text/tailwindcss">
       @layer components {
         .input-std { @apply w-full bg-sgd-bg border border-sgd-border text-sgd-text px-3 py-2 rounded focus:outline-none focus:border-sgd-gold transition-colors; }
@@ -34,6 +36,7 @@
 
     <script type="module" src="../js/main.js" defer></script>
 
+    <!-- Mais estilos personalizados -->
     <style>
       .font-poppins { font-family: 'Poppins', sans-serif; }
       .hidden { display: none; }
@@ -43,6 +46,8 @@
       .custom-scrollbar::-webkit-scrollbar-thumb:hover { bg: #C0A040; }
     </style>
 </head>
+
+<!-- Html dinamizado com JS -->
 <body class="font-poppins min-h-screen flex bg-sgd-bg text-sgd-text">
 
   <div id="navbar" class="sticky top-0 h-screen z-10"></div>
@@ -193,7 +198,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                     Ficha do Aluno
                 </h3>
-                <button onclick="closeDetailsModal()" class="text-sgd-muted hover:text-white transition bg-[#333333] p-1 rounded-full">
+                <button onclick="closeDetalhesModal()" class="text-sgd-muted hover:text-white transition bg-[#333333] p-1 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
@@ -223,7 +228,7 @@
             </div>
             
             <div class="p-4 border-t border-sgd-border bg-[#1A1A1A] flex justify-end sticky bottom-0 rounded-b-lg">
-                <button onclick="closeDetailsModal()" class="btn-primary px-6">Fechar</button>
+                <button onclick="closeDetalhesModal()" class="btn-primary px-6">Fechar</button>
             </div>
         </div>
     </div>

@@ -102,45 +102,44 @@ let mockAlunos = [
     { id: 140, nome: "Helena Santos Cruz", matricula: "2024202777", email: "helena.s@aluno.ifpb.edu.br", curso: "Mestrado", ingresso: 2024, orientador: "Giovanni Silva", status: "Ativo", defesa: null }
 ];
 
-// (Adicionei mais alguns só para garantir que a paginação continue funcionando no exemplo)
 for (let i = 105; i <= 134; i++) {
      mockAlunos.push({ id: i, nome: `Aluno Teste ${i}`, matricula: `2023${i}`, email: `aluno${i}@ifpb.edu.br`, curso: "Mestrado", ingresso: 2023, orientador: "Damires Yluska", status: "Ativo", defesa: null });
 }
 
 let currentPage = 1;
-const ITEMS_PER_PAGE = 8;
+const ITENS_POR_PAG = 8;
 let filteredData = [...mockAlunos];
 
-// --- RENDERIZAÇÃO 
-function renderTable() {
+function renderTabela() {
     const tbody = document.getElementById('alunos-table-body');
     tbody.innerHTML = '';
 
     if (filteredData.length === 0) {
         tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-sgd-muted">Nenhum aluno encontrado.</td></tr>`;
-        renderPagination();
+        renderPaginas();
         return;
     }
 
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const startIndex = (currentPage - 1) * ITENS_POR_PAG;
+    const endIndex = startIndex + ITENS_POR_PAG;
     const paginatedData = filteredData.slice(startIndex, endIndex);
 
     paginatedData.forEach(aluno => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-[#1A1A1A] transition-colors";
 
-        let statusClass = 'bg-gray-900 text-gray-400 border-gray-700';
+        // Define o status de cada aluno
+        let statusClasse = 'bg-gray-900 text-gray-400 border-gray-700';
         switch(aluno.status) {
-            case 'Ativo': statusClass = 'bg-sky-900/30 text-sky-400 border-sky-800'; break;
-            case 'Qualificado': statusClass = 'bg-sgd-gold/20 text-sgd-gold border-sgd-gold/50'; break;
-            case 'Defendido': statusClass = 'bg-emerald-900/30 text-emerald-400 border-emerald-800'; break;
-            case 'Trancado': case 'Desligado': statusClass = 'bg-red-900/30 text-red-400 border-red-800 opacity-70'; break;
+            case 'Ativo': statusClasse = 'bg-sky-900/30 text-sky-400 border-sky-800'; break;
+            case 'Qualificado': statusClasse = 'bg-sgd-gold/20 text-sgd-gold border-sgd-gold/50'; break;
+            case 'Defendido': statusClasse = 'bg-emerald-900/30 text-emerald-400 border-emerald-800'; break;
+            case 'Trancado': case 'Desligado': statusClasse = 'bg-red-900/30 text-red-400 border-red-800 opacity-70'; break;
         }
 
         tr.innerHTML = `
             <td class="table-cell">
-                <a href="#" onclick="viewStudent(event, ${aluno.id})" class="font-medium text-white hover:text-sgd-gold hover:underline transition">
+                <a href="#" onclick="student_details(event, ${aluno.id})" class="font-medium text-white hover:text-sgd-gold hover:underline transition">
                     ${aluno.nome}
                 </a>
                 <div class="text-sgd-muted text-xs">${aluno.matricula}</div>
@@ -150,7 +149,7 @@ function renderTable() {
                 <div class="text-sgd-muted text-xs">Ingresso: ${aluno.ingresso}</div>
             </td>
             <td class="table-cell">${aluno.orientador || '<span class="text-sgd-muted italic">—</span>'}</td>
-            <td class="table-cell"><span class="px-2 py-1 text-xs font-medium rounded-full border ${statusClass}">${aluno.status}</span></td>
+            <td class="table-cell"><span class="px-2 py-1 text-xs font-medium rounded-full border ${statusClasse}">${aluno.status}</span></td>
             <td class="table-cell text-right">
                 <div class="flex items-center justify-end space-x-3">
                     <button onclick="editAluno(${aluno.id})" class="text-sgd-muted hover:text-sgd-gold transition" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></button>
@@ -159,12 +158,13 @@ function renderTable() {
             </td>`;
         tbody.appendChild(tr);
     });
-    renderPagination();
+    renderPaginas();
 }
 
-function renderPagination() {
+// Funções de paginação
+function renderPaginas() {
     const container = document.getElementById('pagination-container');
-    const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(filteredData.length / ITENS_POR_PAG);
     if (totalPages <= 1) { container.innerHTML = ''; return; }
     let buttonsHtml = `<button onclick="changePage(${currentPage - 1})" class="px-3 py-1 rounded border border-sgd-border text-sm transition ${currentPage === 1 ? 'text-sgd-muted opacity-50 cursor-not-allowed' : 'text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>`;
     let startPage = Math.max(1, currentPage - 2);
@@ -175,15 +175,18 @@ function renderPagination() {
     buttonsHtml += `<button onclick="changePage(${currentPage + 1})" class="px-3 py-1 rounded border border-sgd-border text-sm transition ${currentPage === totalPages ? 'text-sgd-muted opacity-50 cursor-not-allowed' : 'text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}" ${currentPage === totalPages ? 'disabled' : ''}>Próximo</button>`;
     container.innerHTML = `<span class="text-xs text-sgd-muted mr-4">Pág. ${currentPage} de ${totalPages} (${filteredData.length} total)</span>${buttonsHtml}`;
 }
-function changePage(n) { const total = Math.ceil(filteredData.length/ITEMS_PER_PAGE); if(n>=1 && n<=total){ currentPage=n; renderTable(); }}
+function changePage(n) { const total = Math.ceil(filteredData.length/ITENS_POR_PAG); if(n>=1 && n<=total){ currentPage=n; renderTabela(); }}
+// Fim das funções de paginação
+
 function applyFilters() {
     const search = document.getElementById('search-input').value.toLowerCase();
     const status = document.getElementById('filter-status').value.toLowerCase();
     filteredData = mockAlunos.filter(a => (a.nome.toLowerCase().includes(search) || a.matricula.includes(search) || (a.orientador && a.orientador.toLowerCase().includes(search))) && (status === "" || a.status.toLowerCase() === status));
-    currentPage = 1; renderTable();
+    currentPage = 1; renderTabela();
 }
 
-function viewStudent(e, id) {
+// Função para visualizar detalhes do aluno
+function student_details(e, id) {
     if (e) e.preventDefault(); 
     const aluno = mockAlunos.find(a => a.id === id);
     if (!aluno) return;
@@ -225,8 +228,10 @@ function viewStudent(e, id) {
 
     document.getElementById('detalhes-modal').classList.remove('hidden');
 }
-function closeDetailsModal() { document.getElementById('detalhes-modal').classList.add('hidden'); }
+function closeDetalhesModal() { document.getElementById('detalhes-modal').classList.add('hidden'); }
 
+
+// Função para adicionar/editar aluno
 function openAlunoModal(id = null) {
     const modal = document.getElementById('aluno-modal');
     document.getElementById('aluno-form').reset();
@@ -274,11 +279,13 @@ function openAlunoModal(id = null) {
     modal.classList.remove('hidden');
 }
 function closeAlunoModal() { document.getElementById('aluno-modal').classList.add('hidden'); }
+
 function saveAluno(e) {
     e.preventDefault();
     const id = document.getElementById('aluno-id').value;
 
-    const FormData = {
+    // Objeto com os dados do formulário
+    const FormDados = {
         id: id ? parseInt(id) : Date.now(),
         nome: document.getElementById('input-nome').value,
         matricula: document.getElementById('input-matricula').value,
@@ -287,18 +294,18 @@ function saveAluno(e) {
         ingresso: parseInt(document.getElementById('input-ingresso').value),
         orientador: document.getElementById('select-orientador').value,
         status: document.getElementById('select-status').value,
-        defesa: null // Inicializa como null por padrão
+        defesa: null
     };
 
-    // Adiciona a defesa se os campos estiverem preenchidos
     const titulo = document.getElementById('titulo').value;
     const data = document.getElementById('data').value;
     const horario = document.getElementById('horario').value;
     const local = document.getElementById('local').value;
     const banca = document.getElementById('banca').value.split(',').map(s => s.trim()).filter(s => s);
 
+    // Adiciona a defesa ao objeto se e somente se todos os campos obrigatórios estiverem preenchidos
     if (titulo && data && horario && local && banca.length > 0) {
-        FormData.defesa = {
+        FormDados.defesa = {
             titulo,
             data,
             horario,
@@ -310,10 +317,10 @@ function saveAluno(e) {
     if (id) {
         const idx = mockAlunos.findIndex(a => a.id === parseInt(id));
         if (idx !== -1) {
-            mockAlunos[idx] = { ...mockAlunos[idx], ...FormData };
+            mockAlunos[idx] = { ...mockAlunos[idx], ...FormDados };
         }
     } else {
-        mockAlunos.unshift(FormData);
+        mockAlunos.unshift(FormDados);
     }
 
     applyFilters();
@@ -323,12 +330,20 @@ function saveAluno(e) {
 function deleteAluno(id,nome) { if(confirm(`Remover "${nome}"?`)){ mockAlunos=mockAlunos.filter(a=>a.id!==id); applyFilters(); }}
 
 document.addEventListener("DOMContentLoaded",()=>{
-    renderTable();
+    renderTabela();
+    // Se clicar fora do modal, fecha ele
     document.getElementById('aluno-modal').addEventListener('click',(e)=>{if(e.target.id==='aluno-modal')closeAlunoModal();});
     document.getElementById('detalhes-modal').addEventListener('click',(e)=>{if(e.target.id==='detalhes-modal')closeDetailsModal();}); 
+    // Chama a função de salvar aluno ao submeter o formulário
     document.getElementById('aluno-form').addEventListener('submit',saveAluno);
 });
 
-window.applyFilters=applyFilters; window.openAlunoModal=openAlunoModal; window.closeAlunoModal=closeAlunoModal;
-window.deleteAluno=deleteAluno; window.editAluno=openAlunoModal; window.changePage=changePage;
-window.viewStudent=viewStudent; window.closeDetailsModal=closeDetailsModal;
+// As globais acessíveis no HTML
+window.applyFilters=applyFilters;
+window.openAlunoModal=openAlunoModal;
+window.closeAlunoModal=closeAlunoModal;
+window.deleteAluno=deleteAluno;
+window.editAluno=openAlunoModal;
+window.changePage=changePage;
+window.student_details=student_details;
+window.closeDetalhesModal=closeDetalhesModal;
