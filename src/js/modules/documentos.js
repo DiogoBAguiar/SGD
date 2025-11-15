@@ -1,14 +1,24 @@
-document.addEventListener('DOMContentLoaded', () => {
+import { abrirModal, configurarListenersModal } from './funcoesGerais.js';
+
+function inicializarDocumentos() {
     console.log('documentos.js carregado com sucesso.');
 
     const botaoAdicionarMembro = document.querySelector('.btn-add-member');
     const containerBanca = document.querySelector('#banca-container');
     const blocoModelo = document.querySelector('.member-form-block');
     const formDocumentos = document.querySelector('#documentos-form');
-    const modalSucesso = document.querySelector('#success-modal');
-    const botaoFecharModal = document.querySelector('#close-success-modal-button');
-    const iconeFecharModal = document.querySelector('#close-success-modal-icon');
 
+    if (!botaoAdicionarMembro || !containerBanca || !blocoModelo || !formDocumentos) {
+        console.warn("Elementos de 'documentos.js' não encontrados. Aguardando DOMContentLoaded.");
+        document.addEventListener('DOMContentLoaded', inicializarDocumentos);
+        return;
+    }
+
+    configurarListenersModal({
+        idModal: 'success-modal',
+        idsBotoesFechar: ['close-success-modal-button', 'close-success-modal-icon'],
+        fecharAoClicarFora: true
+    });
     const removerMembrosExtrasBanca = () => {
         if (!containerBanca) return;
         const todosOsMembros = containerBanca.querySelectorAll('.member-form-block');
@@ -18,18 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-
-    const abrirModalSucesso = () => {
-        if (modalSucesso) modalSucesso.classList.remove('hidden');
-    };
-
-
-    const fecharModalSucesso = () => {
-        if (modalSucesso) modalSucesso.classList.add('hidden');
-    };
-
     const adicionarMembroBanca = () => {
         console.log('Botão "Adicionar Membro" clicado.');
+        if (!blocoModelo || !containerBanca) return;
 
         const novoBloco = blocoModelo.cloneNode(true);
 
@@ -60,10 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
         containerBanca.appendChild(novoBloco);
     };
 
-    /**
-     * 
-     * @param {Event} evento O evento de submit.
-     */
     const manipularEnvioFormulario = (evento) => {
         evento.preventDefault(); 
         console.log('Formulário válido, enviando...');
@@ -76,27 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log("Dados do Formulário (simplificado):", dados);
 
-        abrirModalSucesso();
+        abrirModal('success-modal');
+
         formDocumentos.reset(); 
         removerMembrosExtrasBanca(); 
     };
 
-    if (botaoAdicionarMembro && containerBanca && blocoModelo) {
+    if (botaoAdicionarMembro) {
         botaoAdicionarMembro.addEventListener('click', adicionarMembroBanca);
     }
 
     if (formDocumentos) {
         formDocumentos.addEventListener('submit', manipularEnvioFormulario);
     }
+}
 
-    if (modalSucesso && botaoFecharModal && iconeFecharModal) {
-        botaoFecharModal.addEventListener('click', fecharModalSucesso);
-        iconeFecharModal.addEventListener('click', fecharModalSucesso);
-
-        modalSucesso.addEventListener('click', (evento) => {
-            if (evento.target.id === 'success-modal') {
-                fecharModalSucesso();
-            }
-        });
-    }
-});
+inicializarDocumentos();

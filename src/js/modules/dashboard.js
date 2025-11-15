@@ -1,52 +1,18 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const solicitacoesPendentes = 5;
-    const defesasAgendadas = 2;
-    const documentosGerados = 42;
-    const quantidadeProfessores = 12;
-
-    const dadosDefesas = [2, 3, 5, 4, 7, 8, 5, 6, 9, 10, 4, 0];
-    const labelsDefesas = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-
-    const dadosStatusAlunos = [15, 60, 10, 15];
-    const labelsStatusAlunos = ['Aguardando Orientação', 'Em Orientação', 'Agendamento Pendente', 'Defendido / Concluído'];
-    const coresStatusAlunos = ['#EF4444', '#3B82F6', '#E6C850', '#22C55E'];
-
-    const solicitacoes = [
-        { nome: 'Ana Clara Silva', curso: 'Eng. de Software', dias: 1 },
-        { nome: 'Bruno Costa', curso: 'Ciência da Computação', dias: 1 },
-        { nome: 'Carla Mendes', curso: 'Sistemas de Informação', dias: 2 },
-        { nome: 'Daniel Oliveira', curso: 'Eng. de Software', dias: 3 },
-        { nome: 'Elisa Fernandes', curso: 'Ciência da Computação', dias: 3 }
-    ];
-
-    document.getElementById('pending-requests').textContent = solicitacoesPendentes;
-    document.getElementById('scheduled-defenses').textContent = defesasAgendadas;
-    document.getElementById('generated-docs').textContent = documentosGerados;
-    document.getElementById('professor-count').textContent = quantidadeProfessores;
-
-    renderizarGraficoDefesasMensais(labelsDefesas, dadosDefesas);
-    renderizarGraficoStatusAlunos(labelsStatusAlunos, dadosStatusAlunos, coresStatusAlunos);
-
-    popularListaSolicitacoes(solicitacoes);
-
-    document.getElementById('link-solicitacoes').href = 'solicitacao.html';
-    document.getElementById('link-agenda').href = 'agenda.html';
-    document.getElementById('link-documentos').href = 'documentos.html';
-    document.getElementById('link-professores').href = 'professores.html';
-    document.getElementById('link-ver-solicitacoes').href = 'solicitacao.html';
-});
-
 function renderizarGraficoDefesasMensais(labels, data) {
     const canvas = document.getElementById('defesasMensaisChart');
-    if (!canvas) return;
+    if (!canvas) {
+        console.warn("Elemento 'defesasMensaisChart' não encontrado.");
+        return;
+    }
     const ctx = canvas.getContext('2d');
 
     const corGrafico = '#C0A040';
     const corGrade = '#333';
     const corTexto = '#AAAAAA';
-    const fonteFamilia = 'Poppins';
+    const fonteFamilia = 'Poppins'; 
 
     const desenhar = () => {
+        if (!canvas.parentElement) return;
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
         const width = canvas.width;
@@ -54,9 +20,8 @@ function renderizarGraficoDefesasMensais(labels, data) {
         const padding = 50;
         const larguraGrafico = width - padding * 2;
         const alturaGrafico = height - padding * 2;
-        const larguraBarra = larguraGrafico / (data.length * 2);
+        const larguraBarra = larguraGrafico / (data.length * 2); 
         const valorMaximo = Math.max(...data);
-
         ctx.clearRect(0, 0, width, height);
 
         ctx.strokeStyle = corGrade;
@@ -89,7 +54,6 @@ function renderizarGraficoDefesasMensais(labels, data) {
             ctx.fillRect(x, y, larguraBarra, alturaBarra);
         });
     };
-
     desenhar();
     window.addEventListener('resize', desenhar);
 }
@@ -97,10 +61,14 @@ function renderizarGraficoDefesasMensais(labels, data) {
 function renderizarGraficoStatusAlunos(labels, data, colors) {
     const canvas = document.getElementById('statusAlunosChart');
     const legendContainer = document.getElementById('statusAlunosLegend');
-    if (!canvas || !legendContainer) return;
+    if (!canvas || !legendContainer) {
+        console.warn("Elementos 'statusAlunosChart' ou 'statusAlunosLegend' não encontrados.");
+        return;
+    }
     const ctx = canvas.getContext('2d');
 
     const desenhar = () => {
+        if (!canvas.parentElement) return;
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
         const width = canvas.width;
@@ -108,11 +76,9 @@ function renderizarGraficoStatusAlunos(labels, data, colors) {
         const centerX = width / 2;
         const centerY = height / 2;
         const radius = Math.min(width, height) / 2 - 10;
-        const cutoutRadius = radius * 0.7;
-
-        let startAngle = -0.5 * Math.PI;
+        const cutoutRadius = radius * 0.7; 
+        let startAngle = -0.5 * Math.PI; 
         const total = data.reduce((soma, val) => soma + val, 0);
-
         data.forEach((valor, i) => {
             const sliceAngle = (valor / total) * 2 * Math.PI;
             const endAngle = startAngle + sliceAngle;
@@ -129,7 +95,7 @@ function renderizarGraficoStatusAlunos(labels, data, colors) {
 
         ctx.beginPath();
         ctx.arc(centerX, centerY, cutoutRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = '#1F1F1F';
+        ctx.fillStyle = '#1F1F1F'; 
         ctx.fill();
     };
 
@@ -170,3 +136,62 @@ function popularListaSolicitacoes(solicitacoes) {
         listaContainer.innerHTML += itemHTML;
     });
 }
+
+function inicializarDashboard() {
+
+    if (!document.getElementById('pending-requests') || !document.getElementById('defesasMensaisChart')) {
+        console.warn("Elementos do Dashboard não encontrados. Aguardando DOMContentLoaded.");
+        document.addEventListener('DOMContentLoaded', executarLogicaDashboard);
+    } else {
+        executarLogicaDashboard();
+    }
+}
+
+function executarLogicaDashboard() {
+    const solicitacoesPendentes = 5;
+    const defesasAgendadas = 2;
+    const documentosGerados = 42;
+    const quantidadeProfessores = 12;
+    const dadosDefesas = [2, 3, 5, 4, 7, 8, 5, 6, 9, 10, 4, 0];
+    const labelsDefesas = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const dadosStatusAlunos = [15, 60, 10, 15];
+    const labelsStatusAlunos = ['Aguardando Orientação', 'Em Orientação', 'Agendamento Pendente', 'Defendido / Concluído'];
+    const coresStatusAlunos = ['#EF4444', '#3B82F6', '#E6C850', '#22C55E'];
+
+    const solicitacoes = [
+        { nome: 'Ana Clara Silva', curso: 'Eng. de Software', dias: 1 },
+        { nome: 'Bruno Costa', curso: 'Ciência da Computação', dias: 1 },
+        { nome: 'Carla Mendes', curso: 'Sistemas de Informação', dias: 2 },
+        { nome: 'Daniel Oliveira', curso: 'Eng. de Software', dias: 3 },
+        { nome: 'Elisa Fernandes', curso: 'Ciência da Computação', dias: 3 }
+    ];
+
+    const pendingEl = document.getElementById('pending-requests');
+    const scheduledEl = document.getElementById('scheduled-defenses');
+    const generatedEl = document.getElementById('generated-docs');
+    const professorEl = document.getElementById('professor-count');
+
+    if (pendingEl) pendingEl.textContent = solicitacoesPendentes;
+    if (scheduledEl) scheduledEl.textContent = defesasAgendadas;
+    if (generatedEl) generatedEl.textContent = documentosGerados;
+    if (professorEl) professorEl.textContent = quantidadeProfessores;
+
+    renderizarGraficoDefesasMensais(labelsDefesas, dadosDefesas);
+    renderizarGraficoStatusAlunos(labelsStatusAlunos, dadosStatusAlunos, coresStatusAlunos);
+
+    popularListaSolicitacoes(solicitacoes);
+
+    const linkSolicitacoes = document.getElementById('link-solicitacoes');
+    const linkAgenda = document.getElementById('link-agenda');
+    const linkDocumentos = document.getElementById('link-documentos');
+    const linkProfessores = document.getElementById('link-professores');
+    const linkVerSolicitacoes = document.getElementById('link-ver-solicitacoes');
+
+    if (linkSolicitacoes) linkSolicitacoes.href = 'solicitacao.html';
+    if (linkAgenda) linkAgenda.href = 'agenda.html';
+    if (linkDocumentos) linkDocumentos.href = 'documentos.html';
+    if (linkProfessores) linkProfessores.href = 'professores.html';
+    if (linkVerSolicitacoes) linkVerSolicitacoes.href = 'solicitacao.html';
+}
+
+inicializarDashboard();

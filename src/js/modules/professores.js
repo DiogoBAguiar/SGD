@@ -1,4 +1,5 @@
 import { listaProfessores } from './database.js';
+import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
 
 for (let i = 11; i <= 33; i++) {
     listaProfessores.push({
@@ -20,11 +21,15 @@ let dadosFiltrados = [...listaProfessores];
 
 function desenharTabela() {
     const corpoTabela = document.getElementById('professores-table-body');
+    if (!corpoTabela) {
+        console.warn("Elemento 'professores-table-body' não encontrado.");
+        return; 
+    }
     corpoTabela.innerHTML = ''; 
 
     if (dadosFiltrados.length === 0) {
         corpoTabela.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-sgd-muted flex flex-col items-center">
-            <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-12 w-12 mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             <p class="text-lg">Nenhum professor encontrado.</p>
         </td></tr>`;
         desenharPaginacao(); 
@@ -67,8 +72,8 @@ function desenharTabela() {
             <td class="table-cell">${iconeStatus}</td>
             <td class="table-cell text-right">
                 <div class="flex items-center justify-end space-x-3">
-                    <button onclick="editarProfessor(${prof.id})" class="text-sgd-muted hover:text-sgd-gold transition"><svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></button>
-                    <button onclick="deletarProfessor(${prof.id}, '${prof.nome}')" class="text-sgd-muted hover:text-red-500 transition"><svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                    <button onclick="editarProfessor(${prof.id})" class="text-sgd-muted hover:text-sgd-gold transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></button>
+                    <button onclick="deletarProfessor(${prof.id}, '${prof.nome}')" class="text-sgd-muted hover:text-red-500 transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
                 </div>
             </td>`;
         corpoTabela.appendChild(linha);
@@ -78,26 +83,13 @@ function desenharTabela() {
 }
 
 function desenharPaginacao() {
-    const divPaginacao = document.getElementById('pagination-container');
-    const totalPaginas = Math.ceil(dadosFiltrados.length / ITENS_POR_PAGINA);
-    
-    if (totalPaginas <= 1) { 
-        divPaginacao.innerHTML = ''; 
-        return; 
-    }
-    
-    let htmlBotoes = `<button onclick="mudarPagina(${paginaAtual - 1})" class="px-3 py-1 rounded border border-sgd-border text-sm transition ${paginaAtual === 1 ? 'text-sgd-muted opacity-50 cursor-not-allowed' : 'text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}" ${paginaAtual === 1 ? 'disabled' : ''}>Anterior</button>`;
-    
-    let paginaInicio = Math.max(1, paginaAtual - 2);
-    let paginaFim = Math.min(totalPaginas, paginaAtual + 2);
-    
-    for (let i = paginaInicio; i <= paginaFim; i++) {
-        htmlBotoes += `<button onclick="mudarPagina(${i})" class="px-3 py-1 rounded border text-sm transition ${i === paginaAtual ? 'bg-sgd-gold text-black border-sgd-gold font-bold' : 'border-sgd-border text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}">${i}</button>`;
-    }
-
-    htmlBotoes += `<button onclick="mudarPagina(${paginaAtual + 1})" class="px-3 py-1 rounded border border-sgd-border text-sm transition ${paginaAtual === totalPaginas ? 'text-sgd-muted opacity-50 cursor-not-allowed' : 'text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}" ${paginaAtual === totalPaginas ? 'disabled' : ''}>Próximo</button>`;
-    
-    divPaginacao.innerHTML = `<span class="text-xs text-sgd-muted mr-4">Pág. ${paginaAtual} de ${totalPaginas} (${dadosFiltrados.length} total)</span>${htmlBotoes}`;
+    renderizarPaginacao({
+        idContainer: 'pagination-container',
+        paginaAtual: paginaAtual,
+        totalItens: dadosFiltrados.length,
+        itensPorPagina: ITENS_POR_PAGINA,
+        nomeFuncaoMudarPagina: 'mudarPagina' 
+    });
 }
 
 function mudarPagina(numPagina) { 
@@ -109,8 +101,11 @@ function mudarPagina(numPagina) {
 }
 
 function aplicarFiltros() {
-    const busca = document.getElementById('search-input').value.toLowerCase();
-    const tipo = document.getElementById('filter-tipo').value.toLowerCase();
+    const searchInput = document.getElementById('search-input');
+    const filterTipo = document.getElementById('filter-tipo');
+
+    const busca = searchInput ? searchInput.value.toLowerCase() : '';
+    const tipo = filterTipo ? filterTipo.value.toLowerCase() : '';
     
     dadosFiltrados = listaProfessores.filter(p => 
         (p.nome.toLowerCase().includes(busca) || p.email.toLowerCase().includes(busca) || (p.areas && p.areas.toLowerCase().includes(busca))) && 
@@ -160,15 +155,13 @@ function verProfessor(evento, id) {
         divAreas.innerHTML = '<span class="text-sgd-muted italic">Nenhuma área registrada.</span>';
     }
 
-    document.getElementById('detalhes-modal').classList.remove('hidden');
-}
-
-function fecharModalDetalhes() { 
-    document.getElementById('detalhes-modal').classList.add('hidden'); 
+    abrirModal('detalhes-modal');
 }
 
 function alternarInstituicao(tipo) {
     const campoInstituicao = document.getElementById('input-instituicao');
+    if (!campoInstituicao) return;
+
     if (tipo === 'Permanente') { 
         campoInstituicao.value = 'IFPB'; 
         campoInstituicao.setAttribute('readonly', true); 
@@ -181,11 +174,10 @@ function alternarInstituicao(tipo) {
 }
 
 function abrirModalProfessor(id = null) {
-    const janelaModal = document.getElementById('professor-modal'); 
-    document.getElementById('professor-form').reset(); 
+    const form = document.getElementById('professor-form');
+    if (form) form.reset(); 
     
     if (id) {
- 
         document.getElementById('modal-title').textContent = "Editar Professor";
         const professor = listaProfessores.find(p => p.id === id);
         if (professor) {
@@ -206,11 +198,7 @@ function abrirModalProfessor(id = null) {
         alternarInstituicao('Permanente'); 
     }
     
-    janelaModal.classList.remove('hidden'); 
-}
-
-function fecharModalProfessor() { 
-    document.getElementById('professor-modal').classList.add('hidden'); 
+    abrirModal('professor-modal'); 
 }
 
 function salvarProfessor(evento) {
@@ -236,12 +224,12 @@ function salvarProfessor(evento) {
         listaProfessores.unshift(dadosFormulario); 
     }
     
-    fecharModalProfessor(); 
+    fecharModal('professor-modal'); 
     aplicarFiltros(); 
 }
 
 function deletarProfessor(id, nome) { 
-    if (confirm(`Remover "${nome}"? ...`)) { 
+    if (confirm(`Remover "${nome}"? Esta ação não pode ser desfeita.`)) { 
         const indice = listaProfessores.findIndex(p => p.id === id);
         if (indice !== -1) {
             listaProfessores.splice(indice, 1);
@@ -250,28 +238,44 @@ function deletarProfessor(id, nome) {
     }
 }
 
-// --- Funções que rodam quando a página carrega ---
+function inicializarProfessores() {
+    if (document.getElementById('professores-table-body') && document.getElementById('professor-form')) {
+        desenharTabela();
 
-document.addEventListener("DOMContentLoaded", () => {
-    desenharTabela(); 
-    
-    document.getElementById('professor-modal').addEventListener('click', (evento) => {
-        if (evento.target.id === 'professor-modal') fecharModalProfessor();
-    });
-    
-    document.getElementById('detalhes-modal').addEventListener('click', (evento) => {
-        if (evento.target.id === 'detalhes-modal') fecharModalDetalhes();
-    });
+        configurarListenersModal({
+            idModal: 'professor-modal',
+            fecharAoClicarFora: true
+        });
 
-    document.getElementById('professor-form').addEventListener('submit', salvarProfessor);
-});
+        configurarListenersModal({
+            idModal: 'detalhes-modal',
+            fecharAoClicarFora: true
+        });
+
+        const form = document.getElementById('professor-form');
+        if (form) {
+            form.addEventListener('submit', salvarProfessor);
+        }
+
+        const searchInput = document.getElementById('search-input');
+        const filterTipo = document.getElementById('filter-tipo');
+        if (searchInput) searchInput.addEventListener('keyup', aplicarFiltros);
+        if (filterTipo) filterTipo.addEventListener('change', aplicarFiltros);
+
+    } else {
+        console.warn("Elementos da página de professores não encontrados. Aguardando DOMContentLoaded.");
+        document.addEventListener("DOMContentLoaded", inicializarProfessores); 
+    }
+}
+
+inicializarProfessores();
 
 window.aplicarFiltros = aplicarFiltros; 
 window.abrirModalProfessor = abrirModalProfessor; 
-window.fecharModalProfessor = fecharModalProfessor;
+window.fecharModalProfessor = () => fecharModal('professor-modal');
 window.alternarInstituicao = alternarInstituicao; 
 window.deletarProfessor = deletarProfessor; 
 window.editarProfessor = abrirModalProfessor; 
 window.mudarPagina = mudarPagina; 
 window.verProfessor = verProfessor; 
-window.fecharModalDetalhes = fecharModalDetalhes;
+window.fecharModalDetalhes = () => fecharModal('detalhes-modal');

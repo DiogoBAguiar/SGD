@@ -1,4 +1,6 @@
-import { mockAlunos } from './database.js'; // Importa os dados dos alunos
+import { mockAlunos } from './database.js'; 
+import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
+
 const listaSolicitacoes = mockAlunos.map((aluno, index) => {
     let statusSolicitacao;
     let dataSolicitacao; 
@@ -36,12 +38,13 @@ const ITENS_POR_PAGINA = 5;
 let dadosFiltrados = [...listaSolicitacoes];
 let containerLista = null;
 let containerPaginacao = null; 
-let modalDetalhes = null; 
 let btnAplicarFiltros = null;
 let campoNome = null;
 let campoStatus = null;
 let campoData = null;
+
 function getClasseStatus(status) {
+
     switch (status.toLowerCase()) {
         case 'aprovada':
             return 'bg-green-700/30 text-green-400';
@@ -95,44 +98,21 @@ function desenharLista() {
     desenharPaginacao();
 }
 
+
 function desenharPaginacao() {
     if (!containerPaginacao) return;
-    const totalPaginas = Math.ceil(dadosFiltrados.length / ITENS_POR_PAGINA);
     
-    if (totalPaginas <= 1) { 
-        containerPaginacao.innerHTML = ''; 
-        return; 
-    }
-    
-    let htmlBotoes = `<button onclick="mudarPagina(${paginaAtual - 1})" class="px-3 py-1 rounded border border-sgd-border text-sm transition ${paginaAtual === 1 ? 'text-sgd-muted opacity-50 cursor-not-allowed' : 'text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}" ${paginaAtual === 1 ? 'disabled' : ''}>Anterior</button>`;
-    
-    let paginaInicio = Math.max(1, paginaAtual - 2);
-    let paginaFim = Math.min(totalPaginas, paginaAtual + 2);
-
-    if (paginaInicio > 1) {
-        htmlBotoes += `<button onclick="mudarPagina(1)" class="px-3 py-1 rounded border text-sm transition border-sgd-border text-sgd-text hover:bg-sgd-border hover:text-sgd-gold">1</button>`;
-        if (paginaInicio > 2) {
-            htmlBotoes += `<span class="px-3 py-1 text-sgd-muted">...</span>`;
-        }
-    }
-
-    for (let i = paginaInicio; i <= paginaFim; i++) {
-        htmlBotoes += `<button onclick="mudarPagina(${i})" class="px-3 py-1 rounded border text-sm transition ${i === paginaAtual ? 'bg-sgd-gold text-black border-sgd-gold font-bold' : 'border-sgd-border text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}">${i}</button>`;
-    }
-
-    if (paginaFim < totalPaginas) {
-        if (paginaFim < totalPaginas - 1) {
-            htmlBotoes += `<span class="px-3 py-1 text-sgd-muted">...</span>`;
-        }
-        htmlBotoes += `<button onclick="mudarPagina(${totalPaginas})" class="px-3 py-1 rounded border text-sm transition border-sgd-border text-sgd-text hover:bg-sgd-border hover:text-sgd-gold">${totalPaginas}</button>`;
-    }
-
-    htmlBotoes += `<button onclick="mudarPagina(${paginaAtual + 1})" class="px-3 py-1 rounded border border-sgd-border text-sm transition ${paginaAtual === totalPaginas ? 'text-sgd-muted opacity-50 cursor-not-allowed' : 'text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}" ${paginaAtual === totalPaginas ? 'disabled' : ''}>Próximo</button>`;
-    
-    containerPaginacao.innerHTML = `<span class="text-xs text-sgd-muted mr-4">Pág. ${paginaAtual} de ${totalPaginas} (${dadosFiltrados.length} total)</span>${htmlBotoes}`;
+    renderizarPaginacao({
+        idContainer: 'pagination-container',
+        paginaAtual: paginaAtual,
+        totalItens: dadosFiltrados.length,
+        itensPorPagina: ITENS_POR_PAGINA,
+        nomeFuncaoMudarPagina: 'mudarPagina'
+    });
 }
 
 function mudarPagina(numPagina) { 
+
     const total = Math.ceil(dadosFiltrados.length / ITENS_POR_PAGINA); 
     if (numPagina >= 1 && numPagina <= total) { 
         paginaAtual = numPagina; 
@@ -140,9 +120,10 @@ function mudarPagina(numPagina) {
     }
 }
 function aplicarFiltros() {
-    const nomeBusca = campoNome.value.toLowerCase();
-    const statusBusca = campoStatus.value;
-    const dataBusca = campoData.value;
+
+    const nomeBusca = campoNome ? campoNome.value.toLowerCase() : '';
+    const statusBusca = campoStatus ? campoStatus.value : '';
+    const dataBusca = campoData ? campoData.value : '';
 
     dadosFiltrados = listaSolicitacoes.filter(solicitacao => {
         const nomeCorresponde = solicitacao.nome.toLowerCase().includes(nomeBusca) || 
@@ -160,19 +141,14 @@ function aplicarFiltros() {
     desenharLista();
 }
 
-function fecharModalDetalhes() {
-    if (modalDetalhes) {
-        modalDetalhes.classList.add('hidden');
-    }
-}
-
 function verDetalhes(idAluno) {
     const solicitacao = listaSolicitacoes.find(s => s.idAluno === idAluno);
     
-    if (!solicitacao || !modalDetalhes) {
-        console.error("Não foi possível encontrar a solicitação ou o modal.", idAluno);
+    if (!solicitacao) {
+        console.error("Não foi possível encontrar a solicitação.", idAluno);
         return;
     }
+
     const aluno = solicitacao.alunoOriginal;
     document.getElementById('detail-nome').textContent = aluno.nome;
     document.getElementById('detail-matricula').textContent = aluno.matricula;
@@ -219,32 +195,29 @@ function verDetalhes(idAluno) {
         </div>`;
     }
 
-    modalDetalhes.classList.remove('hidden');
+    abrirModal('detalhes-modal');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    
+function inicializarSolicitacoes() {
     containerLista = document.getElementById('solicitacoes-container');
     containerPaginacao = document.getElementById('pagination-container'); 
-    modalDetalhes = document.getElementById('detalhes-modal'); 
     btnAplicarFiltros = document.querySelector('.btn-apply-filters');
     campoNome = document.querySelector('input[placeholder="Nome do aluno"]');
     campoStatus = document.querySelector('select');
     campoData = document.querySelector('input[type="date"]');
 
-    if (!containerLista || !containerPaginacao || !modalDetalhes) { 
-        console.error("Erro: Um dos containers (lista, paginação, modal) não foi encontrado."); 
+    if (!containerLista || !containerPaginacao) { 
+        console.warn("Elementos de 'solicitacoes.js' não encontrados. Aguardando DOMContentLoaded."); 
+        document.addEventListener('DOMContentLoaded', inicializarSolicitacoes);
         return;
     }
 
     if (btnAplicarFiltros) {
         btnAplicarFiltros.addEventListener('click', aplicarFiltros);
     }
-
-    modalDetalhes.addEventListener('click', (evento) => {
-        if (evento.target.id === 'detalhes-modal') {
-            fecharModalDetalhes();
-        }
+    configurarListenersModal({
+        idModal: 'detalhes-modal',
+        fecharAoClicarFora: true
     });
 
     if (campoNome) campoNome.addEventListener('keyup', aplicarFiltros);
@@ -252,8 +225,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (campoData) campoData.addEventListener('change', aplicarFiltros);
 
     desenharLista();
-});
+}
+
+inicializarSolicitacoes();
 
 window.verDetalhes = verDetalhes;
 window.mudarPagina = mudarPagina; 
-window.fecharModalDetalhes = fecharModalDetalhes; 
+window.fecharModalDetalhes = () => fecharModal('detalhes-modal');

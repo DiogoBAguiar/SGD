@@ -31,6 +31,10 @@ const gerarLoginHTML = () => {
                     </button>
                 </div>
             </div>
+            
+            <!-- Div de Erro (Substitui o Alert) -->
+            <div id="login-error" class="text-red-400 text-sm mb-4 h-5"></div>
+
             <button id="loginButton"
                 type="button"
                 class="w-full bg-[#C0A040] text-black py-3 text-lg font-extrabold rounded transition transform duration-200 hover:bg-[#E6C850] hover:scale-105">
@@ -43,25 +47,35 @@ const gerarLoginHTML = () => {
     </div>`;
 };
 
-const renderLogin = () => {
+const mostrarErro = (mensagem) => {
+    const errorDiv = document.getElementById('login-error');
+    if (errorDiv) {
+        errorDiv.textContent = mensagem;
+    }
+};
+
+const inicializarLogin = () => {
+
     document.body.innerHTML = gerarLoginHTML();
 
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
-
+    const usernameInput = document.getElementById('username'); 
     togglePassword.addEventListener('click', function () {
         const isPassword = passwordInput.type === 'password';
         passwordInput.type = isPassword ? 'text' : 'password';
         togglePassword.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
     });
 
+    passwordInput.addEventListener('input', () => mostrarErro(''));
+    usernameInput.addEventListener('input', () => mostrarErro(''));
 
     document.getElementById('loginButton').addEventListener('click', function () {
-        const loginInput = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const loginInput = usernameInput.value;
+        const password = passwordInput.value;
 
         if (validarLogin(loginInput, password)) {
-
+            mostrarErro(''); 
             const loggedInUser = users.find(user => 
                 (user.username === loginInput || user.email === loginInput) && user.password === password
             );
@@ -69,9 +83,10 @@ const renderLogin = () => {
             localStorage.setItem('userEmail', loggedInUser.email);
             window.location.href = 'index.html'; 
         } else {
-            alert('Credenciais inválidas. Tente novamente.');
+            mostrarErro('Credenciais inválidas. Tente novamente.');
+  
         }
     });
 };
 
-document.addEventListener('DOMContentLoaded', renderLogin);
+inicializarLogin();
