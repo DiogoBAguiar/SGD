@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- basicamente o root do css -->
+ 
     <script>
       tailwind.config = {
         theme: {
@@ -21,7 +21,7 @@
         }
       }
     </script>
-    <!-- Classes personalizadas -->
+
     <style type="text/tailwindcss">
       @layer components {
         .input-std { @apply w-full bg-sgd-bg border border-sgd-border text-sgd-text px-3 py-2 rounded focus:outline-none focus:border-sgd-gold transition-colors; }
@@ -36,7 +36,6 @@
 
     <script type="module" src="../js/main.js" defer></script>
 
-    <!-- Mais estilos personalizados -->
     <style>
       .font-poppins { font-family: 'Poppins', sans-serif; }
       .hidden { display: none; }
@@ -47,7 +46,6 @@
     </style>
 </head>
 
-<!-- Html dinamizado com JS -->
 <body class="font-poppins min-h-screen flex bg-sgd-bg text-sgd-text">
 
   <div id="navbar" class="sticky top-0 h-screen z-10"></div>
@@ -234,6 +232,5 @@
     </div>
   </main>
 
-  <script src="../js/alunos.js" type="module"></script>
 </body>
 </html>
