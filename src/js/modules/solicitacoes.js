@@ -1,5 +1,9 @@
 import { mockAlunos } from './database.js'; // Importa os dados dos alunos
+// Importa as funções genéricas de modal e paginação
+import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
+
 const listaSolicitacoes = mockAlunos.map((aluno, index) => {
+    // ... (Toda a lógica de 'map' permanece a mesma)
     let statusSolicitacao;
     let dataSolicitacao; 
     let tipoSolicitacao = (aluno.id % 3 === 0) ? 'Qualificação' : 'Defesa';
@@ -34,14 +38,17 @@ const listaSolicitacoes = mockAlunos.map((aluno, index) => {
 let paginaAtual = 1;
 const ITENS_POR_PAGINA = 5; 
 let dadosFiltrados = [...listaSolicitacoes];
+
+// Variáveis de cache de elementos (serão preenchidas na inicialização)
 let containerLista = null;
 let containerPaginacao = null; 
-let modalDetalhes = null; 
 let btnAplicarFiltros = null;
 let campoNome = null;
 let campoStatus = null;
 let campoData = null;
+
 function getClasseStatus(status) {
+    // ... (Esta função permanece a mesma)
     switch (status.toLowerCase()) {
         case 'aprovada':
             return 'bg-green-700/30 text-green-400';
@@ -57,6 +64,7 @@ function desenharLista() {
     if (!containerLista) return; 
     containerLista.innerHTML = ''; 
     if (dadosFiltrados.length === 0) {
+        // ... (HTML de 'nenhuma solicitação' permanece o mesmo)
         containerLista.innerHTML = `<div class="p-8 text-center text-sgd-muted">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -70,6 +78,7 @@ function desenharLista() {
     const indiceFim = indiceInicio + ITENS_POR_PAGINA;
     const dadosPaginados = dadosFiltrados.slice(indiceInicio, indiceFim);
     dadosPaginados.forEach(solicitacao => {
+        // ... (Criação do 'divItem' permanece a mesma)
         const divItem = document.createElement('div');
         divItem.className = "flex flex-col md:flex-row items-start md:items-center justify-between p-5 solicitacao-item";
         
@@ -95,44 +104,22 @@ function desenharLista() {
     desenharPaginacao();
 }
 
+// --- Refatoração da Paginação ---
 function desenharPaginacao() {
     if (!containerPaginacao) return;
-    const totalPaginas = Math.ceil(dadosFiltrados.length / ITENS_POR_PAGINA);
     
-    if (totalPaginas <= 1) { 
-        containerPaginacao.innerHTML = ''; 
-        return; 
-    }
-    
-    let htmlBotoes = `<button onclick="mudarPagina(${paginaAtual - 1})" class="px-3 py-1 rounded border border-sgd-border text-sm transition ${paginaAtual === 1 ? 'text-sgd-muted opacity-50 cursor-not-allowed' : 'text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}" ${paginaAtual === 1 ? 'disabled' : ''}>Anterior</button>`;
-    
-    let paginaInicio = Math.max(1, paginaAtual - 2);
-    let paginaFim = Math.min(totalPaginas, paginaAtual + 2);
-
-    if (paginaInicio > 1) {
-        htmlBotoes += `<button onclick="mudarPagina(1)" class="px-3 py-1 rounded border text-sm transition border-sgd-border text-sgd-text hover:bg-sgd-border hover:text-sgd-gold">1</button>`;
-        if (paginaInicio > 2) {
-            htmlBotoes += `<span class="px-3 py-1 text-sgd-muted">...</span>`;
-        }
-    }
-
-    for (let i = paginaInicio; i <= paginaFim; i++) {
-        htmlBotoes += `<button onclick="mudarPagina(${i})" class="px-3 py-1 rounded border text-sm transition ${i === paginaAtual ? 'bg-sgd-gold text-black border-sgd-gold font-bold' : 'border-sgd-border text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}">${i}</button>`;
-    }
-
-    if (paginaFim < totalPaginas) {
-        if (paginaFim < totalPaginas - 1) {
-            htmlBotoes += `<span class="px-3 py-1 text-sgd-muted">...</span>`;
-        }
-        htmlBotoes += `<button onclick="mudarPagina(${totalPaginas})" class="px-3 py-1 rounded border text-sm transition border-sgd-border text-sgd-text hover:bg-sgd-border hover:text-sgd-gold">${totalPaginas}</button>`;
-    }
-
-    htmlBotoes += `<button onclick="mudarPagina(${paginaAtual + 1})" class="px-3 py-1 rounded border border-sgd-border text-sm transition ${paginaAtual === totalPaginas ? 'text-sgd-muted opacity-50 cursor-not-allowed' : 'text-sgd-text hover:bg-sgd-border hover:text-sgd-gold'}" ${paginaAtual === totalPaginas ? 'disabled' : ''}>Próximo</button>`;
-    
-    containerPaginacao.innerHTML = `<span class="text-xs text-sgd-muted mr-4">Pág. ${paginaAtual} de ${totalPaginas} (${dadosFiltrados.length} total)</span>${htmlBotoes}`;
+    renderizarPaginacao({
+        idContainer: 'pagination-container',
+        paginaAtual: paginaAtual,
+        totalItens: dadosFiltrados.length,
+        itensPorPagina: ITENS_POR_PAGINA,
+        nomeFuncaoMudarPagina: 'mudarPagina'
+    });
 }
+// --- Fim da Refatoração ---
 
 function mudarPagina(numPagina) { 
+    // Esta função permanece a mesma
     const total = Math.ceil(dadosFiltrados.length / ITENS_POR_PAGINA); 
     if (numPagina >= 1 && numPagina <= total) { 
         paginaAtual = numPagina; 
@@ -140,9 +127,10 @@ function mudarPagina(numPagina) {
     }
 }
 function aplicarFiltros() {
-    const nomeBusca = campoNome.value.toLowerCase();
-    const statusBusca = campoStatus.value;
-    const dataBusca = campoData.value;
+    // Esta função permanece a mesma
+    const nomeBusca = campoNome ? campoNome.value.toLowerCase() : '';
+    const statusBusca = campoStatus ? campoStatus.value : '';
+    const dataBusca = campoData ? campoData.value : '';
 
     dadosFiltrados = listaSolicitacoes.filter(solicitacao => {
         const nomeCorresponde = solicitacao.nome.toLowerCase().includes(nomeBusca) || 
@@ -160,19 +148,15 @@ function aplicarFiltros() {
     desenharLista();
 }
 
-function fecharModalDetalhes() {
-    if (modalDetalhes) {
-        modalDetalhes.classList.add('hidden');
-    }
-}
-
 function verDetalhes(idAluno) {
     const solicitacao = listaSolicitacoes.find(s => s.idAluno === idAluno);
     
-    if (!solicitacao || !modalDetalhes) {
-        console.error("Não foi possível encontrar a solicitação ou o modal.", idAluno);
+    if (!solicitacao) {
+        console.error("Não foi possível encontrar a solicitação.", idAluno);
         return;
     }
+
+    // (Toda a lógica de preenchimento do modal permanece a mesma)
     const aluno = solicitacao.alunoOriginal;
     document.getElementById('detail-nome').textContent = aluno.nome;
     document.getElementById('detail-matricula').textContent = aluno.matricula;
@@ -219,41 +203,48 @@ function verDetalhes(idAluno) {
         </div>`;
     }
 
-    modalDetalhes.classList.remove('hidden');
+    abrirModal('detalhes-modal');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    
+// --- Refatoração do Carregamento ---
+// Substituímos o 'DOMContentLoaded' por uma função de inicialização
+function inicializarSolicitacoes() {
+    // Preenchemos as variáveis de cache
     containerLista = document.getElementById('solicitacoes-container');
     containerPaginacao = document.getElementById('pagination-container'); 
-    modalDetalhes = document.getElementById('detalhes-modal'); 
     btnAplicarFiltros = document.querySelector('.btn-apply-filters');
     campoNome = document.querySelector('input[placeholder="Nome do aluno"]');
     campoStatus = document.querySelector('select');
     campoData = document.querySelector('input[type="date"]');
 
-    if (!containerLista || !containerPaginacao || !modalDetalhes) { 
-        console.error("Erro: Um dos containers (lista, paginação, modal) não foi encontrado."); 
+    if (!containerLista || !containerPaginacao) { 
+        console.warn("Elementos de 'solicitacoes.js' não encontrados. Aguardando DOMContentLoaded."); 
+        document.addEventListener('DOMContentLoaded', inicializarSolicitacoes);
         return;
     }
 
     if (btnAplicarFiltros) {
         btnAplicarFiltros.addEventListener('click', aplicarFiltros);
     }
-
-    modalDetalhes.addEventListener('click', (evento) => {
-        if (evento.target.id === 'detalhes-modal') {
-            fecharModalDetalhes();
-        }
+    
+    // Configura o modal
+    configurarListenersModal({
+        idModal: 'detalhes-modal',
+        fecharAoClicarFora: true
     });
 
+    // Adiciona listeners de filtro
     if (campoNome) campoNome.addEventListener('keyup', aplicarFiltros);
     if (campoStatus) campoStatus.addEventListener('change', aplicarFiltros);
     if (campoData) campoData.addEventListener('change', aplicarFiltros);
 
     desenharLista();
-});
+}
 
+inicializarSolicitacoes();
+// --- Fim da Refatoração ---
+
+// --- Expondo Funções para o HTML ---
 window.verDetalhes = verDetalhes;
 window.mudarPagina = mudarPagina; 
-window.fecharModalDetalhes = fecharModalDetalhes; 
+window.fecharModalDetalhes = () => fecharModal('detalhes-modal');

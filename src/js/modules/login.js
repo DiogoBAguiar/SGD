@@ -1,3 +1,4 @@
+// O caminho do import está correto, pois 'auth-data.js' também está em 'modules'
 import { users } from './auth-data.js';
 
 const validarLogin = (login, password) => {
@@ -31,6 +32,10 @@ const gerarLoginHTML = () => {
                     </button>
                 </div>
             </div>
+            
+            <!-- Div de Erro (Substitui o Alert) -->
+            <div id="login-error" class="text-red-400 text-sm mb-4 h-5"></div>
+
             <button id="loginButton"
                 type="button"
                 class="w-full bg-[#C0A040] text-black py-3 text-lg font-extrabold rounded transition transform duration-200 hover:bg-[#E6C850] hover:scale-105">
@@ -43,11 +48,28 @@ const gerarLoginHTML = () => {
     </div>`;
 };
 
-const renderLogin = () => {
+/**
+ * Exibe uma mensagem de erro na UI de login.
+ * @param {string} mensagem A mensagem a ser exibida.
+ */
+const mostrarErro = (mensagem) => {
+    const errorDiv = document.getElementById('login-error');
+    if (errorDiv) {
+        errorDiv.textContent = mensagem;
+    }
+};
+
+/**
+ * Função de inicialização da página de Login.
+ */
+const inicializarLogin = () => {
+    // A lógica do 'main.js' garante que esta função só rode na 'login.html'.
+    // Ela substitui todo o <body> pelo HTML de login.
     document.body.innerHTML = gerarLoginHTML();
 
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
+    const usernameInput = document.getElementById('username'); // Pegamos o input de usuário
 
     togglePassword.addEventListener('click', function () {
         const isPassword = passwordInput.type === 'password';
@@ -55,13 +77,16 @@ const renderLogin = () => {
         togglePassword.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
     });
 
+    // Limpa o erro ao digitar
+    passwordInput.addEventListener('input', () => mostrarErro(''));
+    usernameInput.addEventListener('input', () => mostrarErro(''));
 
     document.getElementById('loginButton').addEventListener('click', function () {
-        const loginInput = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const loginInput = usernameInput.value;
+        const password = passwordInput.value;
 
         if (validarLogin(loginInput, password)) {
-
+            mostrarErro(''); // Limpa erros
             const loggedInUser = users.find(user => 
                 (user.username === loginInput || user.email === loginInput) && user.password === password
             );
@@ -69,9 +94,15 @@ const renderLogin = () => {
             localStorage.setItem('userEmail', loggedInUser.email);
             window.location.href = 'index.html'; 
         } else {
-            alert('Credenciais inválidas. Tente novamente.');
+            // --- ATUALIZAÇÃO ---
+            // alert('Credenciais inválidas. Tente novamente.'); // Removido
+            mostrarErro('Credenciais inválidas. Tente novamente.');
+            // --- Fim da Atualização ---
         }
     });
 };
 
-document.addEventListener('DOMContentLoaded', renderLogin);
+// --- ATUALIZAÇÃO ---
+// Substituímos o DOMContentLoaded pela chamada direta da função
+inicializarLogin();
+// --- Fim da Atualização ---

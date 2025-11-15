@@ -1,14 +1,37 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Importa as funções genéricas de modal
+import { abrirModal, configurarListenersModal } from './funcoesGerais.js';
+
+/**
+ * Função de inicialização da página de Documentos.
+ */
+function inicializarDocumentos() {
     console.log('documentos.js carregado com sucesso.');
 
     const botaoAdicionarMembro = document.querySelector('.btn-add-member');
     const containerBanca = document.querySelector('#banca-container');
     const blocoModelo = document.querySelector('.member-form-block');
     const formDocumentos = document.querySelector('#documentos-form');
-    const modalSucesso = document.querySelector('#success-modal');
-    const botaoFecharModal = document.querySelector('#close-success-modal-button');
-    const iconeFecharModal = document.querySelector('#close-success-modal-icon');
 
+    // Se os elementos principais não existirem, não executa o script.
+    // Isso evita erros caso o script seja carregado em outra página.
+    // Adicionamos um fallback para DCL caso o import seja muito rápido.
+    if (!botaoAdicionarMembro || !containerBanca || !blocoModelo || !formDocumentos) {
+        console.warn("Elementos de 'documentos.js' não encontrados. Aguardando DOMContentLoaded.");
+        document.addEventListener('DOMContentLoaded', inicializarDocumentos);
+        return;
+    }
+
+    // Configura o modal de sucesso
+    configurarListenersModal({
+        idModal: 'success-modal',
+        idsBotoesFechar: ['close-success-modal-button', 'close-success-modal-icon'],
+        fecharAoClicarFora: true
+        // Note que não passamos 'idBotaoAbrir', pois ele é aberto via código
+    });
+
+    /**
+     * Remove membros extras da banca (deixando apenas o primeiro)
+     */
     const removerMembrosExtrasBanca = () => {
         if (!containerBanca) return;
         const todosOsMembros = containerBanca.querySelectorAll('.member-form-block');
@@ -19,17 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const abrirModalSucesso = () => {
-        if (modalSucesso) modalSucesso.classList.remove('hidden');
-    };
-
-
-    const fecharModalSucesso = () => {
-        if (modalSucesso) modalSucesso.classList.add('hidden');
-    };
-
+    /**
+     * Clona e adiciona um novo bloco de membro da banca ao formulário.
+     */
     const adicionarMembroBanca = () => {
         console.log('Botão "Adicionar Membro" clicado.');
+        if (!blocoModelo || !containerBanca) return;
 
         const novoBloco = blocoModelo.cloneNode(true);
 
@@ -61,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * 
+     * Manipula o envio do formulário de documentos.
      * @param {Event} evento O evento de submit.
      */
     const manipularEnvioFormulario = (evento) => {
@@ -76,27 +94,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log("Dados do Formulário (simplificado):", dados);
 
-        abrirModalSucesso();
+        // Chamamos a função genérica 'abrirModal'
+        abrirModal('success-modal');
+
         formDocumentos.reset(); 
         removerMembrosExtrasBanca(); 
     };
 
-    if (botaoAdicionarMembro && containerBanca && blocoModelo) {
+    // Adiciona os listeners aos botões
+    if (botaoAdicionarMembro) {
         botaoAdicionarMembro.addEventListener('click', adicionarMembroBanca);
     }
 
     if (formDocumentos) {
         formDocumentos.addEventListener('submit', manipularEnvioFormulario);
     }
+}
 
-    if (modalSucesso && botaoFecharModal && iconeFecharModal) {
-        botaoFecharModal.addEventListener('click', fecharModalSucesso);
-        iconeFecharModal.addEventListener('click', fecharModalSucesso);
-
-        modalSucesso.addEventListener('click', (evento) => {
-            if (evento.target.id === 'success-modal') {
-                fecharModalSucesso();
-            }
-        });
-    }
-});
+// Chama a inicialização
+inicializarDocumentos();
