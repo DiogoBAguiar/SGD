@@ -1,5 +1,4 @@
 import { listaSecretarios } from "./database.js";
-// Importa as funções genéricas de modal e paginação
 import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
 
 let paginaAtual = 1;
@@ -28,7 +27,6 @@ function desenharTabela() {
     const dadosPaginados = dadosFiltrados.slice(indiceInicio, indiceFim);
 
     dadosPaginados.forEach(secretario => {
-        // ... (Toda a lógica de criação da 'linha' permanece a mesma)
         const linha = document.createElement('tr');
         linha.className = `hover:bg-[#1A1A1A] transition-colors ${!secretario.ativo ? 'opacity-50 bg-black/40' : ''}`;
 
@@ -66,7 +64,6 @@ function desenharTabela() {
     desenharPaginacao();
 }
 
-// --- Refatoração da Paginação ---
 function desenharPaginacao() {
     renderizarPaginacao({
         idContainer: 'pagination-container',
@@ -76,10 +73,7 @@ function desenharPaginacao() {
         nomeFuncaoMudarPagina: 'mudarPagina'
     });
 }
-// --- Fim da Refatoração ---
-
 function mudarPagina(numPagina) { 
-    // Esta função permanece a mesma
     const total = Math.ceil(dadosFiltrados.length / ITENS_POR_PAGINA); 
     if (numPagina >= 1 && numPagina <= total) { 
         paginaAtual = numPagina; 
@@ -88,7 +82,6 @@ function mudarPagina(numPagina) {
 }
 
 function aplicarFiltros() {
-    // Esta função permanece a mesma
     const busca = document.getElementById('search-input') ? document.getElementById('search-input').value.toLowerCase() : '';
     const nivel = document.getElementById('filter-role') ? document.getElementById('filter-role').value : '';
     
@@ -107,7 +100,6 @@ function verSecretario(evento, id) {
     const secretario = listaSecretarios.find(s => s.id === id);
     if (!secretario) return;
 
-    // (Preenchimento dos dados do modal)
     document.getElementById('detail-nome').textContent = secretario.nome;
     document.getElementById('detail-email').textContent = secretario.email;
     document.getElementById('detail-siape').textContent = secretario.siape;
@@ -119,8 +111,7 @@ function verSecretario(evento, id) {
         ? '<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-900/30 text-green-400 border border-green-800">Conta Ativa</span>'
         : '<span class="px-2 py-1 text-xs font-medium rounded-full bg-red-900/30 text-red-400 border border-red-800">Conta Inativa</span>';
     document.getElementById('detail-status').innerHTML = crachaStatus;
-    
-    // --- Refatoração do Modal ---
+
     abrirModal('detalhes-modal');
 }
 
@@ -131,7 +122,6 @@ function abrirModalSecretario(id = null) {
     if (form) form.reset(); 
     
     if (id) {
-        // (Lógica de preenchimento do formulário de edição)
         document.getElementById('modal-title').textContent = "Editar Usuário";
         const secretario = listaSecretarios.find(s => s.id === id);
         if (secretario) {
@@ -144,22 +134,19 @@ function abrirModalSecretario(id = null) {
             document.getElementById('check-ativo').checked = secretario.ativo;
         }
     } else {
-        // Modo Novo
         document.getElementById('modal-title').textContent = "Novo Usuário";
         document.getElementById('secretario-id').value = '';
         document.getElementById('select-role').value = 'Secretário'; 
     }
-    
-    // --- Refatoração do Modal ---
-    abrirModal('secretario-modal'); // Mostra o modal
+
+    abrirModal('secretario-modal');
 }
 
 function salvarSecretario(evento) {
     evento.preventDefault(); 
     const idString = document.getElementById('secretario-id').value;
     const id = idString ? parseInt(idString) : null;
-    
-    // (Lógica de salvar)
+
     const dadosFormulario = {
         id: id || Date.now(), 
         nome: document.getElementById('input-nome').value,
@@ -177,14 +164,11 @@ function salvarSecretario(evento) {
     else { 
         listaSecretarios.unshift(dadosFormulario); 
     }
-    
     aplicarFiltros(); 
-    // --- Refatoração do Modal ---
-    fecharModal('secretario-modal'); // Fecha o modal
+    fecharModal('secretario-modal'); 
 }
 
 function deletarSecretario(id, nome) {
-    // Esta função permanece a mesma
     const secretario = listaSecretarios.find(s => s.id === id);
     if (!secretario) return;
     
@@ -198,24 +182,19 @@ function deletarSecretario(id, nome) {
 }
 
 function resetarSenha(nome) { 
-    // --- ATUALIZAÇÃO ---
-    // alert(`...`); // Removido
+
     console.info(`Um link de redefinição de senha (simulado) foi enviado para o e-mail de ${nome}.`); 
-    // --- Fim da Atualização ---
 }
 
-// --- Refatoração do Carregamento ---
-// Substituímos o 'DOMContentLoaded' por uma função de inicialização
 function inicializarSecretarios() {
     const tabelaBody = document.getElementById('secretarios-table-body');
     const formulario = document.getElementById('secretario-form');
 
     if (tabelaBody && formulario) {
-        desenharTabela(); // Desenha a tabela inicial
+        desenharTabela(); 
         
         formulario.addEventListener('submit', salvarSecretario);
-        
-        // Configura os modais
+
         configurarListenersModal({
             idModal: 'secretario-modal',
             fecharAoClicarFora: true
@@ -225,25 +204,18 @@ function inicializarSecretarios() {
             idModal: 'detalhes-modal',
             fecharAoClicarFora: true
         });
-
-        // Adiciona listeners de filtro
         const searchInput = document.getElementById('search-input');
         const filterRole = document.getElementById('filter-role');
         if (searchInput) searchInput.addEventListener('keyup', aplicarFiltros);
         if (filterRole) filterRole.addEventListener('change', aplicarFiltros);
 
     } else {
-        // Fallback
         console.warn("Elementos de 'secretarios.js' não encontrados. Aguardando DOMContentLoaded.");
         document.addEventListener("DOMContentLoaded", inicializarSecretarios);
     }
 }
 
 inicializarSecretarios();
-// --- Fim da Refatoração ---
-
-
-// --- Expondo Funções para o HTML ---
 window.aplicarFiltros = aplicarFiltros;
 window.abrirModalSecretario = abrirModalSecretario;
 window.deletarSecretario = deletarSecretario;
@@ -251,9 +223,5 @@ window.resetarSenha = resetarSenha;
 window.mudarPagina = mudarPagina;
 window.verSecretario = verSecretario;
 window.salvarSecretario = salvarSecretario; 
-
-// --- Refatoração do Modal ---
-// Mapeamos as funções genéricas para os nomes que o HTML espera no onclick
 window.fecharModalSecretario = () => fecharModal('secretario-modal');
 window.fecharModalDetalhes = () => fecharModal('detalhes-modal');
-// --- Fim da Refatoração ---

@@ -1,14 +1,9 @@
-// Caminhos corretos, pois 'auth-data' e 'funcoesGerais' estão em 'modules'
 import { users } from './auth-data.js';
 import { configurarListenersModal } from './funcoesGerais.js';
 
-/**
- * Renderiza o histórico de atividades recentes.
- */
 function renderActivityHistory() {
     const container = document.getElementById("activityHistory");
-    if (!container) return; // Parar se o container não existir
-    
+    if (!container) return; 
     container.innerHTML = ""; 
 
     const activities = [
@@ -44,14 +39,10 @@ function renderActivityHistory() {
     });
 }
 
-/**
- * Função de inicialização da página de Perfil.
- */
 function inicializarProfile() {
     const loggedInUserEmail = localStorage.getItem('userEmail');
     const loggedInUser = users.find(user => user.email === loggedInUserEmail);
 
-    // Verificador para garantir que os elementos do DOM da página de perfil estão presentes
     const profileImageEl = document.getElementById("profileImage");
     if (!profileImageEl) {
         console.warn("Elementos de 'profile.js' não encontrados. Aguardando DOMContentLoaded.");
@@ -60,7 +51,6 @@ function inicializarProfile() {
     }
 
     if (loggedInUser) {
-        // Preenche os dados do usuário
         document.getElementById("profileEmail").textContent = loggedInUser.email;
         document.getElementById("contactEmail").textContent = loggedInUser.email;
         document.getElementById("contactPhone").textContent = loggedInUser.phone;
@@ -71,37 +61,23 @@ function inicializarProfile() {
         document.getElementById("profileName").textContent = loggedInUser.name;
         document.getElementById("profileRoleDescription").textContent = loggedInUser.role;
 
-        // Define o avatar
         const avatarUrl = `https://ui-avatars.com/api/?name=${loggedInUser.name.replace(' ', '+')}&background=C0A040&color=1F1F1F&bold=true`;
         profileImageEl.src = avatarUrl;
         profileImageEl.alt = `Foto de ${loggedInUser.name}`;
     } else {
         console.error("Usuário logado não encontrado no 'auth-data.js'.");
-        // O main.js já deve ter redirecionado, mas isso é uma segurança.
         if (window.location.pathname !== '/login.html') {
              window.location.href = 'login.html';
         }
         return;
     }
 
-    // --- Refatoração do Modal ---
-    // Removemos os listeners antigos
-    // const editModalBtn = document.getElementById('editModalBtn');
-    // const editModal = document.getElementById('editModal');
-    // const closeModalBtn = document.getElementById('closeModalBtn');
-    // const cancelModalBtn = document.getElementById('cancelModalBtn');
-    // editModalBtn.addEventListener('click', () => { ... });
-    // closeModalBtn.addEventListener('click', () => { ... });
-    // cancelModalBtn.addEventListener('click', () => { ... });
-
-    // Usamos o configurador genérico
     configurarListenersModal({
         idModal: 'editModal',
         idBotaoAbrir: 'editModalBtn',
         idsBotoesFechar: ['closeModalBtn', 'cancelModalBtn'],
         fecharAoClicarFora: true
     });
-    // --- Fim da Refatoração ---
 
     const homeBtn = document.getElementById('homeBtn');
     if (homeBtn) {
@@ -110,11 +86,7 @@ function inicializarProfile() {
         });
     }
 
-    // Renderiza o histórico de atividades
     renderActivityHistory();
 }
 
-// --- Refatoração do Carregamento ---
-// Substituímos a checagem 'document.readyState'
 inicializarProfile();
-// --- Fim da Refatoração ---

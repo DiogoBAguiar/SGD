@@ -1,13 +1,8 @@
-// Importa o header e a navbar, que são usados em quase todas as páginas
 import { createNavbar, createHeader } from './modules/header.js';
-
-// --- Lógica de Roteamento ---
-
 const pathName = window.location.pathname;
 const parts = pathName.split('/');
 const currentPage = parts[parts.length - 1] || 'index.html'; 
 
-// O 'pageMap' agora também define qual script carregar para cada página
 const pageMap = {
     'index.html': { 
         id: 'dashboard', 
@@ -64,30 +59,23 @@ const pageMap = {
 const activePageData = pageMap[currentPage] || { id: '', title: 'SGD IFPB', script: null };
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- SUA LÓGICA CONDICIONAL ---
-
-    // 1. Se for a página de login, só carrega o script de login e para.
+ 
     if (currentPage === 'login.html') {
         if (activePageData.script) {
             import(activePageData.script)
                 .catch(err => console.error(`Erro ao carregar ${activePageData.script}:`, err));
         }
-        return; // Não executa o resto do código
+        return; 
     }
-
-    // --- Lógica para todas as outras páginas (protegidas) ---
 
     const email = localStorage.getItem('userEmail');
 
-    // 2. Se não for a página de login E não tiver email, redireciona para o login.
     if (!email) {
         console.warn("Nenhum usuário logado. Redirecionando para login.html");
         window.location.href = 'login.html';
-        return; // Para a execução
+        return; 
     }
 
-    // 3. Se passou (está logado e não é a pág. de login), desenha o layout:
     const navbarEl = document.getElementById('navbar');
     if (navbarEl) {
         navbarEl.innerHTML = createNavbar(activePageData.id);
@@ -98,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         headerEl.innerHTML = createHeader(email, activePageData.title);
     }
 
-    // 4. Carrega dinamicamente o script específico da página
     if (activePageData.script) {
         console.log(`Carregando módulo: ${activePageData.script}`);
         import(activePageData.script)

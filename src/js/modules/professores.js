@@ -1,8 +1,6 @@
-// Caminhos atualizados para funcionar dentro da pasta 'modules'
 import { listaProfessores } from './database.js';
 import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
 
-// O loop 'for' para adicionar dados de teste permanece o mesmo
 for (let i = 11; i <= 33; i++) {
     listaProfessores.push({
         id: i,
@@ -90,7 +88,7 @@ function desenharPaginacao() {
         paginaAtual: paginaAtual,
         totalItens: dadosFiltrados.length,
         itensPorPagina: ITENS_POR_PAGINA,
-        nomeFuncaoMudarPagina: 'mudarPagina' // Nome da função global (em window)
+        nomeFuncaoMudarPagina: 'mudarPagina' 
     });
 }
 
@@ -123,7 +121,6 @@ function verProfessor(evento, id) {
     const professor = listaProfessores.find(p => p.id === id);
     if (!professor) return;
 
-    // (Preenchimento dos dados do modal de detalhes)
     document.getElementById('detail-nome').textContent = professor.nome;
     document.getElementById('detail-titulacao').textContent = professor.titulacao;
     document.getElementById('detail-email').textContent = professor.email;
@@ -184,7 +181,6 @@ function abrirModalProfessor(id = null) {
         document.getElementById('modal-title').textContent = "Editar Professor";
         const professor = listaProfessores.find(p => p.id === id);
         if (professor) {
-            // (Preenchimento dos dados do formulário de edição)
             document.getElementById('professor-id').value = professor.id; 
             document.getElementById('input-nome').value = professor.nome; 
             document.getElementById('input-email').value = professor.email;
@@ -242,13 +238,10 @@ function deletarProfessor(id, nome) {
     }
 }
 
-// --- Refatoração do Carregamento ---
 function inicializarProfessores() {
-    // Verificamos se os elementos principais da página existem
     if (document.getElementById('professores-table-body') && document.getElementById('professor-form')) {
         desenharTabela();
-        
-        // Configura os modais
+
         configurarListenersModal({
             idModal: 'professor-modal',
             fecharAoClicarFora: true
@@ -259,37 +252,30 @@ function inicializarProfessores() {
             fecharAoClicarFora: true
         });
 
-        // Configura o formulário
         const form = document.getElementById('professor-form');
         if (form) {
             form.addEventListener('submit', salvarProfessor);
         }
 
-        // Adiciona listeners de filtro
         const searchInput = document.getElementById('search-input');
         const filterTipo = document.getElementById('filter-tipo');
         if (searchInput) searchInput.addEventListener('keyup', aplicarFiltros);
         if (filterTipo) filterTipo.addEventListener('change', aplicarFiltros);
 
     } else {
-        // Fallback: Se o import foi muito rápido, espera o DOM
         console.warn("Elementos da página de professores não encontrados. Aguardando DOMContentLoaded.");
-        document.addEventListener("DOMContentLoaded", inicializarProfessores); // Chama a si mesmo
+        document.addEventListener("DOMContentLoaded", inicializarProfessores); 
     }
 }
 
 inicializarProfessores();
-// --- Fim da Refatoração ---
 
-
-// --- Expondo Funções para o HTML ---
-// (Necessário para os botões 'onclick' no HTML)
 window.aplicarFiltros = aplicarFiltros; 
 window.abrirModalProfessor = abrirModalProfessor; 
 window.fecharModalProfessor = () => fecharModal('professor-modal');
 window.alternarInstituicao = alternarInstituicao; 
 window.deletarProfessor = deletarProfessor; 
-window.editarProfessor = abrirModalProfessor; // 'editar' é um atalho para 'abrir'
+window.editarProfessor = abrirModalProfessor; 
 window.mudarPagina = mudarPagina; 
 window.verProfessor = verProfessor; 
 window.fecharModalDetalhes = () => fecharModal('detalhes-modal');

@@ -1,4 +1,3 @@
-// O caminho do import está correto, pois 'auth-data.js' também está em 'modules'
 import { users } from './auth-data.js';
 
 const validarLogin = (login, password) => {
@@ -48,10 +47,6 @@ const gerarLoginHTML = () => {
     </div>`;
 };
 
-/**
- * Exibe uma mensagem de erro na UI de login.
- * @param {string} mensagem A mensagem a ser exibida.
- */
 const mostrarErro = (mensagem) => {
     const errorDiv = document.getElementById('login-error');
     if (errorDiv) {
@@ -59,25 +54,19 @@ const mostrarErro = (mensagem) => {
     }
 };
 
-/**
- * Função de inicialização da página de Login.
- */
 const inicializarLogin = () => {
-    // A lógica do 'main.js' garante que esta função só rode na 'login.html'.
-    // Ela substitui todo o <body> pelo HTML de login.
+
     document.body.innerHTML = gerarLoginHTML();
 
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
-    const usernameInput = document.getElementById('username'); // Pegamos o input de usuário
-
+    const usernameInput = document.getElementById('username'); 
     togglePassword.addEventListener('click', function () {
         const isPassword = passwordInput.type === 'password';
         passwordInput.type = isPassword ? 'text' : 'password';
         togglePassword.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
     });
 
-    // Limpa o erro ao digitar
     passwordInput.addEventListener('input', () => mostrarErro(''));
     usernameInput.addEventListener('input', () => mostrarErro(''));
 
@@ -86,7 +75,7 @@ const inicializarLogin = () => {
         const password = passwordInput.value;
 
         if (validarLogin(loginInput, password)) {
-            mostrarErro(''); // Limpa erros
+            mostrarErro(''); 
             const loggedInUser = users.find(user => 
                 (user.username === loginInput || user.email === loginInput) && user.password === password
             );
@@ -94,15 +83,10 @@ const inicializarLogin = () => {
             localStorage.setItem('userEmail', loggedInUser.email);
             window.location.href = 'index.html'; 
         } else {
-            // --- ATUALIZAÇÃO ---
-            // alert('Credenciais inválidas. Tente novamente.'); // Removido
             mostrarErro('Credenciais inválidas. Tente novamente.');
-            // --- Fim da Atualização ---
+  
         }
     });
 };
 
-// --- ATUALIZAÇÃO ---
-// Substituímos o DOMContentLoaded pela chamada direta da função
 inicializarLogin();
-// --- Fim da Atualização ---
