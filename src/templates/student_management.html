@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- basicamente o root do css -->
+ 
     <script>
       tailwind.config = {
         theme: {
@@ -21,7 +21,7 @@
         }
       }
     </script>
-    <!-- Classes personalizadas -->
+
     <style type="text/tailwindcss">
       @layer components {
         .input-std { @apply w-full bg-sgd-bg border border-sgd-border text-sgd-text px-3 py-2 rounded focus:outline-none focus:border-sgd-gold transition-colors; }
@@ -36,7 +36,6 @@
 
     <script type="module" src="../js/main.js" defer></script>
 
-    <!-- Mais estilos personalizados -->
     <style>
       .font-poppins { font-family: 'Poppins', sans-serif; }
       .hidden { display: none; }
@@ -47,7 +46,6 @@
     </style>
 </head>
 
-<!-- Html dinamizado com JS -->
 <body class="font-poppins min-h-screen flex bg-sgd-bg text-sgd-text">
 
   <div id="navbar" class="sticky top-0 h-screen z-10"></div>
@@ -193,7 +191,7 @@
     </div>
     <div id="detalhes-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 backdrop-blur-sm p-4">
         <div class="card-std w-full max-w-2xl shadow-2xl border-sgd-gold/50 max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center p-6 border-b border-sgd-border shrink-0 bg-[#1A1A1A]">
+            <div class="flex justify-between items-center p-5 border-b border-sgd-border bg-[#1A1A1A] rounded-tl-2xl rounded-tr-2xl">
                 <h3 class="text-xl font-semibold text-sgd-gold flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                     Ficha do Aluno
@@ -227,13 +225,12 @@
                 </div>
             </div>
             
-            <div class="p-4 border-t border-sgd-border bg-[#1A1A1A] flex justify-end sticky bottom-0 rounded-b-lg">
+            <div class="p-4 border-t border-sgd-border bg-[#1A1A1A] flex justify-end sticky bottom-0 rounded-b-lg hidden">
                 <button onclick="closeDetalhesModal()" class="btn-primary px-6">Fechar</button>
             </div>
         </div>
     </div>
   </main>
 
-  <script src="../js/alunos.js"></script>
 </body>
 </html>

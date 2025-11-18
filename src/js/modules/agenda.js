@@ -1,5 +1,7 @@
+import { mockAlunos } from './database.js';
+import { abrirModal, fecharModal, configurarListenersModal } from './funcoesGerais.js';
+
 const listaDefesas = document.getElementById('allDefensesList');
-const modal = document.getElementById('eventModal');
 const formularioEvento = document.getElementById('eventForm');
 const seletorAluno = document.getElementById('evento_aluno');
 
@@ -78,16 +80,14 @@ function popularSeletorAluno() {
         seletorAluno.appendChild(opcao);
     });
 }
-
 function abrirModalEvento() {
-    formularioEvento.reset();
-    document.getElementById('evento_data').value = new Date().toISOString().split('T')[0];
-    document.getElementById('evento_hora').value = '09:00';
-    modal.classList.remove('hidden');
-}
-
-function fecharModal() {
-    modal.classList.add('hidden');
+    if (formularioEvento) formularioEvento.reset();
+    const dataInput = document.getElementById('evento_data');
+    if (dataInput) dataInput.value = new Date().toISOString().split('T')[0];
+    const horaInput = document.getElementById('evento_hora');
+    if (horaInput) horaInput.value = '09:00';
+    
+    abrirModal('eventModal'); 
 }
 
 function tratarEnvioFormulario(e) {
@@ -97,7 +97,7 @@ function tratarEnvioFormulario(e) {
     const nomeAluno = dadosFormulario.get('aluno');
     
     if (!nomeAluno) {
-        alert('Por favor, selecione um aluno.');
+        console.warn('Seleção de aluno é obrigatória.');
         return;
     }
 
@@ -122,20 +122,41 @@ function tratarEnvioFormulario(e) {
     defesas.push(novosDadosEvento);
     salvarDefesas(defesas);
     popularListaDefesas();
-    fecharModal();
+    fecharModal('eventModal');
 }
 
 function initControlesModal() {
-    document.getElementById('addEventButton').addEventListener('click', abrirModalEvento);
-    document.getElementById('modalCloseButton').addEventListener('click', fecharModal);
-    document.getElementById('modalBackdrop').addEventListener('click', fecharModal);
-    document.getElementById('cancelButton').addEventListener('click', fecharModal);
-    formularioEvento.addEventListener('submit', tratarEnvioFormulario);
+    const addEventButton = document.getElementById('addEventButton');
+
+    if (addEventButton) {
+        addEventButton.addEventListener('click', abrirModalEvento);
+    }
+    configurarListenersModal({
+        idModal: 'eventModal',
+        idsBotoesFechar: ['modalCloseButton', 'cancelButton'],
+        fecharAoClicarFora: true 
+    });
+
+    if (formularioEvento) {
+        formularioEvento.addEventListener('submit', tratarEnvioFormulario);
+    }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    obterDefesas();
-    popularListaDefesas();
-    popularSeletorAluno();
-    initControlesModal();
-});
+function inicializarAgenda() {
+
+    if (document.getElementById('allDefensesList') && document.getElementById('eventForm')) {
+        obterDefesas();
+        popularListaDefesas();
+        popularSeletorAluno();
+        initControlesModal();
+    } else {
+        document.addEventListener('DOMContentLoaded', () => {
+            obterDefesas();
+            popularListaDefesas();
+            popularSeletorAluno();
+            initControlesModal();
+        });
+    }
+}
+
+inicializarAgenda();

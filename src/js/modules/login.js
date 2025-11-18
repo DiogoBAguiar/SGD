@@ -1,21 +1,14 @@
-// Simulação de um banco de dados de usuários
-const users = [
-    { username: 'icaro.pontes@academico.ifpb.edu.br', password: 'icaro123' },
-    { username: 'diogo.aguiar@academico.ifpb.edu.br', password: 'diogo123' },
-    { username: 'alan.clemente@academico.ifpb.edu.br', password: 'alan123' },
-    { username: 'carlos.gabriel@academico.ifpb.edu.br', password: 'carlos123' },
-    { username: 'thalyson.felicio@academico.ifpb.edu.br', password: 'thalyson123' }
-];
+import { users } from './auth-data.js';
 
-// Validação de login
-const validateLogin = (username, password) => {
-    return users.some(user => user.username === username && user.password === password);
+const validarLogin = (login, password) => {
+    return users.some(user => 
+        (user.username === login || user.email === login) && user.password === password
+    );
 };
 
-const generateLoginHTML = () => {
+const gerarLoginHTML = () => {
     return `
     <div class="w-full max-w-md bg-[#121212] px-8 py-10 rounded-lg border border-[#333333] text-center shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
-        <!-- CORREÇÃO: Caminho do logo (da pasta 'public') -->
         <img src="/logo_sgd.webp" alt="Logo do SGD" class="w-32 h-32 mb-6 object-cover rounded-md mx-auto">
         <h2 class="text-[#C0A040] text-2xl font-semibold mb-8">Acessar o Sistema</h2>
         <form class="login-form text-left" action="#" method="POST">
@@ -38,6 +31,10 @@ const generateLoginHTML = () => {
                     </button>
                 </div>
             </div>
+            
+            <!-- Div de Erro (Substitui o Alert) -->
+            <div id="login-error" class="text-red-400 text-sm mb-4 h-5"></div>
+
             <button id="loginButton"
                 type="button"
                 class="w-full bg-[#C0A040] text-black py-3 text-lg font-extrabold rounded transition transform duration-200 hover:bg-[#E6C850] hover:scale-105">
@@ -50,29 +47,46 @@ const generateLoginHTML = () => {
     </div>`;
 };
 
-const renderLogin = () => {
-    document.body.innerHTML = generateLoginHTML();
+const mostrarErro = (mensagem) => {
+    const errorDiv = document.getElementById('login-error');
+    if (errorDiv) {
+        errorDiv.textContent = mensagem;
+    }
+};
+
+const inicializarLogin = () => {
+
+    document.body.innerHTML = gerarLoginHTML();
 
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
-
+    const usernameInput = document.getElementById('username'); 
     togglePassword.addEventListener('click', function () {
         const isPassword = passwordInput.type === 'password';
         passwordInput.type = isPassword ? 'text' : 'password';
         togglePassword.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
     });
 
-    document.getElementById('loginButton').addEventListener('click', function () {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    passwordInput.addEventListener('input', () => mostrarErro(''));
+    usernameInput.addEventListener('input', () => mostrarErro(''));
 
-        if (validateLogin(username, password)) {
-            localStorage.setItem('userEmail', username);// guarda o email do usuario logado
+    document.getElementById('loginButton').addEventListener('click', function () {
+        const loginInput = usernameInput.value;
+        const password = passwordInput.value;
+
+        if (validarLogin(loginInput, password)) {
+            mostrarErro(''); 
+            const loggedInUser = users.find(user => 
+                (user.username === loginInput || user.email === loginInput) && user.password === password
+            );
+
+            localStorage.setItem('userEmail', loggedInUser.email);
             window.location.href = 'index.html'; 
         } else {
-            alert('Credenciais inválidas. Tente novamente.');// fazer algo melhor depois
+            mostrarErro('Credenciais inválidas. Tente novamente.');
+  
         }
     });
 };
 
-document.addEventListener('DOMContentLoaded', renderLogin);
+inicializarLogin();

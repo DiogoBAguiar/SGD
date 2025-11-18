@@ -3,225 +3,190 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dashboard - SGD</title>
+    <title>Formulário de Defesa - SGD</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+                sgd: { gold: '#C0A040', 'gold-hover': '#E6C850', bg: '#121212', card: '#1F1F1F', border: '#333333', muted: '#AAAAAA', text: '#E0E0E0' }
+            }
+          }
+        }
+      }
+    </script>
+    <style type="text/tailwindcss">
+      @layer components {
+        .input-std { @apply w-full bg-sgd-bg border border-sgd-border text-sgd-text px-3 py-2 rounded-lg focus:outline-none focus:border-sgd-gold transition-colors text-sm; }
+        .label-std { @apply block text-sm text-sgd-muted mb-1; }
+        .btn-primary { @apply bg-sgd-gold text-black px-4 py-2 rounded-lg font-bold hover:bg-sgd-gold-hover transition flex items-center justify-center; }
+        .btn-secondary { @apply bg-sgd-border text-sgd-text px-4 py-2 rounded-lg hover:bg-[#444444] transition; }
+        .card-std { @apply bg-sgd-card rounded-2xl border border-sgd-border shadow-lg; }
+        .table-header { @apply px-6 py-3 text-left text-sm font-semibold text-sgd-gold uppercase tracking-wider; }
+        .table-cell { @apply px-6 py-4 whitespace-nowrap text-sm text-sgd-text; }
+      }
+    </style>
+
     <script type="module" src="../js/main.js" defer></script>
 
     <style>
       .font-poppins { font-family: 'Poppins', sans-serif; }
+      /* Classe para feedback de validação (opcional, mas bom) */
+      .input-std:invalid {
+        border-color: #991b1b; /* Vermelho escuro no modo dark */
+      }
     </style>
 </head>
-<body class="font-poppins min-h-screen flex bg-[#121212] text-[#E0E0E0]">
+<body class="font-poppins min-h-screen flex bg-sgd-bg text-sgd-text">
     
     <div id="navbar" class="sticky top-0 h-screen z-10"></div>
 
     <main class="flex-1 flex flex-col">
         <div id="header"></div>
 
-        <!-- Conteúdo Principal -->
     <main class="flex-1 w-full">
-      <div class="max-w-5xl mx-auto px-4 py-10">
-        <!-- Título -->
+      <form id="documentos-form" class="max-w-5xl mx-auto px-4 py-10">
         <div class="text-center mb-10">
-          <h2 class="text-3xl font-bold text-[#C0A040] mb-2">
+          <h2 class="text-3xl font-bold text-sgd-gold mb-2">
             Formulário de Agendamento de Defesa
           </h2>
-          <p class="text-gray-400 text-sm">
+          <p class="text-sgd-muted text-sm">
             Programa de Pós-Graduação em Tecnologia da Informação - PPgTI/JP
           </p>
         </div>
 
-        <!-- Dados do Candidato -->
-        <section class="bg-[#1E1E1E] p-6 rounded-2xl shadow-lg mb-8">
-          <h3 class="text-xl font-semibold text-[#C0A040] mb-4">
+        <section class="card-std p-6 mb-8">
+          <h3 class="text-xl font-semibold text-sgd-gold mb-4">
             Dados do Candidato
           </h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="Nome Completo"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Matrícula"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="email"
-              placeholder="E-mail"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Telefone"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Linha de Pesquisa"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 md:col-span-2"
-            />
-            <input
-              type="text"
-              placeholder="Título do Trabalho"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 md:col-span-2"
-            />
-            <textarea
-              placeholder="Resumo do Trabalho"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 md:col-span-2 h-28"
-            ></textarea>
+            <input type="text" placeholder="Nome Completo" class="input-std" required />
+            <input type="text" placeholder="Matrícula" class="input-std" required />
+            <input type="email" placeholder="E-mail" class="input-std" required />
+            <input type="text" placeholder="Telefone" class="input-std" />
+            <input type="text" placeholder="Linha de Pesquisa" class="input-std md:col-span-2"/>
+            <input type="text" placeholder="Título do Trabalho" class="input-std md:col-span-2" required />
+            <textarea placeholder="Resumo do Trabalho" class="input-std md:col-span-2 h-28"></textarea>
           </div>
         </section>
 
-        <!-- Dados da Banca Examinadora -->
-        <section class="bg-[#1E1E1E] p-6 rounded-2xl shadow-lg mb-8">
-          <h3 class="text-xl font-semibold text-[#C0A040] mb-4">
+        <section class="card-std p-6 mb-8">
+          <h3 class="text-xl font-semibold text-sgd-gold mb-4">
             Dados da Banca Examinadora
           </h3>
 
-          <!-- Membro da Banca -->
-          <div class="space-y-6">
-            <div class="border border-gray-800 p-4 rounded-lg">
-              <h4 class="text-[#C0A040] font-medium mb-3">
+          <div class="space-y-6" id="banca-container">
+            <div class="border border-sgd-border p-4 rounded-lg bg-sgd-bg/30 member-form-block">
+              <h4 class="text-sgd-gold font-medium mb-3">
                 Orientador (Membro Interno)
               </h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Nome Completo"
-                  class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Matrícula ou CPF"
-                  class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-                />
-                <input
-                  type="email"
-                  placeholder="E-mail"
-                  class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Telefone"
-                  class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Titulação / Instituição"
-                  class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 md:col-span-2"
-                />
-                <select
-                  class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 text-gray-300 md:col-span-2"
-                >
-                  <option>Participação</option>
-                  <option>Presencial</option>
-                  <option>Virtual</option>
+                <input type="text" placeholder="Nome Completo" class="input-std" required />
+                <input type="text" placeholder="Matrícula ou CPF" class="input-std" required />
+                <input type="email" placeholder="E-mail" class="input-std" />
+                <input type="text" placeholder="Telefone" class="input-std"/>
+                <input type="text" placeholder="Titulação / Instituição" class="input-std md:col-span-2"/>
+                <select class="input-std text-sgd-text md:col-span-2">
+                  <option value="">Participação</option>
+                  <option value="Presencial">Presencial</option>
+                  <option value="Virtual">Virtual</option>
                 </select>
               </div>
             </div>
           </div>
 
-          <!-- Botão para adicionar novos membros -->
           <div class="mt-4 text-center">
+ 
             <button
-              class="bg-[#C0A040] hover:bg-[#b39236] text-black font-semibold px-6 py-2 rounded-lg shadow-md"
+              type="button" 
+              class="btn-primary px-6 py-2 btn-add-member"
             >
               + Adicionar Membro da Banca
             </button>
           </div>
         </section>
 
-        <!-- Informações sobre a Defesa -->
-        <section class="bg-[#1E1E1E] p-6 rounded-2xl shadow-lg mb-8">
-          <h3 class="text-xl font-semibold text-[#C0A040] mb-4">
+        <section class="card-std p-6 mb-8">
+          <h3 class="text-xl font-semibold text-sgd-gold mb-4">
             Informações sobre a Defesa
           </h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input
-              type="date"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="time"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Local / Link"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
+            <input type="date" class="input-std text-sgd-text" required />
+            <input type="time" class="input-std text-sgd-text" required />
+            <input type="text" placeholder="Local / Link" class="input-std" required />
           </div>
         </section>
 
-        <!-- Avaliação -->
-        <section class="bg-[#1E1E1E] p-6 rounded-2xl shadow-lg mb-8">
-          <h3 class="text-xl font-semibold text-[#C0A040] mb-4">
+        <section class="card-std p-6 mb-8">
+          <h3 class="text-xl font-semibold text-sgd-gold mb-4">
             Notas e Avaliação (pós-defesa)
           </h3>
           <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <input
-              type="text"
-              placeholder="Texto"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Apresentação"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Arguição"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Média Final"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
-            <input
-              type="text"
-              placeholder="Avaliação"
-              class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2"
-            />
+            <input type="text" placeholder="Texto" class="input-std"/>
+            <input type="text" placeholder="Apresentação" class="input-std"/>
+            <input type="text" placeholder="Arguição" class="input-std"/>
+            <input type="text" placeholder="Média Final" class="input-std"/>
+            <input type="text" placeholder="Avaliação" class="input-std"/>
           </div>
         </section>
 
-        <!-- Observação -->
-        <section class="bg-[#1E1E1E] p-6 rounded-2xl shadow-lg mb-8">
-          <h3 class="text-xl font-semibold text-[#C0A040] mb-4">
+        <section class="card-std p-6 mb-8">
+          <h3 class="text-xl font-semibold text-sgd-gold mb-4">
             Observações
           </h3>
           <textarea
             placeholder="Observações adicionais ou comentários..."
-            class="bg-[#121212] border border-gray-700 rounded-lg px-4 py-2 w-full h-28"
+            class="input-std w-full h-28"
           ></textarea>
         </section>
 
-        <!-- Botão Final -->
         <div class="text-center">
+
           <button
-            class="bg-[#C0A040] hover:bg-[#b39236] text-black font-semibold px-8 py-3 rounded-lg shadow-md transition-colors"
+            type="submit" 
+            class="btn-primary px-8 py-3 rounded-lg shadow-md transition-colors btn-generate-doc"
           >
             Gerar Documento
           </button>
         </div>
-      </div>
+      </form>
     </main>
 
-    <!-- Rodapé -->
     <footer
-      class="py-6 text-center text-gray-500 text-xs border-t border-gray-800"
+      class="py-6 text-center text-gray-500 text-xs border-t border-sgd-border"
     >
       © 2025 Sistema de Controle de Defesas PPgTI
     </footer>
+
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 backdrop-blur-sm p-4">
+        <div class="card-std w-full max-w-md shadow-2xl border-sgd-gold/50" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center p-5 border-b border-sgd-border bg-[#1A1A1A]">
+                <h3 class="text-lg font-semibold text-sgd-gold flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Formulário Enviado
+                </h3>
+                <button id="close-success-modal-icon" class="text-sgd-muted hover:text-white transition bg-[#333333] p-1 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div class="p-6 bg-[#121212]">
+                <p class="text-sgd-text text-sm">
+                  Os dados do formulário foram validados com sucesso. O documento está pronto para ser processado pelo sistema.
+                </p>
+            </div>
+            <div class="p-4 border-t border-sgd-border bg-[#1A1A1A] flex justify-end rounded-b-lg">
+                <button id="close-success-modal-button" class="btn-primary px-6 py-2 text-sm">Fechar</button>
+            </div>
+        </div>
+    </div>
 
     </main>
 </body>
