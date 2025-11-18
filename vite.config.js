@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
+  base: '/',
   // Raiz continua sendo os templates HTML
   root: path.resolve(__dirname, 'src/templates'),
   
