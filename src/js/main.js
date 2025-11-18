@@ -1,4 +1,9 @@
 import { createNavbar, createHeader } from './modules/header.js';
+
+// --- MUDANÇA AQUI: Dizemos ao Vite explicitamente quais arquivos incluir ---
+const modules = import.meta.glob('./modules/*.js'); 
+// --------------------------------------------------------------------------
+
 const pathName = window.location.pathname;
 const parts = pathName.split('/');
 const currentPage = parts[parts.length - 1] || 'index.html'; 
@@ -61,8 +66,9 @@ const activePageData = pageMap[currentPage] || { id: '', title: 'SGD IFPB', scri
 document.addEventListener('DOMContentLoaded', () => {
  
     if (currentPage === 'login.html') {
-        if (activePageData.script) {
-            import(activePageData.script)
+        if (activePageData.script && modules[activePageData.script]) {
+            // --- MUDANÇA AQUI: Executamos a função que o import.meta.glob retornou ---
+            modules[activePageData.script]()
                 .catch(err => console.error(`Erro ao carregar ${activePageData.script}:`, err));
         }
         return; 
@@ -86,9 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
         headerEl.innerHTML = createHeader(email, activePageData.title);
     }
 
-    if (activePageData.script) {
+    if (activePageData.script && modules[activePageData.script]) {
         console.log(`Carregando módulo: ${activePageData.script}`);
-        import(activePageData.script)
+        // --- MUDANÇA AQUI TAMBÉM ---
+        modules[activePageData.script]()
             .catch(err => console.error(`Erro ao carregar ${activePageData.script}:`, err));
     }
 });
