@@ -2,7 +2,8 @@ name: Deploy do Sistema IFPB para GitHub Pages
 
 on:
   push:
-    branches: [ main ] # Verifique se sua branch é 'main' ou 'master'
+    branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -28,20 +29,21 @@ jobs:
       - name: Build do projeto
         run: npm run build
 
-      # O Vite vai gerar a pasta 'dist' na raiz (graças ao seu path.resolve)
-      # Então o upload deve ser feito dessa pasta raiz
       - name: Upload dos arquivos de build
         uses: actions/upload-pages-artifact@v3
-        with: 
+        with:
           path: ./dist
 
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
     steps:
+      - name: Baixar artifact de build
+        uses: actions/download-pages-artifact@v3
+
       - name: Deploy para o GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
