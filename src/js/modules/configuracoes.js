@@ -1,4 +1,4 @@
-import { fecharModal, configurarListenersModal } from './funcoesGerais.js';
+import { fecharModal, configurarListenersModal } from '@js/modules/funcoesGerais.js';
 function salvarConfiguracoes() {
     const settings = {
         email: document.getElementById("emailNotifications").checked,

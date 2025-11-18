@@ -1,5 +1,5 @@
-import { users } from './auth-data.js';
-import { configurarListenersModal } from './funcoesGerais.js';
+import { users } from '@js/modules/auth-data.js';
+import { configurarListenersModal } from '@js/modules/funcoesGerais.js';
 
 function renderActivityHistory() {
     const container = document.getElementById("activityHistory");

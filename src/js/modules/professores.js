@@ -1,5 +1,5 @@
-import { listaProfessores } from './database.js';
-import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
+import { listaProfessores } from '@js/modules/database.js';
+import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from '@js/modules/funcoesGerais.js';
 
 for (let i = 11; i <= 33; i++) {
     listaProfessores.push({

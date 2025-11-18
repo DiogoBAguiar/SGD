@@ -1,4 +1,4 @@
-import { users } from './auth-data.js';
+import { users } from '@js/modules/auth-data.js';
 
 const validarLogin = (login, password) => {
     return users.some(user => 

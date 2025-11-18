@@ -1,5 +1,5 @@
-import { mockAlunos } from './database.js'; 
-import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
+import { mockAlunos } from '@js/modules/database.js'; 
+import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from '@js/modules/funcoesGerais.js';
 
 const listaSolicitacoes = mockAlunos.map((aluno, index) => {
     let statusSolicitacao;

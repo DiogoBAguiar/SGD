@@ -1,18 +1,10 @@
 import { defineConfig } from 'vite'
 import path from 'path'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  
   base: '/SGD/',
 
-  
-  root: path.resolve(__dirname, 'src/templates'),
-  
-  publicDir: path.resolve(__dirname, 'public'),
+  root: path.resolve(__dirname, 'src'),
 
   resolve: {
     alias: {
@@ -21,19 +13,13 @@ export default defineConfig({
     },
   },
 
-  server: {
-    open: true,
-    fs: {
-      allow: [path.resolve(__dirname, 'src')]
-    }
-  },
-
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     emptyOutDir: true,
+
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, 'src/templates/index.html'),
+        main: path.resolve(__dirname, 'src/index.html'),
         login: path.resolve(__dirname, 'src/templates/login.html'),
         agenda: path.resolve(__dirname, 'src/templates/agenda.html'),
         professores: path.resolve(__dirname, 'src/templates/professores.html'),

@@ -1,5 +1,5 @@
-import { mockAlunos } from './database.js';
-import { abrirModal, fecharModal, configurarListenersModal } from './funcoesGerais.js';
+import { mockAlunos } from '@js/modules/database.js';
+import { abrirModal, fecharModal, configurarListenersModal } from '@js/modules/funcoesGerais.js';
 
 const listaDefesas = document.getElementById('allDefensesList');
 const formularioEvento = document.getElementById('eventForm');

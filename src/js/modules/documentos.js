@@ -1,4 +1,4 @@
-import { abrirModal, configurarListenersModal } from './funcoesGerais.js';
+import { abrirModal, configurarListenersModal } from '@js/modules/funcoesGerais.js';
 
 function inicializarDocumentos() {
     console.log('documentos.js carregado com sucesso.');

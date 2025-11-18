@@ -1,5 +1,5 @@
-import { mockAlunos } from './database.js';
-import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
+import { mockAlunos } from '@js/modules/database.js';
+import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from '@js/modules/funcoesGerais.js';
 
 for (let i = 105; i <= 134; i++) {
      mockAlunos.push({ id: i, nome: `Aluno Teste ${i}`, matricula: `2023${i}`, email: `aluno${i}@ifpb.edu.br`, curso: "Mestrado", ingresso: 2023, orientador: "Damires Yluska", status: "Ativo", defesa: null });

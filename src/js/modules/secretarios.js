@@ -1,5 +1,5 @@
-import { listaSecretarios } from "./database.js";
-import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
+import { listaSecretarios } from "@js/modules/database.js";
+import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from '@js/modules/funcoesGerais.js';
 
 let paginaAtual = 1;
 const ITENS_POR_PAGINA = 8;
