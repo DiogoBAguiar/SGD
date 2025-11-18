@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - SGD</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: #333; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: #555; }
+    </style>
+  <script type="module" crossorigin src="/assets/main-D_ReAame.js"></script>
+</head>
+<body class="font-poppins bg-[#121212] text-[#E0E0E0] flex min-h-screen">
+
+    <div id="navbar" class="sticky top-0 h-screen z-30"></div>
+    
+    <main class="flex-1 flex flex-col">
+        
+        <header id="header"></header>
+        
+        <section class="p-4 sm:p-8 flex-1 overflow-y-auto custom-scroll">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                
+                <div class="bg-[#1F1F1F] rounded-lg p-6 border-l-4 border-[#C0A040] shadow-md transform transition hover:-translate-y-1 hover:shadow-lg">
+                    <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Solicitações Pendentes</h3>
+                    <p class="text-[#AAAAAA] text-sm mb-4">Novos pedidos de defesa.</p>
+                    <div id="pending-requests" class="text-4xl font-extrabold text-[#E0E0E0]">0</div>
+                    <a href="solicitacao.html" id="link-solicitacoes" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">Verificar Agora</a>
+                </div>
+                
+                <div class="bg-[#1F1F1F] rounded-lg p-6 border-l-4 border-[#C0A040] shadow-md transform transition hover:-translate-y-1 hover:shadow-lg">
+                    <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Defesas Agendadas</h3>
+                    <p class="text-[#AAAAAA] text-sm mb-4">Total de defesas agendadas.</p>
+                    <div id="scheduled-defenses" class="text-4xl font-extrabold text-[#E0E0E0]">0</div>
+                    <a href="agenda.html" id="link-agenda" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">Verificar Agora</a>
+                </div>
+
+                <div class="bg-[#1F1F1F] rounded-lg p-6 border-l-4 border-[#C0A040] shadow-md transform transition hover:-translate-y-1 hover:shadow-lg">
+                    <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Documentos Gerados</h3>
+                    <p class="text-[#AAAAAA] text-sm mb-4">Total de atas e declarações.</p>
+                    <div id="generated-docs" class="text-4xl font-extrabold text-[#E0E0E0]">0</div>
+                    <a href="documentos.html" id="link-documentos" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">Verificar Agora</a>
+                </div>
+                
+                <div class="bg-[#1F1F1F] rounded-lg p-6 border-l-4 border-[#C0A040] shadow-md transform transition hover:-translate-y-1 hover:shadow-lg">
+                    <h3 class="text-[#E6C850] text-lg font-semibold mb-2">Gerenciar Professores</h3>
+                    <p class="text-[#AAAAAA] text-sm mb-4">Total de professores cadastrados.</p>
+                    <div id="professor-count" class="text-4xl font-extrabold text-[#E0E0E0]">0</div>
+                    <a href="professores.html" id="link-professores" class="inline-block bg-[#C0A040] text-black px-3 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">Verificar Agora</a>
+                </div>
+            </div>
+
+            <div class="bg-[#1F1F1F] p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-[#E0E0E0]">Volume de Defesas Realizadas por Mês (2025)</h2>
+                <div class="h-80 w-full">
+                    <canvas id="defesasMensaisChart"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+                <div class="lg:col-span-2 bg-[#1F1F1F] p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-[#E0E0E0]">Status Geral dos Alunos no TCC</h2>
+                    <div class="flex flex-col md:flex-row items-center md:space-x-6 h-full">
+                        <div class="h-64 w-64 md:h-80 md:w-80 flex-shrink-0">
+                            <canvas id="statusAlunosChart"></canvas>
+                        </div>
+                        <div id="statusAlunosLegend" class="mt-4 md:mt-0 space-y-2 text-sm text-[#AAAAAA]">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1 bg-[#1F1F1F] p-6 rounded-lg shadow-lg flex flex-col">
+                    <h2 class="text-xl font-semibold mb-4 text-[#E0E0E0]">Solicitações Pendentes</h2>
+                    <div id="listaSolicitacoes" class="space-y-3 flex-1 overflow-y-auto custom-scroll max-h-96">
+                    </div>
+                    <a href="solicitacao.html" id="link-ver-solicitacoes" class="mt-4 w-full text-center py-2 text-[#E6C850] border border-[#E6C850] rounded-lg hover:bg-[#E6C850] hover:text-[#1F1F1F] transition-colors text-sm font-medium">
+                        Ver Todos
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+    
+</body>
+</html>

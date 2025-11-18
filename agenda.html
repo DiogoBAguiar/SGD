@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Agenda - SGD</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background-color: #333; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background-color: #555; }
+    </style>
+  <script type="module" crossorigin src="/assets/main-D_ReAame.js"></script>
+</head> 
+
+<body class="font-poppins bg-[#121212] text-[#E0E0E0] flex min-h-screen">
+
+    <div id="navbar" class="sticky top-0 h-screen z-30"></div>
+
+    <main class="flex-1 flex flex-col min-h-screen relative">
+        
+        <header id="header"></header>
+        
+        <section class="p-4 sm:p-8 flex-1 overflow-y-auto custom-scroll">
+            
+            <div class="bg-[#1F1F1F] p-6 rounded-lg shadow-lg mb-8">
+                <h2 class="text-xl font-semibold mb-4 text-[#E6C850]">Todos os Agendamentos</h2>
+                <div id="allDefensesList" class="space-y-3 max-h-60 overflow-y-auto custom-scroll">
+                </div>
+            </div>
+
+            <div class="bg-[#1F1F1F] p-4 sm:p-8 rounded-lg shadow-lg">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                    <h2 class="text-xl font-semibold text-[#E0E0E0]">Adicionar Novo Agendamento</h2>
+                    <button id="addEventButton" class="w-full sm:w-auto bg-[#C0A040] text-black px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+                        + Novo Agendamento
+                    </button>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div id="eventModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 hidden">
+        <div id="modalBackdrop" class="absolute inset-0"></div>
+        
+        <div class="relative bg-[#1F1F1F] rounded-lg shadow-xl w-full max-w-lg border border-[#333] max-h-[90vh] overflow-y-auto custom-scroll">
+            <form id="eventForm" class="p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-[#333]">
+                    <h3 id="modalTitle" class="text-xl font-semibold text-[#E6C850]">Novo Agendamento</h3>
+                    <button type="button" id="modalCloseButton" class="text-[#AAAAAA] hover:text-[#E0E0E0]">&times;</button>
+                </div>
+                <div class="mt-6 space-y-4">
+                    <input type="hidden" id="eventId" name="eventId">
+                    <div>
+                        <label for="evento_aluno" class="block mb-2 text-sm font-medium text-[#AAAAAA]">Aluno(a)</label>
+                        <select id="evento_aluno" name="aluno" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" required>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="evento_data" class="block mb-2 text-sm font-medium text-[#AAAAAA]">Data</label>
+                            <input type="date" id="evento_data" name="data" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" required>
+                        </div>
+                        <div>
+                            <label for="evento_hora" class="block mb-2 text-sm font-medium text-[#AAAAAA]">Horário</label>
+                            <input type="time" id="evento_hora" name="hora" class="w-full bg-[#333] border border-[#555] text-[#E0E0E0] rounded-lg p-2.5" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end mt-8 pt-4 border-t border-[#333]">
+                    <div class="flex-1 flex justify-end gap-4">
+                        <button type="button" id="cancelButton" class="px-5 py-2.5 rounded-lg text-sm font-medium text-[#AAAAAA] hover:text-[#E0E0E0] transition-colors">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="bg-[#C0A040] text-black px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+                            Salvar Agendamento
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>
