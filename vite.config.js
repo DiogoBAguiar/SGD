@@ -6,15 +6,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  base: '/',
-  // Raiz continua sendo os templates HTML
+  base: '/', 
   root: path.resolve(__dirname, 'src/templates'),
   
   publicDir: path.resolve(__dirname, 'public'),
 
   resolve: {
     alias: {
-      // O TRUQUE MÁGICO: Isso força o navegador a achar a pasta JS
       '/js': path.resolve(__dirname, 'src/js'),
       '@js': path.resolve(__dirname, 'src/js')
     },
@@ -22,7 +20,6 @@ export default defineConfig({
 
   server: {
     open: true,
-    // Permite que o Vite acesse arquivos fora da pasta 'templates'
     fs: {
       allow: [path.resolve(__dirname, 'src')]
     }
@@ -33,6 +30,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
+        // Páginas principais que já estavam funcionando
         main: path.resolve(__dirname, 'src/templates/index.html'),
         login: path.resolve(__dirname, 'src/templates/login.html'),
         agenda: path.resolve(__dirname, 'src/templates/agenda.html'),
@@ -40,6 +38,9 @@ export default defineConfig({
         secretarios: path.resolve(__dirname, 'src/templates/secretarios.html'),
         alunos: path.resolve(__dirname, 'src/templates/student_management.html'),
         profile: path.resolve(__dirname, 'src/templates/profile.html'),
+        solicitacao: path.resolve(__dirname, 'src/templates/solicitacao.html'),
+        documentos: path.resolve(__dirname, 'src/templates/documentos.html'),
+        configuracoes: path.resolve(__dirname, 'src/templates/configuracoes.html'),
       },
     },
   },
