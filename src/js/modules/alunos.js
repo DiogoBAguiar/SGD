@@ -2,21 +2,29 @@ import { mockAlunos } from '@js/modules/database.js';
 import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from '@js/modules/funcoesGerais.js';
 
 for (let i = 105; i <= 134; i++) {
-     mockAlunos.push({ id: i, nome: `Aluno Teste ${i}`, matricula: `2023${i}`, email: `aluno${i}@ifpb.edu.br`, curso: "Mestrado", ingresso: 2023, orientador: "Damires Yluska", status: "Ativo", defesa: null });
+    if(!mockAlunos.some(a => a.id === i)) {
+        mockAlunos.push({ id: i, nome: `Aluno Teste ${i}`, matricula: `2023${i}`, email: `aluno${i}@ifpb.edu.br`, curso: "Mestrado", ingresso: 2023, orientador: "Damires Yluska", status: "Ativo", defesa: null });
+    }
 }
+
 let paginaAtual = 1;
 const ITENS_POR_PAGINA = 8;
 let dadosFiltrados = [...mockAlunos];
 function desenharTabela() {
     const tbody = document.getElementById('alunos-table-body');
-    if (!tbody) {
-        console.warn("Elemento 'alunos-table-body' não encontrado ao desenhar tabela.");
+    const mobileContainer = document.getElementById('alunos-mobile-container');
+
+    if (!tbody && !mobileContainer) {
         return;
     }
-    tbody.innerHTML = '';
+    
+    if (tbody) tbody.innerHTML = '';
+    if (mobileContainer) mobileContainer.innerHTML = '';
 
     if (dadosFiltrados.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-sgd-muted">Nenhum aluno encontrado.</td></tr>`;
+        const msgVazia = `<div class="px-6 py-8 text-center text-sgd-muted">Nenhum aluno encontrado.</div>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="5">${msgVazia}</td></tr>`;
+        if (mobileContainer) mobileContainer.innerHTML = msgVazia;
         desenharPaginacao();
         return;
     }
@@ -26,9 +34,6 @@ function desenharTabela() {
     const dadosPaginados = dadosFiltrados.slice(indiceInicio, indiceFim);
 
     dadosPaginados.forEach(aluno => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-[#1A1A1A] transition-colors";
-
         let statusClasse = 'bg-gray-900 text-gray-400 border-gray-700';
         switch(aluno.status) {
             case 'Ativo': statusClasse = 'bg-sky-900/30 text-sky-400 border-sky-800'; break;
@@ -37,29 +42,68 @@ function desenharTabela() {
             case 'Trancado': case 'Desligado': statusClasse = 'bg-red-900/30 text-red-400 border-red-800 opacity-70'; break;
         }
 
-        tr.innerHTML = `
-            <td class="table-cell">
-                <a href="#" onclick="verAluno(event, ${aluno.id})" class="font-medium text-white hover:text-sgd-gold hover:underline transition">
-                    ${aluno.nome}
-                </a>
-                <div class="text-sgd-muted text-xs">${aluno.matricula}</div>
-            </td>
-            <td class="table-cell">
-                <div>${aluno.curso}</div>
-                <div class="text-sgd-muted text-xs">Ingresso: ${aluno.ingresso}</div>
-            </td>
-            <td class="table-cell">${aluno.orientador || '<span class="text-sgd-muted italic">—</span>'}</td>
-            <td class="table-cell"><span class="px-2 py-1 text-xs font-medium rounded-full border ${statusClasse}">${aluno.status}</span></td>
-            <td class="table-cell text-right">
-                <div class="flex items-center justify-end space-x-3">
-                    <button onclick="editarAluno(${aluno.id})" class="text-sgd-muted hover:text-sgd-gold transition" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></button>
-                    <button onclick="deletarAluno(${aluno.id}, '${aluno.nome}')" class="text-sgd-muted hover:text-red-500 transition" title="Excluir"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+        // -----------------------------------VERSÃO DESKTOP------------------------------------
+        if (tbody) {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-[#1A1A1A] transition-colors";
+            tr.innerHTML = `
+                <td class="table-cell">
+                    <a href="#" onclick="verAluno(event, ${aluno.id})" class="font-medium text-white hover:text-sgd-gold hover:underline transition">
+                        ${aluno.nome}
+                    </a>
+                    <div class="text-sgd-muted text-xs">${aluno.matricula}</div>
+                </td>
+                <td class="table-cell">
+                    <div>${aluno.curso}</div>
+                    <div class="text-sgd-muted text-xs">Ingresso: ${aluno.ingresso}</div>
+                </td>
+                <td class="table-cell">${aluno.orientador || '<span class="text-sgd-muted italic">—</span>'}</td>
+                <td class="table-cell"><span class="px-2 py-1 text-xs font-medium rounded-full border ${statusClasse}">${aluno.status}</span></td>
+                <td class="table-cell text-right">
+                    <div class="flex items-center justify-end space-x-3">
+                        <button onclick="editarAluno(${aluno.id})" class="text-sgd-muted hover:text-sgd-gold transition" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></button>
+                        <button onclick="deletarAluno(${aluno.id}, '${aluno.nome}')" class="text-sgd-muted hover:text-red-500 transition" title="Excluir"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                    </div>
+                </td>`;
+            tbody.appendChild(tr);
+        }
+
+        // ------------------------------------------VERSÃO MOBILE -----------------------------------------------------
+        if (mobileContainer) {
+            const card = document.createElement('div');
+            card.className = "mobile-card";
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white" onclick="verAluno(event, ${aluno.id})">${aluno.nome}</h3>
+                        <p class="text-sm text-sgd-muted">${aluno.matricula} | ${aluno.curso}</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full border ${statusClasse}">${aluno.status}</span>
                 </div>
-            </td>`;
-        tbody.appendChild(tr);
+                
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                    <div>
+                        <p class="mobile-label">Orientador</p>
+                        <p class="mobile-value">${aluno.orientador || '—'}</p>
+                    </div>
+                    <div>
+                        <p class="mobile-label">Ingresso</p>
+                        <p class="mobile-value">${aluno.ingresso}</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 border-t border-sgd-border pt-3">
+                    <button onclick="verAluno(event, ${aluno.id})" class="text-sm text-sgd-muted hover:text-white px-3 py-1 rounded border border-sgd-border">Detalhes</button>
+                    <button onclick="editarAluno(${aluno.id})" class="text-sm text-sgd-gold border border-sgd-gold px-3 py-1 rounded hover:bg-sgd-gold hover:text-black transition">Editar</button>
+                    <button onclick="deletarAluno(${aluno.id}, '${aluno.nome}')" class="text-sm text-red-500 border border-red-900/50 px-3 py-1 rounded hover:bg-red-900/20">Excluir</button>
+                </div>
+            `;
+            mobileContainer.appendChild(card);
+        }
     });
     desenharPaginacao();
 }
+
 function desenharPaginacao() {
     renderizarPaginacao({
         idContainer: 'pagination-container',
@@ -69,6 +113,7 @@ function desenharPaginacao() {
         nomeFuncaoMudarPagina: 'mudarPagina' 
     });
 }
+
 function mudarPagina(n) { 
     const total = Math.ceil(dadosFiltrados.length / ITENS_POR_PAGINA); 
     if(n >= 1 && n <= total) { 
@@ -76,6 +121,7 @@ function mudarPagina(n) {
         desenharTabela(); 
     }
 }
+
 function aplicarFiltros() {
     const searchInput = document.getElementById('search-input');
     const statusInput = document.getElementById('filter-status');
@@ -93,45 +139,51 @@ function verAluno(e, id) {
     const aluno = mockAlunos.find(a => a.id === id);
     if (!aluno) return;
 
-    document.getElementById('detail-nome').textContent = aluno.nome;
-    document.getElementById('detail-matricula').textContent = aluno.matricula;
-    document.getElementById('detail-email').textContent = aluno.email;
-    document.getElementById('detail-curso').textContent = `${aluno.curso} (Ingresso: ${aluno.ingresso})`;
-    document.getElementById('detail-status').textContent = aluno.status;
-    document.getElementById('detail-orientador').textContent = aluno.orientador || 'Não definido';
+    const setElementText = (id, text) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+    };
+
+    setElementText('detail-nome', aluno.nome);
+    setElementText('detail-matricula', aluno.matricula);
+    setElementText('detail-email', aluno.email);
+    setElementText('detail-curso', `${aluno.curso} (Ingresso: ${aluno.ingresso})`);
+    setElementText('detail-status', aluno.status);
+    setElementText('detail-orientador', aluno.orientador || 'Não definido');
 
     const defesaContainer = document.getElementById('detail-defesa-container');
-    if (aluno.defesa) {
-        let bancaHtml = '<ul class="list-disc list-inside text-sgd-muted">';
-        aluno.defesa.banca.forEach(membro => { bancaHtml += `<li>${membro}</li>`; });
-        bancaHtml += '</ul>';
+    if (defesaContainer) {
+        if (aluno.defesa) {
+            let bancaHtml = '<ul class="list-disc list-inside text-sgd-muted">';
+            aluno.defesa.banca.forEach(membro => { bancaHtml += `<li>${membro}</li>`; });
+            bancaHtml += '</ul>';
 
-        defesaContainer.innerHTML = `
-            <div class="mb-4">
-                <h4 class="text-sgd-gold text-sm font-semibold mb-1">Título do Trabalho</h4>
-                <p class="text-white font-medium">${aluno.defesa.titulo}</p>
-            </div>
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div><h4 class="text-sgd-muted text-xs mb-1">Data</h4><p>${aluno.defesa.data}</p></div>
-                <div><h4 class="text-sgd-muted text-xs mb-1">Horário</h4><p>${aluno.defesa.horario}</p></div>
-                <div class="col-span-2"><h4 class="text-sgd-muted text-xs mb-1">Local</h4><p>${aluno.defesa.local}</p></div>
-            </div>
-            <div>
-                <h4 class="text-sgd-gold text-sm font-semibold mb-2">Banca Examinadora</h4>
-                ${bancaHtml}
-            </div>
-        `;
-    } else {
-        defesaContainer.innerHTML = `<div class="text-center py-6 text-sgd-muted bg-black/20 rounded-lg border border-dashed border-sgd-border">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-            <p>Nenhuma defesa agendada ou registrada.</p>
-        </div>`;
+            defesaContainer.innerHTML = `
+                <div class="mb-4">
+                    <h4 class="text-sgd-gold text-sm font-semibold mb-1">Título do Trabalho</h4>
+                    <p class="text-white font-medium">${aluno.defesa.titulo}</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div><h4 class="text-sgd-muted text-xs mb-1">Data</h4><p>${aluno.defesa.data}</p></div>
+                    <div><h4 class="text-sgd-muted text-xs mb-1">Horário</h4><p>${aluno.defesa.horario}</p></div>
+                    <div class="col-span-2"><h4 class="text-sgd-muted text-xs mb-1">Local</h4><p>${aluno.defesa.local}</p></div>
+                </div>
+                <div>
+                    <h4 class="text-sgd-gold text-sm font-semibold mb-2">Banca Examinadora</h4>
+                    ${bancaHtml}
+                </div>
+            `;
+        } else {
+            defesaContainer.innerHTML = `<div class="text-center py-6 text-sgd-muted bg-black/20 rounded-lg border border-dashed border-sgd-border">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                <p>Nenhuma defesa agendada ou registrada.</p>
+            </div>`;
+        }
     }
-
     abrirModal('detalhes-modal');
 }
+
 function abrirModalAluno(id = null) {
-    const modal = document.getElementById('aluno-modal');
     const form = document.getElementById('aluno-form');
     if(form) form.reset();
     
@@ -156,22 +208,15 @@ function abrirModalAluno(id = null) {
                 document.getElementById('local').value = a.defesa.local || '';
                 document.getElementById('banca').value = a.defesa.banca.join(', ') || '';
             } else {
-                document.getElementById('titulo').value = '';
-                document.getElementById('data').value = '';
-                document.getElementById('horario').value = '';
-                document.getElementById('local').value = '';
-                document.getElementById('banca').value = '';
+                ['titulo', 'data', 'horario', 'local', 'banca'].forEach(field => {
+                    const el = document.getElementById(field);
+                    if (el) el.value = '';
+                });
             }
         }
     } else {
         document.getElementById('modal-title').textContent = "Novo Aluno";
         document.getElementById('aluno-id').value = '';
-        
-        document.getElementById('titulo').value = '';
-        document.getElementById('data').value = '';
-        document.getElementById('horario').value = '';
-        document.getElementById('local').value = '';
-        document.getElementById('banca').value = '';
     }
  
     abrirModal('aluno-modal');
@@ -199,13 +244,7 @@ function salvarAluno(e) {
     const banca = document.getElementById('banca').value.split(',').map(s => s.trim()).filter(s => s);
 
     if (titulo && data && horario && local && banca.length > 0) {
-        FormDados.defesa = {
-            titulo,
-            data,
-            horario,
-            local,
-            banca
-        };
+        FormDados.defesa = { titulo, data, horario, local, banca };
     }
 
     if (id) {
@@ -231,54 +270,50 @@ function deletarAluno(id,nome) {
     }
 }
 
-function inicializarAlunos() {
-    if (document.getElementById('alunos-table-body') && document.getElementById('aluno-form')) {
-        desenharTabela();
-        configurarListenersModal({
-            idModal: 'aluno-modal',
-            fecharAoClicarFora: true
-        });
-        configurarListenersModal({
-            idModal: 'detalhes-modal',
-            fecharAoClicarFora: true
-        });
-        document.getElementById('aluno-form').addEventListener('submit', salvarAluno);
-        const searchInput = document.getElementById('search-input');
-        const statusInput = document.getElementById('filter-status');
-        if (searchInput) searchInput.addEventListener('keyup', aplicarFiltros);
-        if (statusInput) statusInput.addEventListener('change', aplicarFiltros);
+function configurarEventos() {
+    desenharTabela();
+    
+    configurarListenersModal({
+        idModal: 'aluno-modal',
+        fecharAoClicarFora: true
+    });
+    configurarListenersModal({
+        idModal: 'detalhes-modal',
+        fecharAoClicarFora: true
+    });
 
+    const form = document.getElementById('aluno-form');
+    if(form) form.addEventListener('submit', salvarAluno);
+
+    const searchInput = document.getElementById('search-input');
+    const statusInput = document.getElementById('filter-status');
+    if (searchInput) searchInput.addEventListener('keyup', aplicarFiltros);
+    if (statusInput) statusInput.addEventListener('change', aplicarFiltros);
+}
+
+function inicializarAlunos() {
+    if (document.getElementById('alunos-table-body') || document.getElementById('alunos-mobile-container')) {
+        configurarEventos();
     } else {
         console.warn("Elementos da página de alunos não encontrados. Aguardando DOMContentLoaded.");
         document.addEventListener("DOMContentLoaded", () => {
-            desenharTabela();
-
-            configurarListenersModal({
-                idModal: 'aluno-modal',
-                fecharAoClicarFora: true
-            });
-            configurarListenersModal({
-                idModal: 'detalhes-modal',
-                fecharAoClicarFora: true
-            });
-
-            const form = document.getElementById('aluno-form');
-            if (form) form.addEventListener('submit', salvarAluno);
-
-            const searchInput = document.getElementById('search-input');
-            const statusInput = document.getElementById('filter-status');
-            if (searchInput) searchInput.addEventListener('keyup', aplicarFiltros);
-            if (statusInput) statusInput.addEventListener('change', aplicarFiltros);
+             if (document.getElementById('alunos-table-body') || document.getElementById('alunos-mobile-container')) {
+                configurarEventos();
+             }
         });
     }
 }
 
-inicializarAlunos();
 window.aplicarFiltros = aplicarFiltros;
 window.abrirModalAluno = abrirModalAluno;
+window.openAlunoModal = abrirModalAluno; 
 window.deletarAluno = deletarAluno;
 window.editarAluno = abrirModalAluno; 
 window.mudarPagina = mudarPagina;
 window.verAluno = verAluno;
 window.fecharModalAluno = () => fecharModal('aluno-modal');
+window.closeAlunoModal = () => fecharModal('aluno-modal'); 
 window.fecharModalDetalhes = () => fecharModal('detalhes-modal');
+window.closeDetalhesModal = () => fecharModal('detalhes-modal'); 
+
+inicializarAlunos();

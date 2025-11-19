@@ -31,14 +31,18 @@ function salvarDefesas(defesas) {
 
 function popularListaDefesas() {
     if (!listaDefesas) return;
-
     const defesas = obterDefesas();
     defesas.sort((a, b) => new Date(a.start) - new Date(b.start));
 
     listaDefesas.innerHTML = '';
 
     if (defesas.length === 0) {
-        listaDefesas.innerHTML = `<p class="text-[#AAAAAA]">Nenhum agendamento realizado.</p>`;
+        listaDefesas.innerHTML = `<div class="text-center py-8 text-[#AAAAAA]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Nenhum agendamento realizado.
+        </div>`;
         return;
     }
 
@@ -46,20 +50,28 @@ function popularListaDefesas() {
         const dataEvento = new Date(defesa.start);
         const dataString = dataEvento.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
         const horaString = dataEvento.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
         const nomeAluno = defesa.extendedProps.student;
-        const tituloDefesa = defesa.extendedProps.title;
-
-        let alunoDisplay = nomeAluno;
-        if (tituloDefesa) {
-            alunoDisplay = `${nomeAluno} (${tituloDefesa})`;
-        }
-
+        const tituloDefesa = defesa.extendedProps.title || 'Título não informado';
         const itemHTML = `
-            <div class="flex items-center justify-between p-3 bg-[#121212] rounded-lg border border-[#333] gap-4">
-                <p class="text-sm font-medium text-[#E0E0E0]">${alunoDisplay}</p>
-                <div class="text-right flex-shrink-0">
-                    <span class="font-semibold text-[#E0E0E0]">${dataString} às ${horaString}</span>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-[#1A1A1A] rounded-lg border border-[#333] hover:border-[#C0A040] transition-colors gap-4 group">
+                
+                <div class="flex-1 min-w-0">
+                    <h4 class="text-sm font-bold text-white group-hover:text-[#E6C850] transition-colors truncate">${nomeAluno}</h4>
+                    <p class="text-xs text-[#888888] truncate mt-1" title="${tituloDefesa}">${tituloDefesa}</p>
+                </div>
+
+                <div class="flex items-center bg-[#121212] px-4 py-2 rounded-md border border-[#333] shrink-0 w-full sm:w-auto justify-center">
+                    <!-- Ícone de Calendário -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#C0A040] mr-3 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    
+                    <!-- Data e Hora Formatadas -->
+                    <div class="text-sm font-medium">
+                        <span class="text-[#E0E0E0]">${dataString}</span>
+                        <span class="text-[#555] text-xs mx-1">às</span>
+                        <span class="text-[#C0A040] font-bold">${horaString}</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -144,17 +156,19 @@ function initControlesModal() {
 
 function inicializarAgenda() {
 
-    if (document.getElementById('allDefensesList') && document.getElementById('eventForm')) {
+    if (document.getElementById('allDefensesList') || document.getElementById('eventForm')) {
         obterDefesas();
         popularListaDefesas();
         popularSeletorAluno();
         initControlesModal();
     } else {
         document.addEventListener('DOMContentLoaded', () => {
-            obterDefesas();
-            popularListaDefesas();
-            popularSeletorAluno();
-            initControlesModal();
+            if (document.getElementById('allDefensesList')) {
+                obterDefesas();
+                popularListaDefesas();
+                popularSeletorAluno();
+                initControlesModal();
+            }
         });
     }
 }
