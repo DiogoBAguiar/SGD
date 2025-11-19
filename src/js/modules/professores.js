@@ -2,17 +2,19 @@ import { listaProfessores } from './database.js';
 import { abrirModal, fecharModal, configurarListenersModal, renderizarPaginacao } from './funcoesGerais.js';
 
 for (let i = 11; i <= 33; i++) {
-    listaProfessores.push({
-        id: i,
-        nome: `Professor Teste ${i}`,
-        email: `prof${i}@exemplo.com`,
-        lattes: i % 2 === 0 ? `http://lattes.cnpq.br/${i}` : "",
-        instituicao: i % 3 === 0 ? "UFPB" : "IFPB",
-        titulacao: i % 4 === 0 ? "Mestrado" : "Doutorado",
-        tipo: i % 3 === 0 ? "Visitante" : (i % 2 === 0 ? "Colaborador" : "Permanente"),
-        areas: "Área Genérica A, Área Genérica B",
-        ativo: i % 5 !== 0
-    });
+    if(!listaProfessores.some(p => p.id === i)) {
+        listaProfessores.push({
+            id: i,
+            nome: `Professor Teste ${i}`,
+            email: `prof${i}@exemplo.com`,
+            lattes: i % 2 === 0 ? `http://lattes.cnpq.br/${i}` : "",
+            instituicao: i % 3 === 0 ? "UFPB" : "IFPB",
+            titulacao: i % 4 === 0 ? "Mestrado" : "Doutorado",
+            tipo: i % 3 === 0 ? "Visitante" : (i % 2 === 0 ? "Colaborador" : "Permanente"),
+            areas: "Área Genérica A, Área Genérica B",
+            ativo: i % 5 !== 0
+        });
+    }
 }
 
 let paginaAtual = 1;
@@ -21,17 +23,21 @@ let dadosFiltrados = [...listaProfessores];
 
 function desenharTabela() {
     const corpoTabela = document.getElementById('professores-table-body');
+    const mobileContainer = document.getElementById('professores-mobile-container'); 
     if (!corpoTabela) {
         console.warn("Elemento 'professores-table-body' não encontrado.");
         return; 
-    }
+    } 
     corpoTabela.innerHTML = ''; 
+    if(mobileContainer) mobileContainer.innerHTML = '';
 
     if (dadosFiltrados.length === 0) {
+        const msgVazia = `<div class="px-6 py-8 text-center text-sgd-muted">Nenhum professor encontrado.</div>`;
         corpoTabela.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-sgd-muted flex flex-col items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             <p class="text-lg">Nenhum professor encontrado.</p>
         </td></tr>`;
+        if(mobileContainer) mobileContainer.innerHTML = msgVazia;
         desenharPaginacao(); 
         return; 
     }
@@ -41,9 +47,6 @@ function desenharTabela() {
     const dadosPaginados = dadosFiltrados.slice(indiceInicio, indiceFim);
 
     dadosPaginados.forEach(prof => {
-        const linha = document.createElement('tr');
-        linha.className = `hover:bg-[#1A1A1A] transition-colors ${!prof.ativo ? 'opacity-50 bg-black/40' : ''}`;
-
         let classeCrachaTipo = prof.tipo === 'Permanente' ? 'bg-sgd-gold/20 text-sgd-gold border-sgd-gold/50' :
                              prof.tipo === 'Colaborador' ? 'bg-blue-900/30 text-blue-400 border-blue-800' :
                              'bg-purple-900/30 text-purple-400 border-purple-800';
@@ -56,6 +59,9 @@ function desenharTabela() {
             ? `<a href="${prof.lattes}" target="_blank" class="flex justify-center text-sgd-muted hover:text-sgd-gold transition" title="Ver Lattes"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></a>`
             : `<span class="flex justify-center text-sgd-border opacity-30 cursor-not-allowed"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></span>`;
 
+        // ----------------------------- VERSÃO DESKTOP  ----------------------------------
+        const linha = document.createElement('tr');
+        linha.className = `hover:bg-[#1A1A1A] transition-colors ${!prof.ativo ? 'opacity-50 bg-black/40' : ''}`;
         linha.innerHTML = `
             <td class="table-cell">
                 <a href="#" onclick="verProfessor(event, ${prof.id})" class="font-medium text-white hover:text-sgd-gold hover:underline transition">
@@ -77,6 +83,41 @@ function desenharTabela() {
                 </div>
             </td>`;
         corpoTabela.appendChild(linha);
+
+        // --------------------------------------- VERSÃO MOBILE (CARDS) --------------------------------------
+        if (mobileContainer) {
+            const card = document.createElement('div');
+            card.className = "mobile-card";
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white" onclick="verProfessor(event, ${prof.id})">${prof.nome}</h3>
+                        <p class="text-sm text-sgd-muted">${prof.titulacao} | ${prof.instituicao}</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full border ${classeCrachaTipo}">${prof.tipo}</span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <div>
+                        <p class="mobile-label">Áreas</p>
+                        <p class="mobile-value truncate" title="${prof.areas}">${prof.areas || '—'}</p>
+                    </div>
+                    <div>
+                        <p class="mobile-label">Status</p>
+                        <p class="mobile-value flex items-center gap-2">
+                           ${prof.ativo ? '<span class="w-2 h-2 rounded-full bg-green-500"></span> Ativo' : '<span class="w-2 h-2 rounded-full bg-red-500"></span> Inativo'}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 border-t border-sgd-border pt-3">
+                     ${prof.lattes ? `<a href="${prof.lattes}" target="_blank" class="text-sm text-sgd-muted hover:text-white px-3 py-1 rounded border border-sgd-border flex items-center gap-1"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg> Lattes</a>` : ''}
+                    <button onclick="editarProfessor(${prof.id})" class="text-sm text-sgd-gold border border-sgd-gold px-3 py-1 rounded hover:bg-sgd-gold hover:text-black transition">Editar</button>
+                    <button onclick="deletarProfessor(${prof.id}, '${prof.nome}')" class="text-sm text-red-500 border border-red-900/50 px-3 py-1 rounded hover:bg-red-900/20">Excluir</button>
+                </div>
+            `;
+            mobileContainer.appendChild(card);
+        }
     });
 
     desenharPaginacao();
@@ -239,7 +280,8 @@ function deletarProfessor(id, nome) {
 }
 
 function inicializarProfessores() {
-    if (document.getElementById('professores-table-body') && document.getElementById('professor-form')) {
+    // Verifica a tabela OU o container mobile (para garantir que inicialize em qualquer tela)
+    if (document.getElementById('professores-table-body') || document.getElementById('professores-mobile-container')) {
         desenharTabela();
 
         configurarListenersModal({
@@ -268,8 +310,7 @@ function inicializarProfessores() {
     }
 }
 
-inicializarProfessores();
-
+// Alias globais para os botões HTML acessarem
 window.aplicarFiltros = aplicarFiltros; 
 window.abrirModalProfessor = abrirModalProfessor; 
 window.fecharModalProfessor = () => fecharModal('professor-modal');
@@ -279,3 +320,5 @@ window.editarProfessor = abrirModalProfessor;
 window.mudarPagina = mudarPagina; 
 window.verProfessor = verProfessor; 
 window.fecharModalDetalhes = () => fecharModal('detalhes-modal');
+
+inicializarProfessores();

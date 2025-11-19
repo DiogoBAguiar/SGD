@@ -9,7 +9,7 @@ const createNavbar = (activePage) => {
     };
 
     const icons = {
-        dashboard: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>',
+        dashboard: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>',
         agenda: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>',
         solicitacoes: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>',
         documentos: '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>',
@@ -22,17 +22,38 @@ const createNavbar = (activePage) => {
     };
 
     return `
-    <aside class="w-[260px] h-screen bg-[#000000] border-r border-[#333333] p-5 flex flex-col sticky top-0">
-        <div class="text-center mb-6 pt-2">
-            <!-- CORREÇÃO: Caminho do logo (da pasta 'public') -->
-            <img src="/logo_sgd.webp" alt="Logo SGD" class="w-20 h-20 rounded-xl object-cover mx-auto mb-3 border-2 border-[#333333]">
-            <h2 class="text-[#C0A040] text-lg font-bold tracking-wider">SGD IFPB</h2>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #333;
+            border-radius: 20px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #C0A040;
+        }
+    </style>
+
+    <div id="sidebarOverlay" class="fixed inset-0 top-20 bg-black/50 z-30 hidden md:hidden glass-effect"></div>
+    
+    <aside id="sidebar" class="
+        fixed left-0 top-20 bottom-0 w-[260px] z-40 bg-[#000000] border-r border-[#333333] flex flex-col transition-transform duration-300 -translate-x-full shadow-2xl
+        md:translate-x-0 md:static md:sticky md:top-0 md:h-screen md:shadow-none md:z-0
+    ">
+        <div class="hidden md:flex flex-col justify-between items-center mb-6 pt-5 px-5">
+            <div class="text-center w-full">
+                <img src="/logo_sgd.webp" alt="Logo SGD" class="w-20 h-20 rounded-xl object-cover mx-auto mb-3 border-2 border-[#333333]">
+                <h2 class="text-[#C0A040] text-lg font-bold tracking-wider">SGD IFPB</h2>
+            </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto custom-scrollbar pr-2">
+        <nav class="flex-1 overflow-y-auto custom-scrollbar px-5 py-4 md:py-0">
             <ul class="space-y-1 text-sm">
-                <li class="px-3 text-[#AAAAAA] uppercase tracking-widest text-[0.65rem] font-bold mt-4 mb-2">Principal</li>
-                <!-- CORREÇÃO: Link para index.html -->
+                <li class="px-3 text-[#AAAAAA] uppercase tracking-widest text-[0.65rem] font-bold mt-2 md:mt-4 mb-2">Principal</li>
                 <li><a href="index.html" class="${getLinkClass('dashboard')}">${icons.dashboard} Dashboard</a></li>
                 <li><a href="agenda.html" class="${getLinkClass('agenda')}">${icons.agenda} Agenda</a></li>
 
@@ -52,7 +73,6 @@ const createNavbar = (activePage) => {
                 <li><a href="profile.html" class="${getLinkClass('meu_perfil')}">${icons.perfil} Meu Perfil</a></li>
                 
                 <li class="mt-6 pt-4 border-t border-[#333333]">
-                    <!-- CORREÇÃO: Link para login.html (mesma pasta) -->
                     <a href="login.html" id="logoutButton" class="flex items-center px-3 py-2 rounded text-red-400 hover:bg-red-900/20 transition-colors duration-200">
                         ${icons.sair} Sair
                     </a>
@@ -68,14 +88,29 @@ const createHeader = (email = '') => {
     const avatarUrl = `https://ui-avatars.com/api/?name=${names.replace(' ', '+')}&background=C0A040&color=1F1F1F&bold=true`;
 
     return `
-    <header class="flex items-center justify-between px-8 py-5 bg-[#000000] border-b border-[#333333] sticky top-0 z-10 h-20">
-        <h1 class="text-2xl font-semibold text-[#E0E0E0]">Bem-vindo, ${names}!</h1>
+    <header class="flex items-center justify-between px-4 sm:px-8 py-5 bg-[#000000] border-b border-[#333333] sticky top-0 z-50 h-20">
+        <div class="flex items-center gap-4">
+            
+            <button id="mobileMenuBtn" class="md:hidden text-[#C0A040] w-10 h-10 flex items-center justify-center hover:bg-[#1F1F1F] rounded focus:outline-none group">
+                <div class="w-6 flex flex-col gap-1.5 overflow-hidden relative">
+                    <span id="hamburger-line-1" class="w-full h-0.5 bg-current rounded transition-all duration-300 origin-center"></span>
+                    <span id="hamburger-line-2" class="w-full h-0.5 bg-current rounded transition-all duration-300"></span>
+                    <span id="hamburger-line-3" class="w-full h-0.5 bg-current rounded transition-all duration-300 origin-center"></span>
+                </div>
+            </button>
+            
+            <div class="flex items-center gap-3">
+                <img src="/logo_sgd.webp" alt="Logo Mobile" class="w-8 h-8 rounded object-cover border border-[#333333] md:hidden">
+                <h1 class="text-lg sm:text-2xl font-semibold text-[#E0E0E0] truncate max-w-[150px] sm:max-w-none">Bem-vindo, ${names}!</h1>
+            </div>
+        </div>
+        
         <div class="flex items-center text-sm">
-            <div class="text-right mr-4">
+            <div class="text-right mr-4 hidden sm:block">
                 <span class="block text-[#E0E0E0] font-medium">${names}</span>
                 <span class="block text-sgd-muted text-xs">Coordenador</span>
             </div>
-            <img src="${avatarUrl}" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-[#C0A040] object-cover">
+            <img src="${avatarUrl}" alt="Avatar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#C0A040] object-cover">
         </div>
     </header>
     `;
