@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,7 +13,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .font-poppins {
+      font-family: 'Poppins', sans-serif;
+    }
   </style>
 </head>
 
@@ -25,49 +28,67 @@
 
     <section class="p-8 flex justify-center items-start flex-1">
       <div class="bg-[#1F1F1F] p-8 rounded-xl shadow-lg w-full max-w-4xl border border-[#333333] mt-4 relative">
-        
-        
-        <button id="homeBtn" class="absolute top-6 right-6 text-[#C0A040] hover:text-[#E6C850] hidden" title="Voltar ao Dashboard">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+
+
+        <button id="homeBtn" class="absolute top-6 right-6 text-[#C0A040] hover:text-[#E6C850] hidden"
+          title="Voltar ao Dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+            stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10h14V10" />
           </svg>
         </button>
 
         <h2 class="text-2xl font-semibold text-[#E6C850] mb-6">Configurações Gerais</h2>
 
-        
+
         <div class="space-y-6">
-          
-         
+
+
           <div class="bg-[#181818] p-5 rounded-lg border border-[#333333]">
             <div class="flex justify-between items-center">
               <div>
                 <h3 class="text-[#E6C850] font-semibold text-lg">Notificações e Lembretes</h3>
                 <p class="text-sm text-[#AAAAAA]">Gerencie os prazos e alertas automáticos do sistema.</p>
               </div>
-              <button id="openPrazoModal" class="bg-[#C0A040] text-black px-4 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+              <button id="openPrazoModal"
+                class="bg-[#C0A040] text-black px-4 py-2 rounded font-semibold text-sm hover:bg-[#E6C850] transition-colors">
+                Configurar
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-[#181818] p-6 rounded-xl border border-[#333333]">
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="text-[#E6C850] font-semibold">Permissões de Usuário</h3>
+                <p class="text-sm text-[#AAAAAA]">Controle o que os alunos e orientadores podem fazer no sistema.</p>
+              </div>
+              <button id="openPermissionsModal"
+                class="bg-[#C0A040] text-black px-4 py-2 rounded font-semibold hover:bg-[#E6C850] transition-colors text-sm">
                 Configurar
               </button>
             </div>
           </div>
 
 
-            </div>
-          </div>
 
         </div>
       </div>
+
+      </div>
+      </div>
     </section>
 
-   
+
     <div id="prazoModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-      <div class="bg-[#1F1F1F] p-8 rounded-xl w-full max-w-3xl border border-[#333333] relative overflow-y-auto max-h-[90vh]">
+      <div
+        class="bg-[#1F1F1F] p-8 rounded-xl w-full max-w-3xl border border-[#333333] relative overflow-y-auto max-h-[90vh]">
         <h2 class="text-2xl font-semibold text-[#E6C850] mb-6">Configurar Lembretes e Notificações</h2>
         <button id="closePrazoModal" class="absolute top-4 right-4 text-[#AAAAAA] hover:text-[#C0A040]">✕</button>
 
-        
+
         <div class="space-y-8">
-          
+
           <div>
             <h3 class="text-xl font-semibold text-[#E6C850] mb-3">Notificações Gerais</h3>
             <label class="flex items-center gap-3 bg-[#181818] p-4 rounded-lg border border-[#333333] cursor-pointer">
@@ -75,18 +96,20 @@
               <p class="text-sm">Receber notificações por <span class="text-[#E6C850]">e-mail</span></p>
             </label>
 
-            <label class="flex items-center gap-3 bg-[#181818] p-4 rounded-lg border border-[#333333] mt-3 cursor-pointer">
+            <label
+              class="flex items-center gap-3 bg-[#181818] p-4 rounded-lg border border-[#333333] mt-3 cursor-pointer">
               <input type="checkbox" id="systemNotifications" class="w-5 h-5">
               <p class="text-sm">Receber notificações dentro do sistema</p>
             </label>
           </div>
 
-          
+
           <div>
             <h3 class="text-xl font-semibold text-[#E6C850] mb-3">Lembretes de Prazos</h3>
             <label class="text-sm">Quando deseja ser avisado antes dos eventos?</label>
 
-            <select id="deadlineReminder" class="w-full mt-2 bg-[#2A2A2A] text-white p-3 border border-[#444] rounded focus:border-[#C0A040]">
+            <select id="deadlineReminder"
+              class="w-full mt-2 bg-[#2A2A2A] text-white p-3 border border-[#444] rounded focus:border-[#C0A040]">
               <option value="1">1 dia antes</option>
               <option value="3">3 dias antes</option>
               <option value="7">7 dias antes</option>
@@ -95,15 +118,79 @@
           </div>
         </div>
 
-        
+
         <div class="flex justify-end gap-3 mt-6">
-          <button id="resetBtn" class="px-5 py-2 rounded bg-[#333] text-white hover:bg-[#444] transition-colors">Restaurar</button>
-          <button id="saveBtn" class="px-5 py-2 rounded bg-[#C0A040] text-black font-semibold hover:bg-[#E6C850] transition-colors">Salvar</button>
+          <button id="resetBtn"
+            class="px-5 py-2 rounded bg-[#333] text-white hover:bg-[#444] transition-colors">Restaurar</button>
+          <button id="saveBtn"
+            class="px-5 py-2 rounded bg-[#C0A040] text-black font-semibold hover:bg-[#E6C850] transition-colors">Salvar</button>
         </div>
       </div>
     </div>
 
+    <div id="permissionsModal"
+      class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+
+      <div class="bg-[#1F1F1F] p-8 rounded-xl w-full max-w-lg border border-[#333333] relative">
+
+        <h2 class="text-xl font-semibold text-[#E6C850] mb-4">
+          Permissões de Usuário
+        </h2>
+
+        <button id="closePermissionsModal" class="absolute top-4 right-4 text-[#AAAAAA] hover:text-[#C0A040]">✕</button>
+
+        <form id="permissionsForm" class="space-y-4">
+
+
+          <div>
+            <p class="font-semibold text-[#E6C850] mb-1">Permissões de Alunos</p>
+
+            <label class="flex items-center gap-2 mb-2">
+              <input type="checkbox" id="alunoEnviarProrrogacao" class="form-checkbox text-[#C0A040]" />
+              <span class="text-sm text-[#CCCCCC]">Pode solicitar prorrogação de prazo</span>
+            </label>
+
+            <label class="flex items-center gap-2">
+              <input type="checkbox" id="alunoAgendarDefesa" class="form-checkbox text-[#C0A040]" />
+              <span class="text-sm text-[#CCCCCC]">Pode solicitar agendamento de defesa</span>
+            </label>
+          </div>
+
+
+          <div>
+            <p class="font-semibold text-[#E6C850] mb-1">Permissões de Orientadores</p>
+
+            <label class="flex items-center gap-2 mb-2">
+              <input type="checkbox" id="orientadorCriarBanca" class="form-checkbox text-[#C0A040]" />
+              <span class="text-sm text-[#CCCCCC]">Pode criar banca sem aprovação da coordenação</span>
+            </label>
+
+            <label class="flex items-center gap-2">
+              <input type="checkbox" id="orientadorEditarNotas" class="form-checkbox text-[#C0A040]" />
+              <span class="text-sm text-[#CCCCCC]">Pode editar notas após o registro</span>
+            </label>
+          </div>
+
+
+          <div class="flex justify-end gap-3 mt-6">
+            <button type="button" id="cancelPermissions"
+              class="px-5 py-2 bg-[#333] text-white rounded hover:bg-[#444] transition-colors">
+              Cancelar
+            </button>
+
+            <button type="submit"
+              class="px-5 py-2 bg-[#C0A040] text-black font-semibold rounded hover:bg-[#E6C850] transition-colors">
+              Salvar
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+
   </main>
-  <script type="module" src="../js/main.js" defer></script>
+  <script type="module" src="/js/main.js" defer></script>
 </body>
+
 </html>
