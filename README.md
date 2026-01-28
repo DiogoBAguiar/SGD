@@ -56,8 +56,4 @@ Este projeto também possui uma implementação utilizando o ecossistema React. 
 
 🔗 [itechbr/sgd-react: Sistema de gerenciamento de defesa de tcc em react](https://github.com/itechbr/sgd-react)
 
-### O que foi melhorado:
-1.  **Formatação e Estrutura:** Uso de negrito e listas para facilitar a leitura.
-2.  **Seção "Como Rodar":** Como seu `package.json` mostra o uso do **Vite**, é essencial explicar como iniciar o ambiente de desenvolvimento (`npm run dev`).
-3.  **Detalhamento:** Expandimos a descrição das funcionalidades com base no texto original ("agendamento", "documentos finais").
-4.  **Link React:** Adicionado em destaque no final, criando uma referência cruzada clara para a nova versão do sistema.
+
