@@ -49,12 +49,12 @@ Thalyson Felício
 
 🌐 Acesso ao Projeto
 Você pode acessar a versão de demonstração (deploy) através do link abaixo: 
-🔗 Acessar SGD - GitHub Pages
+🔗 [Acessar SGD - GitHub Pages](https://diogobaguiar.github.io/SGD/index.html)
 
 ⚛️ Outras Versões
 Este projeto também possui uma implementação utilizando o ecossistema React. Confira o repositório abaixo:
 
-🔗 itechbr/sgd-react: Sistema de gerenciamento de defesa de tcc em react
+🔗 [itechbr/sgd-react: Sistema de gerenciamento de defesa de tcc em react](https://github.com/itechbr/sgd-react)
 
 ### O que foi melhorado:
 1.  **Formatação e Estrutura:** Uso de negrito e listas para facilitar a leitura.
