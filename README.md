@@ -35,7 +35,8 @@ Pré-requisitos: Você precisa ter o [Node.js](https://nodejs.org/) instalado em
 3. **Inicie o servidor de desenvolvimento:**
    ```bash
    npm run build
-👥 Integrantes
+👥 Integrantes:
+
 Diogo Bruno Aguiar
 
 Alan Borba
