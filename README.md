@@ -2,21 +2,61 @@
 
 ## 🎯 Sobre o Projeto
 
-O SGD é uma plataforma web dedicada a gerenciar todo o fluxo de defesas de qualificação e TCC (Trabalho de Conclusão de Curso) da pós-graduação. O sistema foi projetado para automatizar, centralizar e organizar o processo para alunos, orientadores e a secretaria acadêmica, desde o agendamento inicial até a geração dos documentos finais.
+O **SGD** é uma plataforma web desenvolvida para gerenciar integralmente o fluxo de defesas de qualificação e TCC (Trabalho de Conclusão de Curso) da pós-graduação. 
 
-## 👥 Integrantes
+O sistema foi projetado para solucionar problemas de organização e burocracia, automatizando e centralizando processos para todos os envolvidos: alunos, orientadores e a secretaria acadêmica. O foco principal abrange desde o agendamento inicial da defesa até a geração automática dos documentos finais necessários.
 
-- Diogo Bruno Aguiar
-- Alan Borba
-- Carlos Gabriel
-- Ícaro Pontes
-- Thalyson Felício
+## ✨ Funcionalidades Principais
+
+* **Gerenciamento de Fluxo:** Acompanhamento do status das defesas (agendamento, realização, aprovação).
+* **Perfis de Acesso:** Áreas específicas para Alunos, Orientadores e Secretaria.
+* **Automação de Documentos:** Geração dos documentos finais da defesa.
+* **Agendamento Centralizado:** Organização de datas e horários para as bancas.
 
 ## 🛠️ Tecnologias Utilizadas
 
-- Html
-- Css
-- JS
+O projeto foi construído utilizando tecnologias web modernas e ferramentas de build para garantir performance:
 
-## 🌐 Página de Login (Temporária)
-http://diogobaguiar.github.io/SGD/
+* **HTML5**
+* **CSS3**
+* **JavaScript** (Vanilla)
+* **Vite** (Build Tool e Ambiente de Desenvolvimento)
+
+## 🚀 Como Rodar o Projeto
+
+Pré-requisitos: Você precisa ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/diogobaguiar/SGD.git](https://github.com/diogobaguiar/SGD.git)
+2. **Instale as dependências:**
+   ```bash
+   npm install
+3. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm run build
+👥 Integrantes
+Diogo Bruno Aguiar
+
+Alan Borba
+
+Carlos Gabriel
+
+Ícaro Pontes
+
+Thalyson Felício
+
+🌐 Acesso ao Projeto
+Você pode acessar a versão de demonstração (deploy) através do link abaixo: 
+🔗 Acessar SGD - GitHub Pages
+
+⚛️ Outras Versões
+Este projeto também possui uma implementação utilizando o ecossistema React. Confira o repositório abaixo:
+
+🔗 itechbr/sgd-react: Sistema de gerenciamento de defesa de tcc em react
+
+### O que foi melhorado:
+1.  **Formatação e Estrutura:** Uso de negrito e listas para facilitar a leitura.
+2.  **Seção "Como Rodar":** Como seu `package.json` mostra o uso do **Vite**, é essencial explicar como iniciar o ambiente de desenvolvimento (`npm run dev`).
+3.  **Detalhamento:** Expandimos a descrição das funcionalidades com base no texto original ("agendamento", "documentos finais").
+4.  **Link React:** Adicionado em destaque no final, criando uma referência cruzada clara para a nova versão do sistema.
